@@ -255,6 +255,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 @media(max-width:900px){.academy-layout{grid-template-columns:minmax(0,1fr)}.academy-syllabus{position:static}.academy-lesson-list{grid-template-columns:repeat(2,minmax(0,1fr))}.academy-lesson-button{min-width:0}.academy-lesson h3{font-size:21px}}
 @media(max-width:520px){.academy-hero-row{align-items:flex-start}.academy-hero h3{font-size:18px}.academy-score strong{font-size:20px}.academy-lesson-list{grid-template-columns:minmax(0,1fr)}.academy-lesson-button{min-height:52px}.academy-lesson h3{font-size:20px}.academy-video-resource{min-height:160px;padding:14px}.academy-actions button{flex:1 1 100%}.academy-progress-meta{font-size:10px}}
 
+
+.chart-upload-box{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:13px;display:grid;gap:10px}
+.chart-upload-box p{margin:4px 0 0;line-height:1.5}
+.chart-upload-box input[type=file]{width:100%;font-size:13px}
+#copilotChartPreviewWrap{display:grid;gap:8px}
+#copilotChartPreview{display:block;max-width:100%;max-height:300px;object-fit:contain;border-radius:9px;border:1px solid var(--line);background:#070b12}
+.chart-upload-box .field{margin:0}
+@media(max-width:520px){.chart-upload-box{padding:10px}#copilotChartPreview{max-height:220px}}
+
 </style>
 </head>
 <body>
@@ -473,6 +482,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <div class="panel" style="background:var(--panel2);padding:14px"><strong>Copilot</strong><p style="margin:7px 0 0">Ask me about BOS, FVG, IFVG, trendlines, risk concepts, journaling, or how to test a strategy. I’ll explain the idea and help you turn it into rules you can evaluate in replay or paper trading.</p></div>
     </div>
     <form id="copilotForm" style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+      <div class="chart-upload-box">
+        <div><strong>Analyze a chart screenshot</strong><p class="muted small">Upload a clear chart image. Copilot will describe visible structure and uncertainty; it cannot see live market data from a screenshot.</p></div>
+        <input id="copilotChartFile" type="file" accept="image/png,image/jpeg,image/webp" />
+        <div id="copilotChartPreviewWrap" class="hidden"><img id="copilotChartPreview" alt="Selected chart screenshot preview" /><button type="button" id="copilotChartRemove" class="ghost">Remove image</button></div>
+        <label class="field"><span>Asset / symbol (optional)</span><input id="copilotChartSymbol" maxlength="80" placeholder="e.g. AAPL, EUR/USD, BTC/USD" /></label>
+        <label class="field"><span>Timeframe (optional)</span><input id="copilotChartTimeframe" maxlength="40" placeholder="e.g. 5-minute, daily" /></label>
+        <p class="muted small">Hide account numbers, names, balances, and other private details before uploading. Images are sent to the configured AI provider for analysis.</p>
+      </div>
       <label for="copilotInput">Your question</label>
       <textarea id="copilotInput" rows="3" maxlength="2000" placeholder="Example: How do I confirm a trendline breakout without chasing price?" required></textarea>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary" id="copilotSend" type="submit">Ask Copilot</button><span class="muted small" id="copilotStatus">AI service setup required before answers are enabled.</span></div>
@@ -936,6 +953,20 @@ function initQuiz(){
 // Trading Copilot chat: responses are served securely by the Supabase Edge Function.
 (function(){
  const chat=$('copilotChat'),form=$('copilotForm'),input=$('copilotInput'),send=$('copilotSend'),statusEl=$('copilotStatus');
+ let chartImage=null;
+ const chartFile=$('copilotChartFile'),chartPreviewWrap=$('copilotChartPreviewWrap'),chartPreview=$('copilotChartPreview');
+ if(chartFile)chartFile.addEventListener('change',()=>{
+   const file=chartFile.files&&chartFile.files[0];chartImage=null;
+   if(!file){chartPreviewWrap.classList.add('hidden');return;}
+   if(!['image/png','image/jpeg','image/webp'].includes(file.type)){statusEl.textContent='Choose a PNG, JPG, or WebP image.';chartFile.value='';return;}
+   if(file.size>5*1024*1024){statusEl.textContent='Please choose an image smaller than 5 MB.';chartFile.value='';return;}
+   const reader=new FileReader();
+   reader.onload=()=>{const result=String(reader.result||'');const comma=result.indexOf(',');if(comma<0){statusEl.textContent='Could not read that image.';return;}chartImage={mimeType:file.type,data:result.slice(comma+1)};chartPreview.src=result;chartPreviewWrap.classList.remove('hidden');statusEl.textContent='Chart ready to analyze.';};
+   reader.onerror=()=>{statusEl.textContent='Could not read that image.';};
+   reader.readAsDataURL(file);
+ });
+ $('copilotChartRemove')?.addEventListener('click',()=>{chartImage=null;if(chartFile)chartFile.value='';chartPreview.removeAttribute('src');chartPreviewWrap.classList.add('hidden');statusEl.textContent='Chart image removed.';});
+
  if(!chat||!form)return;
  function addMessage(role,text){
    const wrap=document.createElement('div');wrap.className='panel';wrap.style.cssText='padding:13px 14px;background:'+(role==='You'?'var(--panel)':'var(--panel2)');
@@ -969,7 +1000,8 @@ function initQuiz(){
    const pending=addMessage('Copilot','Thinking through your question…');
    try{
      const monthContext=buildCopilotMonthContext();
-     const {data,error}=await client.functions.invoke('trading-copilot',{body:{question,monthContext}});
+     const chartContext=chartImage?{...chartImage,symbol:$('copilotChartSymbol')?.value?.trim()||'',timeframe:$('copilotChartTimeframe')?.value?.trim()||''}:null;
+     const {data,error}=await client.functions.invoke('trading-copilot',{body:{question,monthContext,chartImage:chartContext}});
      if(error)throw error;
      const answer=data&&data.answer;if(!answer)throw new Error((data&&data.error)||'No answer returned.');
      pending.lastChild.textContent=answer;statusEl.textContent='Ready';
