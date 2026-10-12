@@ -376,6 +376,32 @@ tbody tr{transition:background .16s ease}tbody tr:hover{background:color-mix(in 
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+
+/* Final quality pass: calm visual hierarchy, accessible states, and safer mobile ergonomics */
+:root{--focus-ring:color-mix(in srgb,var(--blue) 72%,white 0%);font-synthesis:none}
+body{line-height:1.45;letter-spacing:-.005em}
+button{transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease}
+button:hover:not(:disabled){border-color:color-mix(in srgb,var(--blue) 42%,var(--line));}
+button.primary:hover:not(:disabled){filter:brightness(1.045);box-shadow:0 5px 18px color-mix(in srgb,var(--blue) 12%,transparent)}
+button:active:not(:disabled){transform:translateY(1px)}
+.card,.panel{box-shadow:0 1px 0 #ffffff05;transition:border-color .18s ease,box-shadow .18s ease}
+.card:hover,.panel:hover{border-color:color-mix(in srgb,var(--line) 75%,var(--blue) 25%)}
+.metric-label{letter-spacing:.01em}
+.metric-value{font-variant-numeric:tabular-nums;line-height:1.12}
+.pill,.status,.metric-foot,.small{font-variant-numeric:tabular-nums}
+input,select,textarea{accent-color:var(--blue)}
+::selection{background:color-mix(in srgb,var(--blue) 35%,transparent);color:var(--text)}
+@media(max-width:900px){
+ .card:hover,.panel:hover{border-color:var(--line)}
+ .mobile-bottom-nav{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+ .mobile-bottom-nav button{font-size:10px;letter-spacing:0}
+ .content{padding-left:max(11px,env(safe-area-inset-left));padding-right:max(11px,env(safe-area-inset-right))}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>
@@ -713,6 +739,8 @@ let quizCurrentId=null,quizAnswered=false,quizSelected=null,quizQueue=[],quizQue
 const $=id=>document.getElementById(id);
 const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n)||0);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Use local calendar dates for the journal; ISO UTC dates can shift a day near midnight.
+const localDateKey=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
 const calc=t=>((Number(t.exit_price)-Number(t.entry_price))*Number(t.contracts)*Number(t.point_value)*(t.side==='short'?-1:1))-Number(t.fees||0);
 const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
 function showView(name){if(!document.getElementById('view-'+name))return;document.querySelectorAll('.view').forEach(v=>{const active=v.id==='view-'+name;v.classList.toggle('active',active);v.hidden=!active;});document.querySelectorAll('[data-view]').forEach(b=>{const active=b.dataset.view===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],replay:['Replay Lab','Practice examples and test rules without live orders'],masterclass:['Beginner Masterclass','Learn the foundations step by step'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Settings','Personalize your workspace and manage your data']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
@@ -737,7 +765,7 @@ $('resetTheme').addEventListener('click',()=>applyTheme('midnight'));
 applyTheme(localStorage.getItem('tjp_theme')||'midnight');
 document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
 const mobileBackdrop=document.createElement('div');mobileBackdrop.className='mobile-nav-backdrop';mobileBackdrop.hidden=true;document.body.appendChild(mobileBackdrop);function closeMobileNav(){document.querySelector('.sidebar').classList.remove('mobile-open');mobileBackdrop.hidden=true;} $('menuBtn').onclick=()=>{const sidebar=document.querySelector('.sidebar');const open=!sidebar.classList.contains('mobile-open');sidebar.classList.toggle('mobile-open',open);mobileBackdrop.hidden=!open;};const mobileMore=$('mobileMoreBtn');if(mobileMore)mobileMore.onclick=()=> $('menuBtn').click();mobileBackdrop.onclick=closeMobileNav;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',closeMobileNav));
-function openEditor(){editingId=null;$('tradeForm').reset();$('tradeDate').value=new Date().toISOString().slice(0,10);$('contracts').value=1;$('pointValue').value=1;$('fees').value=0;$('tradeStatus').value='closed';$('editorTitle').textContent='Log a paper trade';$('tradeForm').querySelector('button[type="submit"]').textContent='Save trade';$('tradeStatusMsg').textContent='';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
+function openEditor(){editingId=null;$('tradeForm').reset();$('tradeDate').value=localDateKey(new Date());$('contracts').value=1;$('pointValue').value=1;$('fees').value=0;$('tradeStatus').value='closed';$('editorTitle').textContent='Log a paper trade';$('tradeForm').querySelector('button[type="submit"]').textContent='Save trade';$('tradeStatusMsg').textContent='';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
 function editTrade(id){const t=trades.find(x=>String(x.id)===String(id));if(!t)return;if(!client||!user){status('Sign in to your cloud journal before editing trades.');return;}editingId=t.id;const values={tradeDate:t.trade_date,symbol:t.symbol,side:t.side,entry:t.entry_price,exit:t.exit_price,tradeStatus:t.trade_status||'closed',contracts:t.contracts,pointValue:t.point_value,fees:t.fees??0,setup:t.setup||'Other',mood:t.mood||'Focused',followed:t.followed_rules||'yes',grade:t.execution_grade||'B',stop:t.stop_price,target:t.target_price,notes:t.notes||'',screenshot:t.screenshot_url||''};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value??'';});$('editorTitle').textContent='Edit trade · '+(t.symbol||'Trade');$('tradeForm').querySelector('button[type="submit"]').textContent='Save changes';$('tradeStatusMsg').textContent='';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
 $('dashboardAddTrade').onclick=openEditor;$('newTradeTop').onclick=openEditor;$('newTradeLog').onclick=openEditor;$('closeEditor').onclick=()=>$('tradeEditor').classList.add('hidden');$('cancelTrade').onclick=()=>$('tradeEditor').classList.add('hidden');
 function preview(){const e=$('entry').value,x=$('exit').value;if(e===''||x===''||$('tradeStatus').value==='open'){$('pnlPreview').textContent=$('tradeStatus').value==='open'?'Open trade — realized P&L not available':'Enter entry and exit prices';$('pnlPreview').className='';return;}const n=calc({entry_price:e,exit_price:x,contracts:$('contracts').value,point_value:$('pointValue').value,side:$('side').value,fees:$('fees').value});$('pnlPreview').textContent=cash(n);$('pnlPreview').className=n>=0?'positive':'negative';}
@@ -760,7 +788,7 @@ function filtered(){let a=[...trades];const sym=$('filterSymbol').value,side=$('
 ['filterSymbol','filterSide','filterSetup','filterStatus'].forEach(id=>$(id).addEventListener('change',renderTradeTable));
 $('dashSymbol').onchange=renderDashboard;
 function renderDashboard(){refreshAssetFilters();let a=closed(trades);if($('dashSymbol').value!=='all')a=a.filter(t=>t.symbol===$('dashSymbol').value);const wins=a.filter(t=>Number(t.net_pnl)>0),losses=a.filter(t=>Number(t.net_pnl)<0),net=a.reduce((s,t)=>s+Number(t.net_pnl||0),0),gw=wins.reduce((s,t)=>s+Number(t.net_pnl),0),gl=Math.abs(losses.reduce((s,t)=>s+Number(t.net_pnl),0));$('mNet').textContent=cash(net);$('mNet').className='metric-value '+(net>=0?'positive':'negative');$('mWin').textContent=a.length?(wins.length/a.length*100).toFixed(1)+'%':'—';$('mWinFoot').textContent=a.length?`${wins.length} winners · ${losses.length} losers`:'No closed trades yet';$('mPF').textContent=gl?(gw/gl).toFixed(2):gw?'∞':'—';$('mAvg').textContent=a.length?cash(net/a.length):cash(0);
-const last=[];const now=new Date();for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const key=d.toISOString().slice(0,10);last.push({key,label:d.toLocaleDateString('en-US',{weekday:'short'}),pnl:a.filter(t=>t.trade_date===key).reduce((s,t)=>s+Number(t.net_pnl||0),0)})}const max=Math.max(1,...last.map(x=>Math.abs(x.pnl)));$('pnlChart').innerHTML=last.map(x=>`<div class="chart-col" title="${x.key}: ${cash(x.pnl)}"><div class="chart-bar ${x.pnl<0?'neg':''}" style="height:${Math.max(2,Math.abs(x.pnl)/max*100)}px"></div><small>${x.label}</small></div>`).join('');
+const last=[];const now=new Date();for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const key=localDateKey(d);last.push({key,label:d.toLocaleDateString('en-US',{weekday:'short'}),pnl:a.filter(t=>t.trade_date===key).reduce((s,t)=>s+Number(t.net_pnl||0),0)})}const max=Math.max(1,...last.map(x=>Math.abs(x.pnl)));$('pnlChart').innerHTML=last.map(x=>`<div class="chart-col" title="${x.key}: ${cash(x.pnl)}"><div class="chart-bar ${x.pnl<0?'neg':''}" style="height:${Math.max(2,Math.abs(x.pnl)/max*100)}px"></div><small>${x.label}</small></div>`).join('');
 renderBars($('setupBars'),groupPnl(a,'setup'));$('recentTrades').innerHTML=tableHtml(trades.slice(0,6),false)}
 function groupPnl(a,key){const map={};a.forEach(t=>{const k=t[key]||'Other';map[k]=(map[k]||0)+Number(t.net_pnl||0)});return Object.entries(map).sort((a,b)=>b[1]-a[1])}
 function renderBars(el,items){if(!items.length){el.innerHTML='<div class="empty">Add closed trades to see performance.</div>';return}const max=Math.max(1,...items.map(x=>Math.abs(x[1])));el.innerHTML=items.map(([name,n])=>`<div class="bar-row"><span>${esc(name)}</span><div class="bar-track"><div class="bar-fill ${n<0?'neg':''}" style="width:${Math.max(2,Math.abs(n)/max*100)}%"></div></div><strong class="${n>=0?'positive':'negative'}" style="text-align:right">${cash(n)}</strong></div>`).join('')}
