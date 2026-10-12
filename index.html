@@ -296,7 +296,83 @@ button:active{transform:scale(.98)}
 @media(max-width:520px){.dashboard-hero{padding:23px 17px 19px;border-radius:17px;gap:12px}.dashboard-hero-copy{padding-top:33px}.eyebrow{font-size:8px;letter-spacing:.12em;margin-bottom:12px}.dashboard-hero h2{font-size:30px}.dashboard-hero-copy>p{font-size:12px;margin:10px 0 15px}.dashboard-hero-actions{display:grid;grid-template-columns:1fr 1fr}.dashboard-hero-actions button{padding:10px 8px;font-size:11px}.hero-filter{top:11px;right:13px;width:130px}.hero-filter label{display:none}.hero-filter select{padding:7px 8px;font-size:12px}.dashboard-hero-glow{right:-100px;top:-250px}.copilot-dashboard-card{margin-bottom:0!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 @media(max-width:760px){.topbar-brand .brand-mark{animation:none}}
- .topbar-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;white-space:nowrap;pointer-events:none}.topbar-brand .brand-mark{width:34px;height:34px;border-radius:10px;background:#111318;color:#f3e8d3;border:1px solid #44454a}.topbar-brand strong{font-size:15px;letter-spacing:-.03em;color:var(--text)}@media(max-width:760px){.topbar-brand{position:static;transform:none;margin:0 auto;gap:6px}.topbar-brand .brand-mark{width:30px;height:30px}.topbar-brand strong{font-size:12px}.topbar .top-actions #exportBtn{display:none}.topbar{padding:0 12px}.topbar-brand{flex-shrink:0}}@media(max-width:420px){.topbar-brand .brand-mark{display:none}.topbar-brand strong{font-size:11px}.topbar h1{font-size:16px}.topbar p{display:none}}</style>
+ .topbar-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;white-space:nowrap;pointer-events:none}.topbar-brand .brand-mark{width:34px;height:34px;border-radius:10px;background:#111318;color:#f3e8d3;border:1px solid #44454a}.topbar-brand strong{font-size:15px;letter-spacing:-.03em;color:var(--text)}@media(max-width:760px){.topbar-brand{position:static;transform:none;margin:0 auto;gap:6px}.topbar-brand .brand-mark{width:30px;height:30px}.topbar-brand strong{font-size:12px}.topbar .top-actions #exportBtn{display:none}.topbar{padding:0 12px}.topbar-brand{flex-shrink:0}}@media(max-width:420px){.topbar-brand .brand-mark{display:none}.topbar-brand strong{font-size:11px}.topbar h1{font-size:16px}.topbar p{display:none}} 
+/* ── TradeJournal Pro · unified premium design system ── */
+:root{--radius-card:18px;--radius-control:11px;--shadow-card:0 10px 35px #00000012;--line-soft:color-mix(in srgb,var(--line) 78%,transparent);--surface-raised:color-mix(in srgb,var(--panel) 90%,var(--panel2))}
+html{scroll-behavior:smooth}
+body{font-feature-settings:"ss01" on,"cv11" on;letter-spacing:-.008em}
+.app{grid-template-columns:238px minmax(0,1fr);background:transparent}
+.sidebar{position:sticky;top:0;height:100dvh;min-height:100vh;padding:25px 14px 16px;background:color-mix(in srgb,var(--panel) 90%,var(--bg));border-right:1px solid var(--line-soft);gap:27px;backdrop-filter:blur(20px)}
+.brand{padding:0 8px;gap:11px}.brand-mark{width:38px;height:38px;border-radius:13px;box-shadow:inset 0 1px #ffffff13}.brand strong{font-size:14px;letter-spacing:-.04em}.brand small{font-size:9px;letter-spacing:.08em;line-height:1.4}
+.nav-label{font-size:9px;letter-spacing:.17em;font-weight:800;color:var(--muted);opacity:.75;margin:0 10px 9px}
+.nav{gap:5px}.nav button{position:relative;min-height:43px;padding:10px 12px;border-radius:11px;font-size:12px;letter-spacing:-.01em;color:var(--muted);border:1px solid transparent}
+.nav button .ico{width:20px;font-size:15px;opacity:.86}.nav button.active{background:color-mix(in srgb,var(--blue) 11%,var(--panel));color:var(--text);border-color:color-mix(in srgb,var(--blue) 18%,var(--line));box-shadow:inset 2px 0 var(--blue)}
+.nav button.active .ico{color:var(--blue)}.nav button:hover:not(.active){background:color-mix(in srgb,var(--panel2) 72%,transparent);color:var(--text)}
+.accountbox{border-radius:14px;background:color-mix(in srgb,var(--panel2) 55%,transparent);border-color:var(--line-soft);font-size:11px}
+.main{min-width:0}.topbar{height:78px;padding:0 clamp(18px,3vw,38px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line-soft);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.topbar h1{font-size:18px;font-weight:750;letter-spacing:-.04em}.topbar p{font-size:11px;letter-spacing:0;color:var(--muted)}
+.content{max-width:1480px;padding:30px clamp(18px,3vw,38px) 42px;gap:22px}
+.view.active:not([hidden]){gap:22px}
+.section-head{margin-bottom:1px;align-items:center}.section-head h2{font-size:18px;letter-spacing:-.04em;font-weight:750}.section-head p{font-size:12px;line-height:1.55;color:var(--muted);max-width:58ch}
+.card,.panel{border-radius:var(--radius-card);padding:20px;border-color:var(--line-soft);box-shadow:var(--shadow-card);background:color-mix(in srgb,var(--panel) 96%,transparent)}
+.panel h3{font-size:13px;font-weight:740;letter-spacing:-.025em}.panel-head{margin-bottom:16px}.panel-head h3{margin-bottom:0}.panel-head p{font-size:11px;line-height:1.5}
+.cards{gap:13px}.cards .card{padding:19px;min-height:132px}.metric-label{font-size:11px;font-weight:600;letter-spacing:.01em}.metric-value{font-size:29px;font-weight:760;letter-spacing:-.055em;margin:13px 0 7px;font-variant-numeric:tabular-nums}.metric-foot{font-size:10px;line-height:1.45}
+button{border-radius:var(--radius-control);font-size:12px;font-weight:680;letter-spacing:-.005em;transition:transform .18s var(--ease-premium),border-color .18s ease,background .18s ease,box-shadow .18s ease}
+button.primary{background:var(--blue);color:#0b1422;border-color:transparent;box-shadow:0 4px 14px color-mix(in srgb,var(--blue) 12%,transparent)}
+button.primary:hover{box-shadow:0 7px 22px color-mix(in srgb,var(--blue) 24%,transparent);filter:brightness(1.035)}
+button.ghost{border-color:var(--line-soft);color:var(--text)}
+button.ghost:hover{background:var(--panel2);border-color:var(--line)}
+button.danger{background:color-mix(in srgb,var(--red) 7%,var(--panel));border-color:color-mix(in srgb,var(--red) 25%,var(--line))}
+input,select,textarea{border-radius:var(--radius-control)!important}
+.field label{font-size:10px;font-weight:650;letter-spacing:.015em}
+.field input,.field select,.field textarea,.filter{border-color:var(--line-soft);background:color-mix(in srgb,var(--bg) 70%,var(--panel));transition:border-color .18s ease,box-shadow .18s ease}
+.field input:focus,.field select:focus,.field textarea:focus,.filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 12%,transparent);outline:none}
+.notice{border-radius:13px;border-color:var(--line-soft);background:color-mix(in srgb,var(--panel2) 65%,transparent);line-height:1.65}
+.pill{border-color:var(--line-soft);background:color-mix(in srgb,var(--panel2) 65%,transparent);font-weight:650;letter-spacing:.025em}
+.table-wrap{border-radius:12px}table{font-size:11px}th{font-size:9px;letter-spacing:.1em;padding:14px 11px}td{padding:14px 11px}td,th{border-bottom-color:var(--line-soft)}
+tbody tr{transition:background .16s ease}tbody tr:hover{background:color-mix(in srgb,var(--blue) 5%,var(--panel))}
+.chart-bars{height:180px;gap:9px;padding-top:16px}.chart-bar{width:min(30px,76%);border-radius:7px 7px 2px 2px}.chart-col small{font-size:9px;font-weight:600}
+.bar-list{gap:15px}.bar-row{font-size:11px}.bar-track{height:7px;background:color-mix(in srgb,var(--panel2) 80%,var(--bg))}
+.calendar{gap:7px}.day{border-color:var(--line-soft);border-radius:11px;background:color-mix(in srgb,var(--panel2) 45%,transparent);transition:transform .16s ease,border-color .16s ease}.day:not(.blank):hover{transform:translateY(-2px);border-color:var(--blue)}
+.filters{gap:11px}.form-grid{gap:14px}.form-actions{gap:9px}
+.quiz-callout,.quiz-callout,.quiz-mini,.quiz-learn-item,.quiz-feedback,.skill-card,.academy-exercise,.academy-lesson-button{border-radius:13px}
+.skill-card,.quiz-mini,.quiz-learn-item{border-color:var(--line-soft);background:color-mix(in srgb,var(--panel2) 55%,transparent)}
+.quiz-option,.academy-quiz-option{border-radius:12px;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.quiz-option:hover,.academy-quiz-option:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--blue) 55%,var(--line))}
+.academy-hero{border:1px solid var(--line-soft);border-radius:var(--radius-card);box-shadow:var(--shadow-card)}
+.academy-video,.academy-video-resource{border-radius:14px}
+.chart-upload-box{border-radius:14px;border-color:var(--line-soft)}
+#copilotChat>.panel{box-shadow:none}
+.theme-panel{box-shadow:var(--shadow-card)}
+.empty{padding:34px 18px;line-height:1.6}
+:root[data-theme="light"] .sidebar{background:#fff}
+:root[data-theme="light"] .topbar{background:#ffffffd9}
+:root[data-theme="light"] .card,:root[data-theme="light"] .panel{box-shadow:0 8px 28px #1a2c4510}
+:root[data-theme="light"] .field input,:root[data-theme="light"] .field select,:root[data-theme="light"] .field textarea,:root[data-theme="light"] .filter{background:#f8faff}
+:root[data-theme="light"] .nav button.active{background:#edf3fc}
+:root[data-theme="light"] .accountbox{background:#f8faff}
+@media(min-width:901px){.sidebar{z-index:8}.topbar{z-index:7}}
+@media(max-width:900px){
+ .app{display:block;min-height:100dvh}.sidebar{position:fixed;top:0;left:0;width:min(84vw,310px);height:100dvh;min-height:0;z-index:30;border-right:1px solid var(--line);box-shadow:22px 0 65px #0004}
+ .topbar{height:70px;padding:0 16px}.content{padding:20px 16px calc(104px + env(safe-area-inset-bottom));gap:16px}.view.active:not([hidden]){gap:16px}
+ .cards{gap:10px}.cards .card{padding:15px;min-height:119px}.metric-value{font-size:25px;margin:10px 0 5px}
+ .layout-2{gap:12px}.panel,.card{border-radius:16px}.panel{padding:16px}
+ .mobile-bottom-nav{padding:7px 7px calc(7px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--panel) 92%,transparent);border-top-color:var(--line-soft);box-shadow:0 -8px 30px #00000012}
+ .mobile-bottom-nav button{border-radius:12px;min-height:52px;gap:5px}.mobile-bottom-nav button.active{background:color-mix(in srgb,var(--blue) 10%,var(--panel2));border-color:color-mix(in srgb,var(--blue) 20%,var(--line));color:var(--blue)}
+}
+@media(max-width:520px){
+ .content{padding:15px 12px calc(100px + env(safe-area-inset-bottom));gap:13px}.view.active:not([hidden]){gap:13px}
+ .section-head h2{font-size:16px}.section-head p{font-size:11px}
+ .cards{gap:8px}.cards .card{padding:13px;min-height:112px}.metric-value{font-size:23px;letter-spacing:-.05em}.metric-label{font-size:10px}.metric-foot{font-size:9px}
+ .panel{padding:14px}.panel-head{gap:8px;margin-bottom:13px}.panel h3{font-size:12px}
+ .topbar{height:64px;padding:0 11px}.topbar h1{font-size:15px}.topbar-brand strong{font-size:11px}
+ .dashboard-hero{margin:0}.filters{gap:8px}.form-grid{gap:10px}.chart-bars{height:150px;gap:5px}
+ .calendar{gap:4px}.day{min-height:53px;padding:5px}.day-label{font-size:9px}
+ .mobile-bottom-nav button{min-height:49px;font-size:9px}.mobile-bottom-nav button .tab-icon{font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -633,7 +709,7 @@ const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).f
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const calc=t=>((Number(t.exit_price)-Number(t.entry_price))*Number(t.contracts)*Number(t.point_value)*(t.side==='short'?-1:1))-Number(t.fees||0);
 const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
-function showView(name){if(!document.getElementById('view-'+name))return;document.querySelectorAll('.view').forEach(v=>{const active=v.id==='view-'+name;v.classList.toggle('active',active);v.hidden=!active;});document.querySelectorAll('[data-view]').forEach(b=>{const active=b.dataset.view===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],replay:['Replay Lab','Practice examples and test rules without live orders'],masterclass:['Beginner Masterclass','Learn the foundations step by step'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
+function showView(name){if(!document.getElementById('view-'+name))return;document.querySelectorAll('.view').forEach(v=>{const active=v.id==='view-'+name;v.classList.toggle('active',active);v.hidden=!active;});document.querySelectorAll('[data-view]').forEach(b=>{const active=b.dataset.view===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],replay:['Replay Lab','Practice examples and test rules without live orders'],masterclass:['Beginner Masterclass','Learn the foundations step by step'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Settings','Personalize your workspace and manage your data']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
 
 // Robust delegated navigation: works for sidebar, mobile drawer, and nested icon/text clicks.
 document.addEventListener('click',function(event){
