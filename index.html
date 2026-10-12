@@ -510,6 +510,9 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 
 .study-steps{padding-left:22px;display:grid;gap:14px}.study-steps li p{margin:5px 0 0}.study-note-list{display:grid;gap:12px;margin-top:14px}.study-note{margin:0;padding:16px}.study-note p{overflow-wrap:anywhere;line-height:1.55}.study-note .panel-head{align-items:flex-start}.study-note .panel-head button{flex-shrink:0}
 @media(max-width:720px){#view-replay .grid-2{grid-template-columns:minmax(0,1fr)}#view-replay .panel-head{flex-wrap:wrap;gap:10px}#view-replay .form-actions{flex-wrap:wrap}#view-replay .form-actions button{flex:1}}
+
+/* Phone-first account and import simplification */
+.auth-welcome{display:flex;align-items:center;gap:12px;margin:4px 0 16px}.auth-welcome-icon{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:14px;background:var(--panel2);color:var(--blue);font-size:22px}.auth-simple-grid{grid-template-columns:1fr 1fr}.password-row{display:flex;gap:7px;align-items:stretch}.password-row input{min-width:0;flex:1}.password-toggle{min-width:60px;padding:8px 10px}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.auth-actions #loginBtn{min-height:48px}.auth-actions #logoutBtn{grid-column:1/-1}.advanced-connection,.import-advanced{margin-top:16px;border-top:1px solid var(--border);padding-top:13px}.advanced-connection summary,.import-advanced summary{cursor:pointer;font-weight:600;min-height:42px;display:flex;align-items:center;color:var(--muted)}.import-quick-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.import-quick-step{display:flex;gap:10px;align-items:flex-start;padding:12px;background:var(--panel2);border:1px solid var(--border);border-radius:12px}.import-quick-step>span{display:grid;place-items:center;flex:0 0 26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-weight:700}.import-quick-step strong{display:block;margin:2px 0 5px}.import-quick-step p{font-size:12px;line-height:1.5;margin:0;color:var(--muted)}.import-file-field{padding:14px;border:1px dashed var(--border);border-radius:14px;background:var(--panel2)}.import-file-field input{width:100%;min-height:50px;margin-top:8px}.import-panel #previewCsvBtn,.import-panel #confirmCsvBtn{min-height:48px}.import-panel #confirmCsvBtn{font-weight:700}.import-panel #csvPreview{overflow-x:auto}.import-panel #csvPreview table{min-width:580px}@media(max-width:600px){.auth-simple-grid{grid-template-columns:1fr}.auth-actions{grid-template-columns:1fr}.auth-actions #logoutBtn{grid-column:auto}.import-quick-steps{grid-template-columns:1fr;gap:8px}.import-quick-step{padding:10px}.import-quick-step p{font-size:13px}.import-panel .form-grid{grid-template-columns:1fr!important}.import-panel .form-actions{display:grid;grid-template-columns:1fr;gap:9px}.import-panel .form-actions button{width:100%;min-height:48px}.advanced-connection .auth-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -568,9 +571,15 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 </section>
 
 <section class="view" id="view-trades">
-  <div class="panel"><div class="panel-head"><div><h3>Import trades from a platform</h3><p class="muted small">Import a CSV export from a broker or journal. Review the preview before adding records.</p></div><span class="pill">CSV · Preview first</span></div>
-  <div class="notice">Import a CSV export from TradingView or another platform. The importer previews the rows, calculates journal P&amp;L, and skips probable duplicates. TradingView paper-trading exports can vary by report type, so always verify the preview and multiplier before importing.</div>
-  <div class="import-steps" style="margin-top:12px"><div class="import-step"><span>01</span><div><strong>Export from TradingView</strong><p>Open Trading Panel → Paper Trading → Account History (closed positions), then use Export / Download data for that tab. Save the CSV to your device. Do not choose chart-data export. Order History is a different file format and may not match this importer yet.</p></div></div><div class="import-step"><span>02</span><div><strong>Preview your CSV here</strong><p>Choose the file. Select the matching columns below, then preview before confirming.</p></div></div><div class="import-step"><span>03</span><div><strong>Check futures multipliers</strong><p>For futures, the value per 1.00 price move depends on the contract. Check the symbol's contract specifications; a wrong multiplier means wrong calculated P&amp;L.</p></div></div></div>
+  <div class="panel import-panel"><div class="panel-head"><div><h3>Import paper trades</h3><p class="muted small">A simpler phone-friendly import, with a preview before anything is saved.</p></div><span class="pill">CSV import</span></div>
+  <div class="import-quick-steps">
+    <div class="import-quick-step"><span>1</span><div><strong>Get your CSV</strong><p>In TradingView, export <b>Account History</b> if available. Don't use “Download chart data”—that is candle data, not trades.</p></div></div>
+    <div class="import-quick-step"><span>2</span><div><strong>Choose it below</strong><p>On iPhone, tap Browse and choose the file from Files or Downloads. We'll try to match the columns automatically.</p></div></div>
+    <div class="import-quick-step"><span>3</span><div><strong>Preview, then import</strong><p>Check the sample rows and contract value before confirming. Nothing is saved until you tap Import.</p></div></div>
+  </div>
+  <div class="field import-file-field"><label for="csvFile">Your TradingView CSV file</label><input type="file" id="csvFile" accept=".csv,text/csv"><p class="muted small">If you only see Order History, the file may contain individual orders instead of completed positions and may need a different format.</p></div>
+  <details class="import-advanced"><summary>Advanced: match CSV columns manually</summary>
+  <p class="muted small">Most supported exports are auto-detected. Open this only if the preview says the columns were matched incorrectly.</p>
   <div class="form-grid" style="margin-top:12px">
     <div class="field span-all"><label for="csvFile">Choose CSV file</label><input type="file" id="csvFile" accept=".csv,text/csv"></div>
     <div class="field"><label for="csvSymbol">Symbol / asset column</label><select id="csvSymbol"><option value="symbol">symbol</option><option value="ticker">ticker</option><option value="instrument">instrument</option><option value="market">market</option></select></div>
@@ -584,7 +593,8 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
   </div>
   <div class="form-actions" style="margin-top:12px"><button type="button" class="ghost" id="csvAutoMapBtn">Auto-detect columns</button><button type="button" class="ghost" id="csvTradingViewHint">TradingView export help</button></div>
   <div class="form-actions" style="margin-top:12px"><button type="button" class="primary" id="previewCsvBtn">Preview CSV</button><button type="button" id="confirmCsvBtn" disabled>Import previewed trades</button></div>
-  <div id="csvImportStatus" class="status" aria-live="polite">No file selected.</div><div id="csvPreview" class="table-wrap"></div>
+  <div id="csvImportStatus" class="status" aria-live="polite">Choose a CSV to get started. Your file is previewed before import.</div><div id="csvPreview" class="table-wrap"></div>
+  </details>
 </div>
   <div class="section-head"><div><h2>Trade log</h2><p>Review any asset, market, broker, or trading platform.</p></div><button class="primary" id="newTradeLog">+ Log a trade</button></div>
   <div class="panel"><div class="filters">
@@ -869,15 +879,29 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
   </div>
   <div class="section-head"><div><h2>Cloud setup</h2><p>Connect your own Supabase project to sync trades across devices.</p></div></div>
   <div class="panel auth-panel">
-    <div class="notice">Your public website code can be public, but your trading records should not be. Use the SQL setup file included in the starter pack and only your Supabase Project URL plus publishable/anon key here. Never use a service-role or secret key in a browser app.</div>
-    <div class="auth-grid">
-      <div class="field"><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
-      <div class="field"><label>Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_… or anon key"></div>
-      <div class="field"><label>Email</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email"></div>
-      <div class="field"><label>Password</label><input id="password" type="password" placeholder="At least 8 characters" autocomplete="current-password"></div>
+    <div class="auth-welcome">
+      <div class="auth-welcome-icon" aria-hidden="true">☁</div>
+      <div><h3 style="margin:0 0 5px">Your journal account</h3><p class="muted small" style="margin:0">Sign in to sync your journal and import CSV trades. Your existing account works here too.</p></div>
     </div>
-    <div class="form-actions"><button class="primary" id="connectBtn">Connect</button><button id="signupBtn">Create account</button><button id="loginBtn">Sign in</button><button id="logoutBtn" class="hidden">Sign out</button></div>
-    <div id="authStatus" class="status">Not connected. Trades will sync only after cloud setup is complete.</div>
+    <div class="auth-grid auth-simple-grid">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="field"><label for="password">Password</label><div class="password-row"><input id="password" type="password" placeholder="Your password" autocomplete="current-password"><button type="button" class="password-toggle" id="togglePassword" aria-label="Show password">Show</button></div></div>
+    </div>
+    <div class="auth-actions">
+      <button type="button" class="primary" id="loginBtn">Sign in</button>
+      <button type="button" id="signupBtn">Create account</button>
+      <button type="button" id="logoutBtn" class="hidden">Sign out</button>
+    </div>
+    <div id="authStatus" class="status" aria-live="polite">Ready. Sign in or create an account to sync your journal.</div>
+    <details class="advanced-connection">
+      <summary>Advanced connection settings</summary>
+      <p class="muted small">These settings are already filled in for this app. Only change them if you manage your own Supabase project. Never use a service-role or secret key here.</p>
+      <div class="auth-grid">
+        <div class="field"><label for="supabaseUrl">Supabase Project URL</label><input id="supabaseUrl" inputmode="url" placeholder="https://your-project.supabase.co"></div>
+        <div class="field"><label for="supabaseKey">Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_… or anon key"></div>
+      </div>
+      <div class="form-actions"><button type="button" class="ghost" id="connectBtn">Save connection</button></div>
+    </details>
   </div>
   <div class="panel"><h3>Trade calculation settings</h3><div class="notice">Universal P&amp;L model: (exit − entry) × quantity × value per 1.00 move × direction − fees. For stocks and spot assets, the value-per-move is usually based on units; for options, futures, CFDs, and other derivatives, confirm the contract multiplier with your platform. This journal does not assume every asset uses the same math.</div></div>
 </section>
@@ -964,8 +988,10 @@ function makeClient(){const {url,key}=credentials();if(!url||!key)throw Error('E
 $('supabaseUrl').value=localStorage.getItem('tjp_url')||'https://elozimzymcrbgoerdhnh.supabase.co';$('supabaseKey').value=localStorage.getItem('tjp_key')||'sb_publishable_n_sdknClVD7gbt_nASfeBg_SSaBjp7j';
 try{makeClient();status('Cloud connection ready. Create an account or sign in to sync your paper-trading journal across devices.')}catch(e){status(e.message)}
 $('connectBtn').onclick=()=>{try{makeClient();status('Connected to the Supabase project. Create an account or sign in.')}catch(e){status(e.message)}};
-$('signupBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;status(data.session?'Account created and signed in.':'Account created. Check your email if confirmation is required, then sign in.');await checkSession()}catch(e){status(e.message)}};
-$('loginBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;user=data.user;status('Signed in as '+user.email);updateConnection(true);$('logoutBtn').classList.remove('hidden');await loadTrades()}catch(e){status(e.message)}};
+$('togglePassword').onclick=()=>{const p=$('password'),show=p.type==='password';p.type=show?'text':'password';$('togglePassword').textContent=show?'Hide':'Show';$('togglePassword').setAttribute('aria-label',show?'Hide password':'Show password')};
+
+$('signupBtn').onclick=async()=>{try{const email=$('email').value.trim(),password=$('password').value;if(!email||!password)throw Error('Enter your email and password first.');if(password.length<8)throw Error('Use a password with at least 8 characters.');if(!client)makeClient();$('signupBtn').disabled=true;status('Creating your account…');const {data,error}=await client.auth.signUp({email,password});if(error)throw error;status(data.session?'Account created and signed in.':'Account created. Check your email for a confirmation link, then return here and sign in.');await checkSession()}catch(e){status(e.message)}finally{$('signupBtn').disabled=false}};
+$('loginBtn').onclick=async()=>{try{const email=$('email').value.trim(),password=$('password').value;if(!email||!password)throw Error('Enter your email and password first.');if(!client)makeClient();$('loginBtn').disabled=true;status('Signing in…');const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;user=data.user;status('Signed in. Your journal is syncing.');updateConnection(true);$('logoutBtn').classList.remove('hidden');await loadTrades()}catch(e){status(e.message)}finally{$('loginBtn').disabled=false}};
 $('logoutBtn').onclick=async()=>{if(client)await client.auth.signOut();user=null;trades=[];renderAll();updateConnection(false);status('Signed out.');$('logoutBtn').classList.add('hidden')};
 async function checkSession(){if(!client)return;const {data}=await client.auth.getSession();if(data.session){user=data.session.user;updateConnection(true);status('Signed in as '+user.email);$('logoutBtn').classList.remove('hidden');await loadTrades()}}
 function formTrade(){const st=$('tradeStatus').value,e=$('entry').value,x=$('exit').value;if(!$('symbol').value.trim())throw Error('Enter an asset name or symbol.');if(!e)throw Error('Enter an entry price.');if(st==='closed'&&x==='')throw Error('Enter an exit price for a closed trade.');const t={trade_date:$('tradeDate').value,symbol:$('symbol').value.trim(),side:$('side').value,setup:$('setup').value,entry_price:Number(e),exit_price:x===''?null:Number(x),trade_status:st,contracts:Number($('contracts').value),point_value:Number($('pointValue').value),fees:Number($('fees').value||0),stop_price:$('stop').value===''?null:Number($('stop').value),target_price:$('target').value===''?null:Number($('target').value),mood:$('mood').value,followed_rules:$('followed').value,execution_grade:$('grade').value,notes:$('notes').value.trim(),screenshot_url:$('screenshot').value.trim()||null};if(!t.trade_date)throw Error('Choose the trade date.');if(!Number.isFinite(t.entry_price)||!Number.isFinite(t.contracts)||!Number.isFinite(t.point_value)||!Number.isFinite(t.fees)||(st==='closed'&&!Number.isFinite(t.exit_price)))throw Error('Check that prices, quantity, point value, and fees are valid numbers.');if(t.contracts<=0||t.point_value<0||t.fees<0)throw Error('Quantity must be greater than zero; value per move and fees cannot be negative.');if((t.stop_price!==null&&!Number.isFinite(t.stop_price))||(t.target_price!==null&&!Number.isFinite(t.target_price)))throw Error('Stop and target prices must be valid numbers.');t.net_pnl=st==='open'?null:calc(t);return t}
@@ -1070,6 +1096,7 @@ const csvAliases={
 };
 function setCsvMap(headers){let changed=0;Object.entries(csvAliases).forEach(([id,aliases])=>{const match=headers.find(h=>aliases.includes(h.toLowerCase().trim()));if(match){const select=$(id);let option=[...select.options].find(o=>o.value.toLowerCase()===match.toLowerCase());if(!option){option=document.createElement('option');option.value=match;option.textContent=match;select.appendChild(option)}select.value=option.value;changed++}});return changed}
 $('csvAutoMapBtn').addEventListener('click',async()=>{const file=$('csvFile').files[0];if(!file){$('csvImportStatus').textContent='Choose your TradingView CSV first.';return}try{const text=await file.text(),parsed=parseCsvText(text);if(!parsed.length)throw Error('No rows or headers found.');const headers=Object.keys(parsed[0]);const n=setCsvMap(headers);$('csvImportStatus').textContent='Detected '+n+' of 6 column mappings from '+file.name+'. Check each dropdown; then preview the CSV.';}catch(e){$('csvImportStatus').textContent='Could not detect columns: '+e.message}});
+$('csvFile').addEventListener('change',async()=>{const file=$('csvFile').files[0];csvRowsPending=[];$('confirmCsvBtn').disabled=true;$('csvPreview').innerHTML='';if(!file){$('csvImportStatus').textContent='No file selected.';return}try{const parsed=parseCsvText(await file.text());if(!parsed.length)throw Error('No data rows or headers found.');const headers=Object.keys(parsed[0]);const n=setCsvMap(headers);$('csvImportStatus').textContent='Selected '+file.name+' · Detected '+n+' of 6 columns. Next, check the value-per-move field below and tap Preview CSV.';if(n<4)$('import-advanced-placeholder');}catch(e){$('csvImportStatus').textContent='Could not read this CSV: '+e.message}});
 $('csvTradingViewHint').addEventListener('click',()=>{$('csvImportStatus').textContent='For this importer, start with Trading Panel → Paper Trading → Account History (closed positions), then export/download the data for that tab. The chart toolbar’s “Download chart data” exports candle data, not your trades. Order History exports individual orders and may need a different importer. If you upload your CSV here for troubleshooting, remove account IDs or other personal details first. Always inspect the preview and verify dates, entry/exit prices, quantities, fees, and contract multiplier.'});
 
 // CSV import: preview, normalize common headers, and skip probable duplicates.
