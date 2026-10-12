@@ -175,7 +175,7 @@
 <header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
 <main class="content">
 <section class="view active" id="view-dashboard">
-  <div class="section-head"><div><h2>Performance overview</h2><p>Track execution and consistency—not just P&amp;L.</p></div><div class="field" style="min-width:135px"><select id="dashSymbol"><option value="all">All instruments</option><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div></div>
+  <div class="section-head"><div><h2>Performance overview</h2><p>Track stocks, options, crypto, forex, futures, ETFs, and other assets—not just P&amp;L.</p></div><div class="field" style="min-width:135px"><select id="dashSymbol"><option value="all">All instruments / assets</option></select></div></div>
   <div class="cards">
     <div class="card"><div class="metric-label">Net P&amp;L <span>↗</span></div><div class="metric-value" id="mNet">$0.00</div><div class="metric-foot">Closed trades after fees</div></div>
     <div class="card"><div class="metric-label">Win rate <span>◎</span></div><div class="metric-value" id="mWin">—</div><div class="metric-foot" id="mWinFoot">No closed trades yet</div></div>
@@ -194,13 +194,13 @@
 </section>
 
 <section class="view" id="view-trades">
-  <div class="section-head"><div><h2>Trade log</h2><p>Review every entry, exit, setup, and lesson.</p></div><button class="primary" id="newTradeLog">+ Log a trade</button></div>
+  <div class="section-head"><div><h2>Trade log</h2><p>Review any asset, market, broker, or trading platform.</p></div><button class="primary" id="newTradeLog">+ Log a trade</button></div>
   <div class="panel"><div class="filters">
-    <div class="field"><label>Instrument</label><select id="filterSymbol" class="filter"><option value="all">All instruments</option><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div>
+    <div class="field"><label>Asset / symbol</label><select id="filterSymbol" class="filter"><option value="all">All assets</option></select></div>
     <div class="field"><label>Direction</label><select id="filterSide" class="filter"><option value="all">All directions</option><option value="long">Long</option><option value="short">Short</option></select></div>
-    <div class="field"><label>Setup</label><select id="filterSetup" class="filter"><option value="all">All setups</option><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
+    <div class="field"><label>Strategy / setup</label><select id="filterSetup" class="filter"><option value="all">All setups</option><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
     <div class="field"><label>Trade status</label><select id="filterStatus" class="filter"><option value="all">All statuses</option><option value="closed">Closed</option><option value="open">Open</option></select></div>
-  </div><div id="tradeTable" class="table-wrap"><div class="empty">Your saved trades will appear here.</div></div></div>
+  </div><div id="tradeTable" class="table-wrap"><div class="empty">Log trades from any asset or platform to build your journal.</div></div></div>
 </section>
 
 <section class="view" id="view-calendar">
@@ -355,7 +355,7 @@
   </div>
   <div class="panel">
     <h3>Data portability & connections</h3>
-    <p class="muted small">Export your journal as CSV to keep a backup. Direct broker connections are not enabled yet; avoid entering broker passwords or API secrets into this app.</p>
+    <p class="muted small">Designed for trades from any broker or platform: stocks, ETFs, options, futures, forex, crypto, CFDs, and custom assets. Use manual entry or a compatible CSV export; direct broker connections are not enabled yet. Never enter broker passwords or API secrets here.</p>
     <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div>
     <div id="brokerInfo" class="notice hidden">Broker linking is a future feature. The safer first step is a read-only import of a broker-provided CSV, with a preview and duplicate check before importing. Never share brokerage passwords, API secrets, or account credentials in chat or a browser form.</div>
   </div>
@@ -371,21 +371,21 @@
     <div class="form-actions"><button class="primary" id="connectBtn">Connect</button><button id="signupBtn">Create account</button><button id="loginBtn">Sign in</button><button id="logoutBtn" class="hidden">Sign out</button></div>
     <div id="authStatus" class="status">Not connected. Trades will sync only after cloud setup is complete.</div>
   </div>
-  <div class="panel"><h3>Trade calculation settings</h3><div class="notice">P&amp;L is calculated as (exit − entry) × contracts × point value × direction − fees. Point value means dollars per 1.00 price move per contract. Confirm the multiplier for the exact contract you are journaling; the app does not guess contract specifications.</div></div>
+  <div class="panel"><h3>Trade calculation settings</h3><div class="notice">Universal P&amp;L model: (exit − entry) × quantity × value per 1.00 move × direction − fees. For stocks and spot assets, the value-per-move is usually based on units; for options, futures, CFDs, and other derivatives, confirm the contract multiplier with your platform. This journal does not assume every asset uses the same math.</div></div>
 </section>
 
 <section class="panel hidden" id="tradeEditor">
-  <div class="panel-head"><h3 id="editorTitle">Log a paper trade</h3><button class="ghost" id="closeEditor">✕</button></div>
+  <div class="panel-head"><h3 id="editorTitle">Log a trade</h3><button class="ghost" id="closeEditor">✕</button></div>
   <form id="tradeForm">
     <div class="form-grid">
       <div class="field"><label>Date *</label><input id="tradeDate" type="date" required></div>
-      <div class="field"><label>Instrument *</label><select id="symbol"><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div>
+      <div class="field"><label>Asset / symbol *</label><input id="symbol" list="assetSuggestions" placeholder="e.g. AAPL, BTCUSD, EURUSD, ES, Gold" required><datalist id="assetSuggestions"><option value="AAPL"><option value="SPY"><option value="BTCUSD"><option value="ETHUSD"><option value="EURUSD"><option value="GBPUSD"><option value="ES"><option value="NQ"><option value="CL"><option value="GC"><option value="WTI/CL"><option value="MGC"><option value="Options: AAPL 2026-11-20 250C"><option value="Custom asset"></datalist></div>
       <div class="field"><label>Direction *</label><select id="side"><option value="long">Long / Buy</option><option value="short">Short / Sell</option></select></div>
       <div class="field"><label>Entry price *</label><input id="entry" type="number" step="any" required></div>
       <div class="field"><label>Exit price <span class="muted">(leave blank if open)</span></label><input id="exit" type="number" step="any"></div>
       <div class="field"><label>Status</label><select id="tradeStatus"><option value="closed">Closed</option><option value="open">Open</option></select></div>
-      <div class="field"><label>Contracts *</label><input id="contracts" type="number" min="1" step="1" value="1" required></div>
-      <div class="field"><label>Point value ($ per 1.00 move)</label><input id="pointValue" type="number" min="0" step="any" value="1" required></div>
+      <div class="field"><label>Quantity / units *</label><input id="contracts" type="number" min="0.00000001" step="any" value="1" required></div>
+      <div class="field"><label>Value per 1.00 price move (USD)</label><input id="pointValue" type="number" min="0" step="any" value="1" required></div>
       <div class="field"><label>Total fees ($)</label><input id="fees" type="number" min="0" step="any" value="0"></div>
       <div class="field"><label>Setup</label><select id="setup"><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
       <div class="field"><label>Mindset</label><select id="mood"><option>Focused</option><option>Patient</option><option>FOMO</option><option>Frustrated</option><option>Overconfident</option><option>Tired</option></select></div>
@@ -450,13 +450,13 @@ $('signupBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=
 $('loginBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;user=data.user;status('Signed in as '+user.email);updateConnection(true);$('logoutBtn').classList.remove('hidden');await loadTrades()}catch(e){status(e.message)}};
 $('logoutBtn').onclick=async()=>{if(client)await client.auth.signOut();user=null;trades=[];renderAll();updateConnection(false);status('Signed out.');$('logoutBtn').classList.add('hidden')};
 async function checkSession(){if(!client)return;const {data}=await client.auth.getSession();if(data.session){user=data.session.user;updateConnection(true);status('Signed in as '+user.email);$('logoutBtn').classList.remove('hidden');await loadTrades()}}
-function formTrade(){const st=$('tradeStatus').value,e=$('entry').value,x=$('exit').value;if(!e)throw Error('Enter an entry price.');if(st==='closed'&&x==='')throw Error('Enter an exit price for a closed trade.');const t={trade_date:$('tradeDate').value,symbol:$('symbol').value,side:$('side').value,setup:$('setup').value,entry_price:Number(e),exit_price:x===''?null:Number(x),trade_status:st,contracts:Number($('contracts').value),point_value:Number($('pointValue').value),fees:Number($('fees').value||0),stop_price:$('stop').value===''?null:Number($('stop').value),target_price:$('target').value===''?null:Number($('target').value),mood:$('mood').value,followed_rules:$('followed').value,execution_grade:$('grade').value,notes:$('notes').value.trim(),screenshot_url:$('screenshot').value.trim()||null};if(t.contracts<1||t.point_value<0||t.fees<0)throw Error('Check contracts, point value, and fees.');t.net_pnl=st==='open'?null:calc(t);return t}
+function formTrade(){const st=$('tradeStatus').value,e=$('entry').value,x=$('exit').value;if(!$('symbol').value.trim())throw Error('Enter an asset name or symbol.');if(!e)throw Error('Enter an entry price.');if(st==='closed'&&x==='')throw Error('Enter an exit price for a closed trade.');const t={trade_date:$('tradeDate').value,symbol:$('symbol').value.trim(),side:$('side').value,setup:$('setup').value,entry_price:Number(e),exit_price:x===''?null:Number(x),trade_status:st,contracts:Number($('contracts').value),point_value:Number($('pointValue').value),fees:Number($('fees').value||0),stop_price:$('stop').value===''?null:Number($('stop').value),target_price:$('target').value===''?null:Number($('target').value),mood:$('mood').value,followed_rules:$('followed').value,execution_grade:$('grade').value,notes:$('notes').value.trim(),screenshot_url:$('screenshot').value.trim()||null};if(t.contracts<=0||t.point_value<0||t.fees<0)throw Error('Quantity must be greater than zero; value per move and fees cannot be negative.');t.net_pnl=st==='open'?null:calc(t);return t}
 $('tradeForm').onsubmit=async e=>{e.preventDefault();try{if(!client||!user)throw Error('Open Cloud setup and connect/sign in first. Cloud sync is not active yet.');const t=formTrade();const {error}=await client.from('trades').insert(t);if(error)throw error;$('tradeStatusMsg').textContent='Trade saved to your private cloud journal.';$('tradeEditor').classList.add('hidden');await loadTrades()}catch(err){$('tradeStatusMsg').textContent=err.message}};
 async function loadTrades(){if(!client||!user)return;const {data,error}=await client.from('trades').select('*').order('trade_date',{ascending:false}).order('created_at',{ascending:false});if(error){status('Could not load trades: '+error.message);return}trades=data||[];await loadRemoteQuizProgress();renderAll();renderQuiz();}
 function filtered(){let a=[...trades];const sym=$('filterSymbol').value,side=$('filterSide').value,setup=$('filterSetup').value,st=$('filterStatus').value;if(sym!=='all')a=a.filter(t=>t.symbol===sym);if(side!=='all')a=a.filter(t=>t.side===side);if(setup!=='all')a=a.filter(t=>t.setup===setup);if(st!=='all')a=a.filter(t=>(t.trade_status==='open'?'open':'closed')===st);return a}
 ['filterSymbol','filterSide','filterSetup','filterStatus'].forEach(id=>$(id).addEventListener('change',renderTradeTable));
 $('dashSymbol').onchange=renderDashboard;
-function renderDashboard(){let a=closed(trades);if($('dashSymbol').value!=='all')a=a.filter(t=>t.symbol===$('dashSymbol').value);const wins=a.filter(t=>Number(t.net_pnl)>0),losses=a.filter(t=>Number(t.net_pnl)<0),net=a.reduce((s,t)=>s+Number(t.net_pnl||0),0),gw=wins.reduce((s,t)=>s+Number(t.net_pnl),0),gl=Math.abs(losses.reduce((s,t)=>s+Number(t.net_pnl),0));$('mNet').textContent=cash(net);$('mNet').className='metric-value '+(net>=0?'positive':'negative');$('mWin').textContent=a.length?(wins.length/a.length*100).toFixed(1)+'%':'—';$('mWinFoot').textContent=a.length?`${wins.length} winners · ${losses.length} losers`:'No closed trades yet';$('mPF').textContent=gl?(gw/gl).toFixed(2):gw?'∞':'—';$('mAvg').textContent=a.length?cash(net/a.length):cash(0);
+function renderDashboard(){refreshAssetFilters();let a=closed(trades);if($('dashSymbol').value!=='all')a=a.filter(t=>t.symbol===$('dashSymbol').value);const wins=a.filter(t=>Number(t.net_pnl)>0),losses=a.filter(t=>Number(t.net_pnl)<0),net=a.reduce((s,t)=>s+Number(t.net_pnl||0),0),gw=wins.reduce((s,t)=>s+Number(t.net_pnl),0),gl=Math.abs(losses.reduce((s,t)=>s+Number(t.net_pnl),0));$('mNet').textContent=cash(net);$('mNet').className='metric-value '+(net>=0?'positive':'negative');$('mWin').textContent=a.length?(wins.length/a.length*100).toFixed(1)+'%':'—';$('mWinFoot').textContent=a.length?`${wins.length} winners · ${losses.length} losers`:'No closed trades yet';$('mPF').textContent=gl?(gw/gl).toFixed(2):gw?'∞':'—';$('mAvg').textContent=a.length?cash(net/a.length):cash(0);
 const last=[];const now=new Date();for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const key=d.toISOString().slice(0,10);last.push({key,label:d.toLocaleDateString('en-US',{weekday:'short'}),pnl:a.filter(t=>t.trade_date===key).reduce((s,t)=>s+Number(t.net_pnl||0),0)})}const max=Math.max(1,...last.map(x=>Math.abs(x.pnl)));$('pnlChart').innerHTML=last.map(x=>`<div class="chart-col" title="${x.key}: ${cash(x.pnl)}"><div class="chart-bar ${x.pnl<0?'neg':''}" style="height:${Math.max(2,Math.abs(x.pnl)/max*100)}px"></div><small>${x.label}</small></div>`).join('');
 renderBars($('setupBars'),groupPnl(a,'setup'));$('recentTrades').innerHTML=tableHtml(trades.slice(0,6),false)}
 function groupPnl(a,key){const map={};a.forEach(t=>{const k=t[key]||'Other';map[k]=(map[k]||0)+Number(t.net_pnl||0)});return Object.entries(map).sort((a,b)=>b[1]-a[1])}
