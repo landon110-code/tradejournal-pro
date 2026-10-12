@@ -151,6 +151,74 @@
 :root[data-ui-text="small"]{font-size:14px}:root[data-ui-text="normal"]{font-size:16px}:root[data-ui-text="large"]{font-size:18px}
 :root[data-ui-density="compact"] .panel{padding:14px}:root[data-ui-density="compact"] .cards{gap:10px}:root[data-ui-density="compact"] .content{gap:12px}
 :root[data-ui-motion="off"] *, :root[data-ui-motion="off"] *::before, :root[data-ui-motion="off"] *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+
+/* Mobile-first polish pass: safe areas, thumb navigation, legible forms, resilient layouts */
+:root{scroll-padding-top:calc(76px + env(safe-area-inset-top));-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{min-height:100%;scroll-behavior:smooth}
+body{min-width:320px;min-height:100%;overscroll-behavior-y:contain;-webkit-tap-highlight-color:transparent}
+button,[role="button"],select,input[type="checkbox"],input[type="radio"]{touch-action:manipulation}
+button{min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.field input,.field select,.field textarea,.filter{font-size:16px}
+.content,.panel,.card,.section-head,.form-grid,.filters,.layout-2,.quiz-layout{min-width:0}
+.panel p,.notice,.quiz-callout,.metric-foot{overflow-wrap:anywhere}
+.table-wrap{max-width:100%;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.table-wrap table{width:max-content;min-width:100%}
+.mobile-bottom-nav{display:none}
+@media(max-width:900px){
+  :root{scroll-padding-top:calc(68px + env(safe-area-inset-top))}
+  .topbar{padding-top:env(safe-area-inset-top);height:calc(62px + env(safe-area-inset-top))}
+  .content{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  .mobile-bottom-nav{position:fixed;z-index:25;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--panel) 94%,transparent);border-top:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .mobile-bottom-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:52px;padding:5px 2px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);font-size:10px;font-weight:650;line-height:1.1}
+  .mobile-bottom-nav button .tab-icon{font-size:19px;line-height:1.1}
+  .mobile-bottom-nav button.active{background:var(--panel2);color:var(--blue);border-color:var(--line)}
+  .mobile-bottom-nav button:active{transform:scale(.97)}
+  .sidebar{padding-top:calc(18px + env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+  .nav button{min-height:44px}
+  .section-head>.field{width:100%;max-width:none!important}
+  .section-head>.field select{min-height:44px}
+  .form-actions button,.quiz-actions button{flex:1 1 auto;min-height:46px}
+  .form-grid .field input,.form-grid .field select,.form-grid .field textarea{min-height:46px}
+  .calendar-controls{flex-wrap:wrap}
+  .calendar-controls button{min-height:42px}
+  .calendar .day{min-width:0;overflow:hidden}
+  .chart-bars{overflow:hidden}
+  .theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .theme-choice{min-height:44px}
+  .theme-choice:last-child{grid-column:auto}
+  .theme-preview{height:44px}
+  .top-actions #newTradeTop{min-height:42px}
+  .quiz-option{min-height:46px}
+}
+@media(max-width:520px){
+  .topbar{height:calc(60px + env(safe-area-inset-top));padding-left:10px;padding-right:10px}
+  .topbar>div:first-child{min-width:0;gap:8px!important}
+  .topbar h1{max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px}
+  .top-actions{flex-shrink:0}
+  .top-actions #newTradeTop{padding:8px 10px;font-size:11px}
+  .content{padding-left:10px;padding-right:10px}
+  .section-head{display:flex;flex-direction:column;align-items:stretch}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card,.panel{min-width:0}
+  .metric-value{font-size:clamp(18px,5.5vw,22px);letter-spacing:-.035em}
+  .metric-label{font-size:10px}
+  .metric-foot{font-size:10px}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .form-grid .span-all{grid-column:1}
+  .filters{grid-template-columns:minmax(0,1fr)}
+  .bar-row{grid-template-columns:minmax(54px,72px) minmax(24px,1fr) minmax(52px,62px)}
+  .calendar-controls{width:100%;justify-content:space-between}
+  .calendar-controls strong{min-width:0;flex:1}
+  .mobile-bottom-nav{padding-left:5px;padding-right:5px;gap:1px}
+  .mobile-bottom-nav button{font-size:9px}
+  .mobile-bottom-nav button .tab-icon{font-size:18px}
+  .table-wrap{margin-left:-2px;margin-right:-2px}
+  .theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .auth-panel{width:100%}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -466,6 +534,13 @@
 </main>
 </div>
 </div>
+<nav class="mobile-bottom-nav" aria-label="Main mobile navigation">
+<button type="button" data-view="dashboard" class="active" aria-label="Dashboard"><span class="tab-icon" aria-hidden="true">⌂</span><span>Home</span></button>
+<button type="button" data-view="trades" aria-label="Trade log"><span class="tab-icon" aria-hidden="true">≡</span><span>Journal</span></button>
+<button type="button" data-view="analytics" aria-label="Analytics"><span class="tab-icon" aria-hidden="true">▥</span><span>Insights</span></button>
+<button type="button" data-view="masterclass" aria-label="Beginner masterclass"><span class="tab-icon" aria-hidden="true">✦</span><span>Learn</span></button>
+<button type="button" id="mobileMoreBtn" aria-label="Open all sections"><span class="tab-icon" aria-hidden="true">☰</span><span>More</span></button>
+</nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let client=null,user=null,trades=[],editingId=null,calendarMonth=new Date();
@@ -497,7 +572,7 @@ document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('
 $('resetTheme').addEventListener('click',()=>applyTheme('midnight'));
 applyTheme(localStorage.getItem('tjp_theme')||'midnight');
 document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
-const mobileBackdrop=document.createElement('div');mobileBackdrop.className='mobile-nav-backdrop';mobileBackdrop.hidden=true;document.body.appendChild(mobileBackdrop);function closeMobileNav(){document.querySelector('.sidebar').classList.remove('mobile-open');mobileBackdrop.hidden=true;} $('menuBtn').onclick=()=>{const sidebar=document.querySelector('.sidebar');const open=!sidebar.classList.contains('mobile-open');sidebar.classList.toggle('mobile-open',open);mobileBackdrop.hidden=!open;};mobileBackdrop.onclick=closeMobileNav;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',closeMobileNav));
+const mobileBackdrop=document.createElement('div');mobileBackdrop.className='mobile-nav-backdrop';mobileBackdrop.hidden=true;document.body.appendChild(mobileBackdrop);function closeMobileNav(){document.querySelector('.sidebar').classList.remove('mobile-open');mobileBackdrop.hidden=true;} $('menuBtn').onclick=()=>{const sidebar=document.querySelector('.sidebar');const open=!sidebar.classList.contains('mobile-open');sidebar.classList.toggle('mobile-open',open);mobileBackdrop.hidden=!open;};const mobileMore=$('mobileMoreBtn');if(mobileMore)mobileMore.onclick=()=> $('menuBtn').click();mobileBackdrop.onclick=closeMobileNav;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',closeMobileNav));
 function openEditor(){editingId=null;$('tradeForm').reset();$('tradeDate').value=new Date().toISOString().slice(0,10);$('contracts').value=1;$('pointValue').value=1;$('fees').value=0;$('tradeStatus').value='closed';$('editorTitle').textContent='Log a paper trade';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
 $('newTradeTop').onclick=openEditor;$('newTradeLog').onclick=openEditor;$('closeEditor').onclick=()=>$('tradeEditor').classList.add('hidden');$('cancelTrade').onclick=()=>$('tradeEditor').classList.add('hidden');
 function preview(){const e=$('entry').value,x=$('exit').value;if(e===''||x===''||$('tradeStatus').value==='open'){$('pnlPreview').textContent=$('tradeStatus').value==='open'?'Open trade — realized P&L not available':'Enter entry and exit prices';$('pnlPreview').className='';return;}const n=calc({entry_price:e,exit_price:x,contracts:$('contracts').value,point_value:$('pointValue').value,side:$('side').value,fees:$('fees').value});$('pnlPreview').textContent=cash(n);$('pnlPreview').className=n>=0?'positive':'negative';}
