@@ -983,6 +983,32 @@ let client=null,user=null,trades=[],editingId=null,calendarMonth=new Date();
 let quizState=(()=>{try{return JSON.parse(localStorage.getItem('tjp_quiz_progress')||'{"attempted":{},"mastered":{}}')}catch(e){return {attempted:{},mastered:{}}}})();
 let quizCurrentId=null,quizAnswered=false,quizSelected=null,quizQueue=[],quizQueueIndex=0,quizRemoteReady=false;
 const $=id=>document.getElementById(id);
+// Early, mobile-safe signup handler: show feedback even if later app initialization fails.
+$('signupBtn')?.addEventListener('click',async event=>{
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  const button=$('signupBtn');
+  try{
+    const email=$('email')?.value.trim()||'';
+    const password=$('password')?.value||'';
+    if(!email)throw Error('Enter your email first.');
+    if(!password)throw Error('Enter your password first.');
+    if(password.length<8)throw Error('Use a password with at least 8 characters.');
+    if(!client)makeClient();
+    button.disabled=true;
+    button.textContent='Creating…';
+    status('Creating your account…');
+    const {data,error}=await client.auth.signUp({email,password});
+    if(error)throw error;
+    status(data.session?'Account created and signed in.':'Account created. Check your email for a confirmation link, then return here and sign in.');
+    await checkSession();
+  }catch(error){
+    status(error?.message||'Could not create your account. Please check your connection and try again.');
+  }finally{
+    button.disabled=false;
+    button.textContent='Create account';
+  }
+},true);
 const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n)||0);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Use local calendar dates for the journal; ISO UTC dates can shift a day near midnight.
