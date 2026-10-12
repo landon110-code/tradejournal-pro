@@ -461,6 +461,52 @@ input,select,textarea{accent-color:var(--blue)}
   #view-trades #csvMultiplier{min-height:44px;padding-top:10px;padding-bottom:10px;font-size:13px}
 }
 
+
+/* TradeJournal Pro motion system — subtle, consistent, mobile-safe */
+:root{--motion-fast:150ms;--motion-med:240ms;--motion-slow:420ms;--motion-ease:cubic-bezier(.2,.75,.25,1)}
+@keyframes tjFadeUp{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes tjSoftGlow{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 0%,transparent)}50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--green) 8%,transparent)}}
+@keyframes tjShimmer{0%{background-position:160% 0}100%{background-position:-160% 0}}
+@keyframes tjSpin{to{transform:rotate(360deg)}}
+@keyframes tjDotPulse{0%,80%,100%{opacity:.35;transform:scale(.82)}40%{opacity:1;transform:scale(1)}}
+button,.nav button,.theme-choice,.quiz-option,.day,.pill,.field input,.field select,.field textarea,.filter{
+  transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,
+  color var(--motion-fast) ease,box-shadow var(--motion-med) ease,transform var(--motion-med) var(--motion-ease),opacity var(--motion-fast) ease
+}
+button:not(:disabled):hover{transform:translateY(-1px)}
+button:not(:disabled):active{transform:translateY(0) scale(.985)}
+button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.card,.panel,.skill-card,.quiz-mini,.quiz-learn-item,.import-step{
+  transition:border-color var(--motion-med) ease,box-shadow var(--motion-med) ease,transform var(--motion-med) var(--motion-ease)
+}
+.card:hover,.skill-card:hover,.quiz-mini:hover,.quiz-learn-item:hover{
+  border-color:color-mix(in srgb,var(--green) 28%,var(--line))
+}
+.view.active>.panel,.view.active>.cards,.view.active>.layout-2,.view.active>.section-head,
+.view.active>.dashboard-hero,.view.active>.quiz-overview{
+  animation:tjFadeUp var(--motion-slow) var(--motion-ease) both
+}
+.view.active>.panel:nth-child(2),.view.active>.cards:nth-child(2),.view.active>.layout-2:nth-child(2){animation-delay:45ms}
+.view.active>.panel:nth-child(3),.view.active>.cards:nth-child(3){animation-delay:90ms}
+.view.active>.panel:nth-child(4){animation-delay:135ms}
+.nav button.active{box-shadow:inset 2px 0 0 var(--green)}
+.field input:focus,.field select:focus,.field textarea:focus,.filter:focus{
+  outline:none;border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 12%,transparent)
+}
+#view-copilot .copilot-dashboard-card,#view-copilot .panel{transition:border-color var(--motion-med) ease,box-shadow var(--motion-med) ease}
+#copilotSend:disabled{opacity:.72;cursor:progress}
+#copilotSend:disabled::before{content:"";display:inline-block;width:11px;height:11px;margin-right:8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-1px;animation:tjSpin .8s linear infinite}
+#copilotChat .panel{animation:tjFadeUp 260ms var(--motion-ease) both}
+#copilotStatus{transition:color var(--motion-med) ease}
+#csvImportStatus:not(:empty){animation:tjFadeUp 220ms ease both}
+.chart-bar,.bar-fill{transform-origin:bottom;animation:barRise 520ms var(--motion-ease) both}
+.bar-fill{transform-origin:left;animation:barSlide 520ms var(--motion-ease) both}
+#view-trades .import-step:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--green) 35%,var(--line))}
+@media(hover:none){button:not(:disabled):hover{transform:none}.card:hover,.skill-card:hover,.quiz-mini:hover,.quiz-learn-item:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>
