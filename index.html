@@ -848,6 +848,32 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 
 <section class="view" id="view-settings">
   <div class="section-head"><div><h2>Settings</h2><p>Make TradeJournal Pro feel like yours.</p></div></div>
+  <div class="section-head"><div><h2>Cloud setup</h2><p>Connect your own Supabase project to sync trades across devices.</p></div></div>
+  <div class="panel auth-panel">
+    <div class="auth-welcome">
+      <div class="auth-welcome-icon" aria-hidden="true">☁</div>
+      <div><h3 style="margin:0 0 5px">Your journal account</h3><p class="muted small" style="margin:0">Sign in to sync your journal and import CSV trades. Your existing account works here too.</p></div>
+    </div>
+    <div class="auth-grid auth-simple-grid">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="field"><label for="password">Password</label><div class="password-row"><input id="password" type="password" placeholder="Your password" autocomplete="current-password"><button type="button" class="password-toggle" id="togglePassword" aria-label="Show password">Show</button></div></div>
+    </div>
+    <div class="auth-actions">
+      <button type="button" class="primary" id="loginBtn">Sign in</button>
+      <button type="button" id="signupBtn">Create account</button>
+      <button type="button" id="logoutBtn" class="hidden">Sign out</button>
+    </div>
+    <div id="authStatus" class="status" aria-live="polite">Ready. Sign in or create an account to sync your journal.</div>
+    <details class="advanced-connection">
+      <summary>Advanced connection settings</summary>
+      <p class="muted small">These settings are already filled in for this app. Only change them if you manage your own Supabase project. Never use a service-role or secret key here.</p>
+      <div class="auth-grid">
+        <div class="field"><label for="supabaseUrl">Supabase Project URL</label><input id="supabaseUrl" inputmode="url" placeholder="https://your-project.supabase.co"></div>
+        <div class="field"><label for="supabaseKey">Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_… or anon key"></div>
+      </div>
+      <div class="form-actions"><button type="button" class="ghost" id="connectBtn">Save connection</button></div>
+    </details>
+  </div>
   <div class="panel theme-panel">
     <div class="panel-head"><div><h3>Appearance</h3><p class="muted small" style="margin:5px 0 0">Choose a background theme. Your choice saves on this device.</p></div><span class="pill">Personalize</span></div>
     <div class="theme-grid" role="group" aria-label="Background theme">
@@ -880,32 +906,6 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
     <p class="muted small">Designed for trades from any broker or platform: stocks, ETFs, options, futures, forex, crypto, CFDs, and custom assets. Use manual entry or a compatible CSV export; direct broker connections are not enabled yet. Never enter broker passwords or API secrets here.</p>
     <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div>
     <div id="brokerInfo" class="notice hidden">Broker linking is a future feature. The safer first step is a read-only import of a broker-provided CSV, with a preview and duplicate check before importing. Never share brokerage passwords, API secrets, or account credentials in chat or a browser form.</div>
-  </div>
-  <div class="section-head"><div><h2>Cloud setup</h2><p>Connect your own Supabase project to sync trades across devices.</p></div></div>
-  <div class="panel auth-panel">
-    <div class="auth-welcome">
-      <div class="auth-welcome-icon" aria-hidden="true">☁</div>
-      <div><h3 style="margin:0 0 5px">Your journal account</h3><p class="muted small" style="margin:0">Sign in to sync your journal and import CSV trades. Your existing account works here too.</p></div>
-    </div>
-    <div class="auth-grid auth-simple-grid">
-      <div class="field"><label for="email">Email</label><input id="email" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email"></div>
-      <div class="field"><label for="password">Password</label><div class="password-row"><input id="password" type="password" placeholder="Your password" autocomplete="current-password"><button type="button" class="password-toggle" id="togglePassword" aria-label="Show password">Show</button></div></div>
-    </div>
-    <div class="auth-actions">
-      <button type="button" class="primary" id="loginBtn">Sign in</button>
-      <button type="button" id="signupBtn">Create account</button>
-      <button type="button" id="logoutBtn" class="hidden">Sign out</button>
-    </div>
-    <div id="authStatus" class="status" aria-live="polite">Ready. Sign in or create an account to sync your journal.</div>
-    <details class="advanced-connection">
-      <summary>Advanced connection settings</summary>
-      <p class="muted small">These settings are already filled in for this app. Only change them if you manage your own Supabase project. Never use a service-role or secret key here.</p>
-      <div class="auth-grid">
-        <div class="field"><label for="supabaseUrl">Supabase Project URL</label><input id="supabaseUrl" inputmode="url" placeholder="https://your-project.supabase.co"></div>
-        <div class="field"><label for="supabaseKey">Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_… or anon key"></div>
-      </div>
-      <div class="form-actions"><button type="button" class="ghost" id="connectBtn">Save connection</button></div>
-    </details>
   </div>
   <div class="panel"><h3>Trade calculation settings</h3><div class="notice">Universal P&amp;L model: (exit − entry) × quantity × value per 1.00 move × direction − fees. For stocks and spot assets, the value-per-move is usually based on units; for options, futures, CFDs, and other derivatives, confirm the contract multiplier with your platform. This journal does not assume every asset uses the same math.</div></div>
 </section>
