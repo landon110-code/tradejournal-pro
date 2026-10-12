@@ -523,6 +523,11 @@ body.login-required{margin:0}.login-gate{position:fixed;inset:0;z-index:99999;di
 /* Branded animated loading screen */
 .loading-splash{position:fixed;inset:0;z-index:100001;display:grid;place-items:center;padding:24px;background:#090b0a;color:#f1ead8;opacity:1;visibility:visible;transition:opacity .28s ease,visibility .28s ease}.loading-splash[hidden]{display:none!important}.loading-splash.is-leaving{opacity:0;visibility:hidden;pointer-events:none}.splash-content{display:flex;align-items:center;flex-direction:column;text-align:center;width:min(100%,330px)}.splash-logo{width:108px;height:92px;display:grid;place-items:center;color:#e9e1cd;animation:splash-float 2.5s ease-in-out infinite}.splash-logo svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 14px #e9e1cd1f)}.splash-logo svg path,.splash-logo svg circle{stroke-dasharray:150;stroke-dashoffset:150;animation:splash-draw 1.5s ease forwards}.splash-logo svg circle{stroke-dasharray:none;stroke-dashoffset:0;animation:splash-eye 1.5s ease forwards}.splash-wordmark{font-size:clamp(25px,7vw,32px);font-weight:750;letter-spacing:-1.2px;margin-top:18px}.splash-wordmark span{color:#a8c8a7}.splash-tagline{font-size:9px;letter-spacing:2.1px;color:#a8aa9f;margin-top:9px}.splash-loader{width:150px;height:3px;border-radius:9px;background:#242722;overflow:hidden;margin-top:34px}.splash-loader span{display:block;width:38%;height:100%;border-radius:9px;background:#a8c8a7;animation:splash-progress 1.25s ease-in-out infinite}.splash-content p{font-size:12px;color:#a8aa9f;margin:13px 0 0;min-height:18px}.login-gate{z-index:99999}@keyframes splash-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes splash-draw{to{stroke-dashoffset:0}}@keyframes splash-eye{0%,75%{opacity:.15}100%{opacity:1}}@keyframes splash-progress{0%{transform:translateX(-110%)}100%{transform:translateX(390%)}}@media(prefers-reduced-motion:reduce){.splash-logo,.splash-logo svg path,.splash-logo svg circle,.splash-loader span{animation:none!important}.splash-logo svg path{stroke-dashoffset:0}.loading-splash{transition:none}}
 
+/* TradeJournal Pro consistency and accessibility pass v2 */
+:root[data-theme="light"]{color-scheme:light}
+.gate-logo{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#1b3027;color:#a4e6b7;border:1px solid #315443}
+.gate-logo svg{display:block;width:30px;height:26px}
+#tradeBackupStatus{line-height:1.55}
 /* TradeJournal Pro premium visual polish v1 */
 :root, :root[data-theme="midnight"]{
   --bg:#0a0e13;
@@ -627,7 +632,7 @@ tbody tr:hover{background:color-mix(in srgb,var(--panel2) 68%,transparent)}
 </div>
 <div id="loginGate" class="login-gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle" hidden>
   <div class="login-gate-card">
-    <div class="gate-brand"><span class="gate-logo" aria-hidden="true">♧</span><div><strong>TradeJournal Pro</strong><small>YOUR TRADING LEARNING SPACE</small></div></div>
+    <div class="gate-brand"><span class="gate-logo fossil-mark" aria-hidden="true"><svg viewBox="0 0 48 40"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 9 18 17 16 24 11 29 12 32 16 31 22 27 25 20 25 13 23 4 24" stroke-width="1.7"/><path d="M10 18 11 13 14 10M15 16 18 11M21 14 24 10M27 14 29 10" stroke-width="1.5"/><path d="M29 15C34 12 38 16 38 21 38 24 35 26 33 24 31 22 33 20 35 22M30 17C37 15 42 21 40 26 39 29 35 29 34 26" stroke-width="1.7"/><path d="M10 22 9 29 6 33 10 33M16 24 17 30 15 34 19 34M24 25 25 30 23 34 27 34M29 23 32 29 31 33 35 33" stroke-width="1.6"/></g><circle cx="29" cy="15" r=".7" fill="currentColor"/></svg></span><div><strong>TradeJournal Pro</strong><small>YOUR TRADING LEARNING SPACE</small></div></div>
     <div class="gate-heading"><h1 id="gateTitle">Welcome to your journal</h1><p>Create a free account to sync your trades across devices, or jump straight in as a guest.</p></div>
     <div class="guest-choice-actions">
       <button class="primary gate-main-button" id="accountCreateChoice" type="button">Create a free account</button>
@@ -1022,7 +1027,7 @@ tbody tr:hover{background:color-mix(in srgb,var(--panel2) 68%,transparent)}
   <div class="panel">
     <h3>Data portability & connections</h3>
     <p class="muted small">Designed for trades from any broker or platform: stocks, ETFs, options, futures, forex, crypto, CFDs, and custom assets. Use manual entry or a compatible CSV export; direct broker connections are not enabled yet. Never enter broker passwords or API secrets here.</p>
-    <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div>
+    <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="exportTradeBackupBtn">Export trade backup (JSON)</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div><div id="tradeBackupStatus" class="status" aria-live="polite">Keep a separate backup of your journal, especially when using Guest mode.</div>
     <div id="brokerInfo" class="notice hidden">Broker linking is a future feature. The safer first step is a read-only import of a broker-provided CSV, with a preview and duplicate check before importing. Never share brokerage passwords, API secrets, or account credentials in chat or a browser form.</div>
   </div>
   <div class="panel"><h3>Trade calculation settings</h3><div class="notice">Universal P&amp;L model: (exit − entry) × quantity × value per 1.00 move × direction − fees. For stocks and spot assets, the value-per-move is usually based on units; for options, futures, CFDs, and other derivatives, confirm the contract multiplier with your platform. This journal does not assume every asset uses the same math.</div></div>
@@ -1070,32 +1075,7 @@ let client=null,user=null,trades=[],editingId=null,calendarMonth=new Date(),gues
 let quizState=(()=>{try{return JSON.parse(localStorage.getItem('tjp_quiz_progress')||'{"attempted":{},"mastered":{}}')}catch(e){return {attempted:{},mastered:{}}}})();
 let quizCurrentId=null,quizAnswered=false,quizSelected=null,quizQueue=[],quizQueueIndex=0,quizRemoteReady=false;
 const $=id=>document.getElementById(id);
-// Early, mobile-safe signup handler: show feedback even if later app initialization fails.
-$('signupBtn')?.addEventListener('click',async event=>{
-  event.preventDefault();
-  event.stopImmediatePropagation();
-  const button=$('signupBtn');
-  try{
-    const email=$('email')?.value.trim()||'';
-    const password=$('password')?.value||'';
-    if(!email)throw Error('Enter your email first.');
-    if(!password)throw Error('Enter your password first.');
-    if(password.length<8)throw Error('Use a password with at least 8 characters.');
-    if(!client)makeClient();
-    button.disabled=true;
-    button.textContent='Creating…';
-    status('Creating your account…');
-    const {data,error}=await client.auth.signUp({email,password});
-    if(error)throw error;
-    status(data.session?'Account created and signed in.':'Account created. Check your email for a confirmation link, then return here and sign in.');
-    await checkSession();
-  }catch(error){
-    status(error?.message||'Could not create your account. Please check your connection and try again.');
-  }finally{
-    button.disabled=false;
-    button.textContent='Create account';
-  }
-},true);
+// Signup uses the single shared handler below so account creation and the welcome gate stay in sync.
 const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n)||0);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Use local calendar dates for the journal; ISO UTC dates can shift a day near midnight.
@@ -1694,6 +1674,17 @@ function initQuiz(){
    }catch(err){$('learningBackupStatus').textContent='Could not export the backup in this browser. Try another browser or device.'}
  });
  $('settingsExportBtn')?.addEventListener('click',()=>$('exportBtn').click());
+ $('exportTradeBackupBtn')?.addEventListener('click',()=>{
+   try{
+     const payload={format:'tradejournal-pro-trade-backup',version:1,exportedAt:new Date().toISOString(),mode:guestMode?'guest-local':'cloud-journal',tradeCount:trades.length,trades};
+     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+     const url=URL.createObjectURL(blob),a=document.createElement('a');
+     a.href=url;a.download='tradejournal-pro-trades-'+new Date().toISOString().slice(0,10)+'.json';
+     document.body.appendChild(a);a.click();a.remove();
+     window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+     $('tradeBackupStatus').textContent='Trade backup exported ('+trades.length+' trades). Keep this file somewhere safe. This backup does not include your password or account credentials.';
+   }catch(err){$('tradeBackupStatus').textContent='Could not export a backup in this browser. Try Safari’s Share or Files options, or export the journal as CSV.';}
+ });
  $('brokerRoadmapBtn')?.addEventListener('click',()=>{$('brokerInfo').classList.toggle('hidden');});
  $('dashboardCopilotReview')?.addEventListener('click',()=>{showView('copilot');$('copilotMonthlyReview')?.click();});
  $('dashboardCopilotAsk')?.addEventListener('click',()=>{showView('copilot');$('copilotInput')?.focus();});
