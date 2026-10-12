@@ -160,6 +160,7 @@
     <button data-view="analytics"><span class="ico">◒</span>Analytics</button>
     <button data-view="playbook"><span class="ico">◎</span>Playbook</button>
     <button data-view="quiz"><span class="ico">✦</span>Knowledge Quiz</button>
+    <button data-view="copilot"><span class="ico">✧</span>Trading Copilot</button>
   </nav></div>
   <div><div class="nav-label">ACCOUNT</div><nav class="nav">
     <button data-view="settings"><span class="ico">⚙</span>Cloud setup</button>
@@ -265,6 +266,28 @@
   </div>
 </section>
 
+<section class="view" id="view-copilot">
+  <div class="section-head"><div><h2>Trading Copilot</h2><p>Ask about concepts, strategy rules, chart structure, or your paper-trading process.</p></div><span class="pill">Educational · Paper trading</span></div>
+  <div class="panel" style="max-width:920px">
+    <div class="panel-head"><div><h3>Ask your trading coach</h3><p class="muted small" style="margin:5px 0 0">Get explanations, examples, and questions to help test your understanding.</p></div></div>
+    <div class="copilot-prompts" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px">
+      <button class="btn secondary" type="button" data-copilot-prompt="Explain break of structure (BOS) with a simple example.">Explain BOS</button>
+      <button class="btn secondary" type="button" data-copilot-prompt="How can I define and backtest a fair value gap (FVG) setup?">FVG setup</button>
+      <button class="btn secondary" type="button" data-copilot-prompt="Help me create objective entry, stop, target, and invalidation rules for a paper-trading setup.">Build setup rules</button>
+      <button class="btn secondary" type="button" data-copilot-prompt="How do I review a losing trade without changing my strategy impulsively?">Review a loss</button>
+    </div>
+    <div id="copilotChat" aria-live="polite" style="display:flex;flex-direction:column;gap:12px;min-height:180px;max-height:48vh;overflow:auto;padding:4px 2px 14px">
+      <div class="panel" style="background:var(--panel2);padding:14px"><strong>Copilot</strong><p style="margin:7px 0 0">Ask me about BOS, FVG, IFVG, trendlines, risk concepts, journaling, or how to test a strategy. I’ll explain the idea and help you turn it into rules you can evaluate in replay or paper trading.</p></div>
+    </div>
+    <form id="copilotForm" style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+      <label for="copilotInput">Your question</label>
+      <textarea id="copilotInput" rows="3" maxlength="2000" placeholder="Example: How do I confirm a trendline breakout without chasing price?" required></textarea>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary" id="copilotSend" type="submit">Ask Copilot</button><span class="muted small" id="copilotStatus">AI service setup required before answers are enabled.</span></div>
+    </form>
+    <p class="muted small" style="margin-top:16px">For learning only, not financial advice or trade signals. Markets are risky; verify ideas with historical data and paper trading. Copilot won’t promise profits or tell you to risk money.</p>
+  </div>
+</section>
+
 <section class="view" id="view-settings">
   <div class="section-head"><div><h2>Settings</h2><p>Make TradeJournal Pro feel like yours.</p></div></div>
   <div class="panel theme-panel">
@@ -332,7 +355,7 @@ const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).f
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const calc=t=>((Number(t.exit_price)-Number(t.entry_price))*Number(t.contracts)*Number(t.point_value)*(t.side==='short'?-1:1))-Number(t.fees||0);
 const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
-function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
+function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 const themeNames={midnight:'Midnight',obsidian:'Obsidian',slate:'Slate',forest:'Forest',light:'Light'};
 function applyTheme(name){if(!themeNames[name])name='midnight';document.documentElement.dataset.theme=name;localStorage.setItem('tjp_theme',name);document.querySelectorAll('[data-theme-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeChoice===name)));const label=$('themeStatus');if(label)label.textContent=themeNames[name]+' theme selected';}
@@ -610,6 +633,35 @@ function initQuiz(){
  $('quizReset').onclick=async()=>{if(!confirm('Reset all quiz progress on this device and, if signed in, in your cloud account? This cannot be undone.'))return;quizState={attempted:{},mastered:{}};quizAnswered=false;quizSelected=null;persistQuizLocal();if(client&&user){const {error}=await client.from('quiz_progress').upsert({user_id:user.id,progress:quizState,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)$('quizSaveStatus').textContent='Local progress reset, but remote update failed: '+error.message;else $('quizSaveStatus').textContent='Quiz progress reset locally and in cloud.';}else $('quizSaveStatus').textContent='Quiz progress reset on this device.';buildQuizQueue();};
  buildQuizQueue();
 }
+
+
+// Trading Copilot chat: responses are served securely by the Supabase Edge Function.
+(function(){
+ const chat=$('copilotChat'),form=$('copilotForm'),input=$('copilotInput'),send=$('copilotSend'),statusEl=$('copilotStatus');
+ if(!chat||!form)return;
+ function addMessage(role,text){
+   const wrap=document.createElement('div');wrap.className='panel';wrap.style.cssText='padding:13px 14px;background:'+(role==='You'?'var(--panel)':'var(--panel2)');
+   const head=document.createElement('strong');head.textContent=role;
+   const body=document.createElement('div');body.style.cssText='margin-top:7px;white-space:pre-wrap;line-height:1.55';body.textContent=text;
+   wrap.append(head,body);chat.appendChild(wrap);chat.scrollTop=chat.scrollHeight;return wrap;
+ }
+ document.querySelectorAll('[data-copilot-prompt]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.copilotPrompt;input.focus()}));
+ form.addEventListener('submit',async e=>{
+   e.preventDefault();const question=input.value.trim();if(!question||send.disabled)return;
+   if(!client||!user){statusEl.textContent='Connect cloud storage and sign in first.';addMessage('Copilot','To protect the AI service, please sign in through Cloud setup first. Then ask again.');return;}
+   addMessage('You',question);input.value='';send.disabled=true;send.textContent='Thinking…';statusEl.textContent='Working on an explanation…';
+   const pending=addMessage('Copilot','Thinking through your question…');
+   try{
+     const {data,error}=await client.functions.invoke('trading-copilot',{body:{question}});
+     if(error)throw error;
+     const answer=data&&data.answer;if(!answer)throw new Error((data&&data.error)||'No answer returned.');
+     pending.lastChild.textContent=answer;statusEl.textContent='Ready';
+   }catch(err){
+     pending.lastChild.textContent='I couldn’t reach the AI service. Make sure the Copilot function is deployed and its AI provider key is configured in Supabase. Details: '+(err.message||'request failed');
+     statusEl.textContent='AI connection needs setup.';
+   }finally{send.disabled=false;send.textContent='Ask Copilot';chat.scrollTop=chat.scrollHeight;}
+ });
+})();
 
 renderAll();
 initQuiz();
