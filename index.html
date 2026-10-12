@@ -580,7 +580,7 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
     <div class="field"><label for="csvExit">Exit price column</label><select id="csvExit"><option value="exit_price">exit_price</option><option value="exit">exit</option><option value="avg_exit_price">avg_exit_price</option><option value="sell_price">sell_price</option></select></div>
     <div class="field"><label for="csvQty">Quantity column</label><select id="csvQty"><option value="contracts">contracts</option><option value="quantity">quantity</option><option value="qty">qty</option><option value="units">units</option><option value="size">size</option></select></div>
     <div class="field"><label for="csvFees">Fees column (optional)</label><select id="csvFees"><option value="fees">fees</option><option value="commission">commission</option><option value="total_fees">total_fees</option><option value="">No fees column</option></select></div>
-    <div class="field"><label for="csvMultiplier">Value per 1.00 move (USD)</label><input id="csvMultiplier" type="number" min="0" step="any" value="1"></div>
+    <div class="field"><label for="csvMultiplier">Value per 1.00 move (USD)</label><input id="csvMultiplier" type="number" min="0" step="any" value="" placeholder="Set for this product"></div>
   </div>
   <div class="form-actions" style="margin-top:12px"><button type="button" class="ghost" id="csvAutoMapBtn">Auto-detect columns</button><button type="button" class="ghost" id="csvTradingViewHint">TradingView export help</button></div>
   <div class="form-actions" style="margin-top:12px"><button type="button" class="primary" id="previewCsvBtn">Preview CSV</button><button type="button" id="confirmCsvBtn" disabled>Import previewed trades</button></div>
@@ -987,11 +987,11 @@ $('exportBtn').onclick=()=>{if(!trades.length){alert('No trades to export yet.')
 // TradingView-aware CSV helpers. Mapping remains user-confirmed because exports differ by panel and report.
 const csvAliases={
  csvSymbol:['symbol','ticker','instrument','market','symbol id','contract'],
- csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at'],
- csvSide:['side','direction','type','action','order side'],
- csvEntry:['entry_price','entry','avg_entry_price','buy_price','average entry price','avg price','price'],
- csvExit:['exit_price','exit','avg_exit_price','sell_price','average exit price','exit price'],
- csvQty:['contracts','quantity','qty','units','size','filled','filled qty'],
+ csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at','date/time'],
+ csvSide:['side','direction','trade direction','position side','position direction'],
+ csvEntry:['entry_price','entry','avg_entry_price','average entry price','avg entry','open price'],
+ csvExit:['exit_price','exit','avg_exit_price','average exit price','avg exit','close price'],
+ csvQty:['contracts','quantity','qty','units','size','filled qty'],
  csvFees:['fees','commission','total_fees','commissions','fee']
 };
 function setCsvMap(headers){let changed=0;Object.entries(csvAliases).forEach(([id,aliases])=>{const match=headers.find(h=>aliases.includes(h.toLowerCase().trim()));if(match){const select=$(id);let option=[...select.options].find(o=>o.value.toLowerCase()===match.toLowerCase());if(!option){option=document.createElement('option');option.value=match;option.textContent=match;select.appendChild(option)}select.value=option.value;changed++}});return changed}
@@ -1001,10 +1001,64 @@ $('csvTradingViewHint').addEventListener('click',()=>{$('csvImportStatus').textC
 // CSV import: preview, normalize common headers, and skip probable duplicates.
 let csvRowsPending=[];
 function parseCsvText(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else if(c==='"')quoted=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell.replace(/\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row);row=[];cell=''}else cell+=c}if(cell!==''||row.length){row.push(cell.replace(/\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row)}if(!rows.length)return [];const headers=rows.shift().map(h=>h.trim().replace(/^\uFEFF/, '').toLowerCase());return rows.map(values=>Object.fromEntries(headers.map((h,i)=>[h,(values[i]||'').trim()])))}
-function normalizedSide(v){v=String(v||'long').toLowerCase();return ['short','sell','s','bearish'].includes(v)?'short':'long'}
-function readNum(v,fallback=null){if(v===undefined||v===null||String(v).trim()==='')return fallback;const n=Number(String(v).replace(/[,$]/g,''));return Number.isFinite(n)?n:fallback}
-function probableDuplicate(a,b){return String(a.trade_date||'')===String(b.trade_date||'')&&String(a.symbol||'').toLowerCase()===String(b.symbol||'').toLowerCase()&&a.side===b.side&&Number(a.entry_price)===Number(b.entry_price)&&Number(a.exit_price)===Number(b.exit_price)&&Number(a.contracts)===Number(b.contracts)}
-$('previewCsvBtn').addEventListener('click',async()=>{const file=$('csvFile').files[0];if(!file){$('csvImportStatus').textContent='Choose a CSV file first.';return}try{const parsed=parseCsvText(await file.text());if(!parsed.length)throw Error('No data rows were found in this CSV.');const get=(r,id)=>r[$(id).value.toLowerCase()]??'';let invalid=0;csvRowsPending=parsed.map(r=>{const symbol=String(get(r,'csvSymbol')).trim(),dateRaw=String(get(r,'csvDate')).trim(),date=dateRaw?dateRaw.slice(0,10):new Date().toISOString().slice(0,10),entry=readNum(get(r,'csvEntry')),exit=readNum(get(r,'csvExit')),qty=readNum(get(r,'csvQty')),side=normalizedSide(get(r,'csvSide')),fees=readNum(get(r,'csvFees'),0),point_value=readNum($('csvMultiplier').value,1);if(!symbol||entry===null||exit===null||qty===null||qty<=0){invalid++;return null}const t={trade_date:date,symbol,side,setup:'Imported',entry_price:entry,exit_price:exit,trade_status:'closed',contracts:qty,point_value,fees,stop_price:null,target_price:null,mood:'Imported',followed_rules:'partial',execution_grade:'',notes:'Imported from CSV: '+file.name,screenshot_url:null};t.net_pnl=calc(t);return t}).filter(Boolean);const existing=csvRowsPending.filter(x=>trades.some(t=>probableDuplicate(t,x)));const seenInFile=[];let repeatedInFile=0;const unique=csvRowsPending.filter(x=>{if(trades.some(t=>probableDuplicate(t,x)))return false;if(seenInFile.some(t=>probableDuplicate(t,x))){repeatedInFile++;return false}seenInFile.push(x);return true});const sample=unique.slice(0,8);$('csvPreview').innerHTML=sample.length?'<table><thead><tr><th>Date</th><th>Asset</th><th>Side</th><th>Entry</th><th>Exit</th><th>Qty</th><th>Estimated net P&amp;L</th></tr></thead><tbody>'+sample.map(t=>'<tr><td>'+esc(t.trade_date)+'</td><td>'+esc(t.symbol)+'</td><td>'+esc(t.side)+'</td><td>'+esc(t.entry_price)+'</td><td>'+esc(t.exit_price)+'</td><td>'+esc(t.contracts)+'</td><td class="'+(t.net_pnl>=0?'positive':'negative')+'">'+cash(t.net_pnl)+'</td></tr>').join('')+'</tbody></table>'+(unique.length>8?'<p class="muted small">Showing first 8 of '+unique.length+' new rows.</p>':''):'<div class="empty">No new valid rows to import.</div>';$('csvImportStatus').textContent=parsed.length+' CSV rows · '+csvRowsPending.length+' valid · '+invalid+' skipped as invalid · '+existing.length+' probable duplicates excluded from the journal, '+repeatedInFile+' repeated rows excluded within this file. Check multiplier and mapping before importing.';$('confirmCsvBtn').disabled=!unique.length;$('confirmCsvBtn').dataset.importCount=String(unique.length);csvRowsPending=unique}catch(err){csvRowsPending=[];$('confirmCsvBtn').disabled=true;$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Could not preview CSV: '+err.message}});
+function normalizedSide(v){
+ const value=String(v||'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\\s+/g,' ');
+ if(['short','sell short','short sell','s','bearish'].includes(value))return 'short';
+ if(['long','buy','buy long','long buy','b','bullish'].includes(value))return 'long';
+ return null;
+}
+function readNum(v,fallback=null){
+ if(v===undefined||v===null||String(v).trim()==='')return fallback;
+ const raw=String(v).trim().replace(/[,$£€]/g,'');
+ const n=Number(raw);
+ return Number.isFinite(n)?n:fallback;
+}
+function parseCsvDate(value){
+ const v=String(value||'').trim();if(!v)return null;
+ let m=v.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+ if(m){const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);const dt=new Date(y,mo-1,d);return dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d?localDateKey(dt):null;}
+ m=v.match(/^(\\d{1,2})[\\/-](\\d{1,2})[\\/-](\\d{2,4})$/);
+ if(m){const mo=Number(m[1]),d=Number(m[2]),y=Number(m[3])+(Number(m[3])<100?2000:0);const dt=new Date(y,mo-1,d);return dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d?localDateKey(dt):null;}
+ const parsed=new Date(v);return Number.isNaN(parsed.getTime())?null:localDateKey(parsed);
+}
+function probableDuplicate(a,b){return String(a.trade_date||'')===String(b.trade_date||'')&&String(a.symbol||'').trim().toLowerCase()===String(b.symbol||'').trim().toLowerCase()&&a.side===b.side&&Number(a.entry_price)===Number(b.entry_price)&&Number(a.exit_price)===Number(b.exit_price)&&Number(a.contracts)===Number(b.contracts)}
+$('previewCsvBtn').addEventListener('click',async()=>{
+ const file=$('csvFile').files[0];
+ if(!file){$('csvImportStatus').textContent='Choose a CSV file first.';return}
+ const multiplier=readNum($('csvMultiplier').value);
+ if(multiplier===null||multiplier<=0){$('csvImportStatus').textContent='Enter the correct value per 1.00 price move for this product before previewing. The default is intentionally blank so imported P&L is not silently calculated with the wrong multiplier.';return}
+ try{
+  const parsed=parseCsvText(await file.text());
+  if(!parsed.length)throw Error('No data rows were found in this CSV.');
+  const get=(r,id)=>r[$(id).value.toLowerCase()]??'';
+  let invalid=0,badDates=0,badSides=0,badFees=0;
+  const mapped=parsed.map(r=>{
+   const symbol=String(get(r,'csvSymbol')).trim(),date=parseCsvDate(get(r,'csvDate'));
+   const entry=readNum(get(r,'csvEntry')),exit=readNum(get(r,'csvExit')),qty=readNum(get(r,'csvQty'));
+   const side=normalizedSide(get(r,'csvSide')),fees=readNum(get(r,'csvFees'),0);
+   if(!date){badDates++;invalid++;return null}
+   if(!side){badSides++;invalid++;return null}
+   if(fees<0){badFees++;invalid++;return null}
+   if(!symbol||entry===null||exit===null||qty===null||qty<=0){invalid++;return null}
+   const t={trade_date:date,symbol,side,setup:'Imported',entry_price:entry,exit_price:exit,trade_status:'closed',contracts:qty,point_value:multiplier,fees,stop_price:null,target_price:null,mood:'Imported',followed_rules:'partial',execution_grade:'',notes:'Imported from CSV: '+file.name,screenshot_url:null};
+   t.net_pnl=calc(t);return t;
+  });
+  const valid=mapped.filter(Boolean);
+  const existing=valid.filter(x=>trades.some(t=>probableDuplicate(t,x)));
+  const seenInFile=[];let repeatedInFile=0;
+  const unique=valid.filter(x=>{
+   if(trades.some(t=>probableDuplicate(t,x)))return false;
+   if(seenInFile.some(t=>probableDuplicate(t,x))){repeatedInFile++;return false}
+   seenInFile.push(x);return true;
+  });
+  const sample=unique.slice(0,8);
+  $('csvPreview').innerHTML=sample.length?'<table><thead><tr><th>Date</th><th>Asset</th><th>Side</th><th>Entry</th><th>Exit</th><th>Qty</th><th>Estimated net P&amp;L</th></tr></thead><tbody>'+sample.map(t=>'<tr><td>'+esc(t.trade_date)+'</td><td>'+esc(t.symbol)+'</td><td>'+esc(t.side)+'</td><td>'+esc(t.entry_price)+'</td><td>'+esc(t.exit_price)+'</td><td>'+esc(t.contracts)+'</td><td class="'+(t.net_pnl>=0?'positive':'negative')+'">'+cash(t.net_pnl)+'</td></tr>').join('')+'</tbody></table>'+(unique.length>8?'<p class="muted small">Showing first 8 of '+unique.length+' new rows.</p>':''):'<div class="empty">No new valid rows to import.</div>';
+  $('csvImportStatus').textContent=parsed.length+' CSV rows · '+valid.length+' valid · '+invalid+' skipped (including '+badDates+' invalid dates, '+badSides+' unrecognized directions, '+badFees+' negative fee rows) · '+existing.length+' probable duplicates already in the journal · '+repeatedInFile+' repeated rows in this file. Verify column mappings, dates, and multiplier.';
+  csvRowsPending=unique;
+  $('confirmCsvBtn').disabled=!unique.length;
+  $('confirmCsvBtn').dataset.importCount=String(unique.length);
+ }catch(err){csvRowsPending=[];$('confirmCsvBtn').disabled=true;$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Could not preview CSV: '+err.message}
+});
 $('confirmCsvBtn').addEventListener('click',async()=>{if(!client||!user){$('csvImportStatus').textContent='Connect and sign in to your private cloud journal before importing.';return}if(!csvRowsPending.length)return;const batch=csvRowsPending;try{$('confirmCsvBtn').disabled=true;$('csvImportStatus').textContent='Importing '+batch.length+' rows…';for(let i=0;i<batch.length;i+=100){const {error}=await client.from('trades').insert(batch.slice(i,i+100));if(error)throw error}csvRowsPending=[];$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Import complete. '+batch.length+' trades added.';await loadTrades()}catch(err){$('csvImportStatus').textContent='Import stopped: '+err.message+' If some batches succeeded, preview again; duplicates are checked against loaded trades.';$('confirmCsvBtn').disabled=false}});
 
 // Chart Study Notebook: observation notes only; no order or P&L simulation.
