@@ -801,6 +801,12 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
     <div class="form-actions"><button type="button" class="primary" id="saveUiPrefs">Save preferences</button><button type="button" id="resetUiPrefs">Reset preferences</button></div><div id="uiPrefsStatus" class="status">Preferences are stored locally on this device.</div>
   </div>
   <div class="panel">
+    <h3>Learning data backup</h3>
+    <p class="muted small">Save a copy of your local learning progress before switching browsers or clearing site data. This backup includes chart-study observations, Academy progress, quiz progress, custom playbook cards, and display preferences. It does not include cloud trades or account credentials.</p>
+    <div class="form-actions"><button type="button" id="exportLearningBackup">Export learning backup (JSON)</button></div>
+    <div id="learningBackupStatus" class="status" aria-live="polite">Stored locally on this device until you export it.</div>
+  </div>
+  <div class="panel">
     <h3>Data portability & connections</h3>
     <p class="muted small">Designed for trades from any broker or platform: stocks, ETFs, options, futures, forex, crypto, CFDs, and custom assets. Use manual entry or a compatible CSV export; direct broker connections are not enabled yet. Never enter broker passwords or API secrets here.</p>
     <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div>
@@ -1433,6 +1439,18 @@ function initQuiz(){
  populatePrefs();
  $('saveUiPrefs')?.addEventListener('click',()=>{const p={textSize:$('uiTextSize').value,density:$('uiDensity').value,motion:$('uiMotion').value,confirmDelete:$('uiConfirmDelete').value};localStorage.setItem('tjp_ui_prefs',JSON.stringify(p));applyPrefs(p);$('uiPrefsStatus').textContent='Preferences saved on this device.';});
  $('resetUiPrefs')?.addEventListener('click',()=>{localStorage.setItem('tjp_ui_prefs',JSON.stringify(prefDefaults));populatePrefs();$('uiPrefsStatus').textContent='Preferences reset to defaults.';});
+ $('exportLearningBackup')?.addEventListener('click',()=>{
+   const keys=['tjpro_chart_study_notes_v1','tjp_academy_v2','tjp_quiz_progress','tjp_setup_cards','tjp_theme','tjp_ui_prefs'];
+   const payload={format:'tradejournal-pro-learning-backup',version:1,exportedAt:new Date().toISOString(),data:{}};
+   keys.forEach(key=>{try{const raw=localStorage.getItem(key);if(raw!==null)payload.data[key]=JSON.parse(raw)}catch{const raw=localStorage.getItem(key);if(raw!==null)payload.data[key]=raw}});
+   try{
+     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+     const url=URL.createObjectURL(blob),a=document.createElement('a');
+     a.href=url;a.download='tradejournal-pro-learning-backup-'+new Date().toISOString().slice(0,10)+'.json';
+     document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+     $('learningBackupStatus').textContent='Learning backup exported. Keep the file somewhere safe.';
+   }catch(err){$('learningBackupStatus').textContent='Could not export the backup in this browser. Try another browser or device.'}
+ });
  $('settingsExportBtn')?.addEventListener('click',()=>$('exportBtn').click());
  $('brokerRoadmapBtn')?.addEventListener('click',()=>{$('brokerInfo').classList.toggle('hidden');});
  $('dashboardCopilotReview')?.addEventListener('click',()=>{showView('copilot');$('copilotMonthlyReview')?.click();});
