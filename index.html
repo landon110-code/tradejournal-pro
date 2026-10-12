@@ -264,7 +264,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .chart-upload-box .field{margin:0}
 @media(max-width:520px){.chart-upload-box{padding:10px}#copilotChartPreview{max-height:220px}}
 
-</style>
+ .topbar-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;white-space:nowrap;pointer-events:none}.topbar-brand .brand-mark{width:34px;height:34px;border-radius:10px;background:#111318;color:#f3e8d3;border:1px solid #44454a}.topbar-brand strong{font-size:15px;letter-spacing:-.03em;color:var(--text)}@media(max-width:760px){.topbar-brand{position:static;transform:none;margin:0 auto;gap:6px}.topbar-brand .brand-mark{width:30px;height:30px}.topbar-brand strong{font-size:12px}.topbar .top-actions #exportBtn{display:none}.topbar{padding:0 12px}.topbar-brand{flex-shrink:0}}@media(max-width:420px){.topbar-brand .brand-mark{display:none}.topbar-brand strong{font-size:11px}.topbar h1{font-size:16px}.topbar p{display:none}}</style>
 </head>
 <body>
 <div class="app">
@@ -287,7 +287,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <div class="sidebar-bottom accountbox"><div class="inline-status"><span class="dot" id="statusDot"></span><span id="sideStatus">Cloud not connected</span></div><div style="margin-top:8px">Manual journaling · Paper trades</div></div>
 </aside>
 <div class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
+<header class="topbar"><div style="display:flex;align-items:center;gap:10px;min-width:0"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="topbar-brand" aria-label="TradeJournalPro"><span class="brand-mark fossil-mark" aria-hidden="true"><svg viewBox="0 0 48 40"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 9 18 17 16 24 11 29 12 32 16 31 22 27 25 20 25 13 23 4 24" stroke-width="1.7"/><path d="M10 18 11 13 14 10M15 16 18 11M21 14 24 10M27 14 29 10" stroke-width="1.5"/><path d="M29 15C34 12 38 16 38 21 38 24 35 26 33 24 31 22 33 20 35 22M30 17C37 15 42 21 40 26 39 29 35 29 34 26" stroke-width="1.7"/><path d="M10 22 9 29 6 33 10 33M16 24 17 30 15 34 19 34M24 25 25 30 23 34 27 34M29 23 32 29 31 33 35 33" stroke-width="1.6"/><path d="M13 19 13 22M17 17 17 22M21 16 21 22M25 16 25 22M28 17 28 21" stroke-width="1.2"/></g></svg></span><strong>TradeJournalPro</strong></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
 <main class="content">
 <section class="view active" id="view-dashboard">
   <div class="section-head"><div><h2>Performance overview</h2><p>Track stocks, options, crypto, forex, futures, ETFs, and other assets—not just P&amp;L.</p></div><div class="field" style="min-width:135px"><select id="dashSymbol"><option value="all">All instruments / assets</option></select></div></div>
