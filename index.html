@@ -516,10 +516,29 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 
 /* Ultra-simple mobile CSV wizard */
 .visually-hidden-file{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}.import-progress{display:flex;align-items:center;gap:8px;max-width:250px;margin:4px 0 22px}.import-progress-dot{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--border);border-radius:50%;color:var(--muted);font-weight:700}.import-progress-dot.active{background:var(--blue);border-color:var(--blue);color:white}.import-progress-line{height:2px;background:var(--border);flex:1}.import-step-copy{margin-bottom:18px}.import-step-copy h3,.import-next-step h3{margin:0 0 7px}.import-step-copy p,.import-next-step p{line-height:1.55}.import-file-button{display:flex;align-items:center;gap:12px;padding:17px;border:1px dashed var(--blue);border-radius:14px;background:var(--panel2);cursor:pointer;min-height:82px}.import-file-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--blue);color:white;font-size:24px;font-weight:700}.import-file-button strong,.import-file-button small{display:block}.import-file-button small{color:var(--muted);margin-top:4px}.chosen-file{padding:10px 2px 16px;overflow-wrap:anywhere}.import-next-step{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}.import-next-step label{display:block;font-weight:600;margin:10px 0 7px}.import-next-step input{width:100%;min-height:48px}.import-primary-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:13px}.import-primary-actions button{width:100%;min-height:48px}.import-help-link{margin-top:14px;width:100%;text-align:left;white-space:normal}.import-panel #csvImportStatus{margin-top:12px;line-height:1.55}.import-panel #csvPreview{overflow-x:auto}.import-panel #csvPreview table{min-width:560px}.import-advanced{margin-top:16px;border-top:1px solid var(--border);padding-top:12px}.import-advanced summary{min-height:42px;display:flex;align-items:center;cursor:pointer;color:var(--muted);font-weight:600}.import-advanced .form-grid{grid-template-columns:1fr 1fr}@media(max-width:600px){.import-advanced .form-grid{grid-template-columns:1fr}.import-primary-actions button{font-size:15px}.import-panel{padding:16px}}
+
+/* Mandatory first-screen sign-in gate */
+body.login-required{margin:0}.login-gate{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;background:var(--bg,#0b1220);overflow-y:auto}.login-gate-card{width:min(100%,410px);padding:clamp(22px,6vw,34px);border:1px solid var(--border,#273348);border-radius:22px;background:var(--panel,#111b2b);box-shadow:0 22px 70px #0004}.gate-brand{display:flex;align-items:center;gap:12px;margin-bottom:32px}.gate-logo{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--panel2,#1b2940);color:var(--accent,#7ba7ff);font-size:25px}.gate-brand strong,.gate-brand small{display:block}.gate-brand strong{font-size:18px;letter-spacing:-.3px}.gate-brand small{font-size:9px;letter-spacing:1.1px;color:var(--muted,#9caac0);margin-top:4px}.gate-heading h1{font-size:28px;letter-spacing:-.8px;margin:0 0 8px}.gate-heading p{margin:0 0 25px;color:var(--muted,#9caac0);line-height:1.5}.login-gate form label{display:block;font-size:13px;font-weight:650;margin:15px 0 7px}.login-gate form input{box-sizing:border-box;width:100%;min-height:49px;border:1px solid var(--border,#273348);border-radius:11px;background:var(--bg,#0b1220);color:var(--text,#f3f6fc);padding:0 13px;font-size:16px}.gate-password-row{display:flex;gap:8px}.gate-password-row input{flex:1;min-width:0}.gate-password-row button{border:1px solid var(--border,#273348);border-radius:10px;background:transparent;color:var(--text,#f3f6fc);padding:0 13px}.gate-main-button,.gate-create-button{width:100%;min-height:49px;margin-top:17px;border-radius:11px;font-size:15px;font-weight:700}.gate-create-button{margin-top:9px;border:1px solid var(--border,#273348);background:transparent;color:var(--text,#f3f6fc)}.gate-status{min-height:38px;margin:16px 0 0;color:var(--muted,#9caac0);font-size:13px;line-height:1.5;overflow-wrap:anywhere}.gate-footnote{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--border,#273348);color:var(--muted,#9caac0);font-size:11px;line-height:1.5}.login-gate[hidden]{display:none!important}@media(max-width:480px){.login-gate{padding:14px}.login-gate-card{border-radius:18px}.gate-brand{margin-bottom:27px}}
 </style>
 </head>
-<body>
-<div class="app">
+<body class="login-required">
+<div id="loginGate" class="login-gate" role="main" aria-labelledby="gateTitle">
+  <div class="login-gate-card">
+    <div class="gate-brand"><span class="gate-logo" aria-hidden="true">♧</span><div><strong>TradeJournal Pro</strong><small>YOUR TRADING LEARNING SPACE</small></div></div>
+    <div class="gate-heading"><h1 id="gateTitle">Welcome back</h1><p>Sign in to continue to your journal.</p></div>
+    <form id="gateForm">
+      <label for="gateEmail">Email</label>
+      <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required>
+      <label for="gatePassword">Password</label>
+      <div class="gate-password-row"><input id="gatePassword" type="password" placeholder="Enter your password" autocomplete="current-password" required><button id="gateTogglePassword" type="button" aria-label="Show password">Show</button></div>
+      <button class="primary gate-main-button" id="gateSignIn" type="submit">Sign in</button>
+      <button class="gate-create-button" id="gateCreate" type="button">Create an account</button>
+    </form>
+    <p id="gateStatus" class="gate-status" role="status" aria-live="polite">Sign in or create a free account to get started.</p>
+    <p class="gate-footnote">Your journal account keeps your saved trades associated with you.</p>
+  </div>
+</div>
+<div class="app" aria-hidden="true">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark fossil-mark" aria-label="TradeJournal Pro official mammoth fossil logo"><svg viewBox="0 0 48 40" role="img" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 9 18 17 16 24 11 29 12 32 16 31 22 27 25 20 25 13 23 4 24" stroke-width="1.7"/><path d="M10 18 11 13 14 10M15 16 18 11M21 14 24 10M27 14 29 10" stroke-width="1.5"/><path d="M29 15C34 12 38 16 38 21 38 24 35 26 33 24 31 22 33 20 35 22M30 17C37 15 42 21 40 26 39 29 35 29 34 26" stroke-width="1.7"/><path d="M10 22 9 29 6 33 10 33M16 24 17 30 15 34 19 34M24 25 25 30 23 34 27 34M29 23 32 29 31 33 35 33" stroke-width="1.6"/><path d="M13 19 13 22M17 17 17 22M21 16 21 22M25 16 25 22M28 17 28 21M5 24 2 26M9 29 12 30M17 30 20 31M25 30 28 31" stroke-width="1.2"/></g><circle cx="29" cy="15" r=".7" fill="currentColor"/></svg></div><div><strong>TradeJournal Pro</strong><small>OFFICIAL MAMMOTH FOSSIL LOGO</small></div></div>
   <div><div class="nav-label">WORKSPACE</div><nav class="nav">
@@ -1572,5 +1591,26 @@ function initQuiz(){
 
 renderAll();
 initQuiz();
+
+// Mandatory login-first experience: gate access until Supabase confirms a session.
+(function initLoginGate(){
+ const gate=$('loginGate'),email=$('gateEmail'),password=$('gatePassword'),message=$('gateStatus');
+ const showGate=(text)=>{gate.hidden=false;document.body.classList.add('login-required');document.querySelector('.app').setAttribute('aria-hidden','true');if(text)message.textContent=text;};
+ const hideGate=()=>{gate.hidden=true;document.body.classList.remove('login-required');document.querySelector('.app').setAttribute('aria-hidden','false');};
+ const copyCredentials=()=>{$('email').value=email.value.trim();$('password').value=password.value;};
+ const oldLogin=$('loginBtn').onclick;
+ $('loginBtn').onclick=async()=>{await oldLogin();if(user){hideGate();message.textContent='Signed in.';}else message.textContent=$('authStatus').textContent;};
+ const oldSignup=$('signupBtn').onclick;
+ $('signupBtn').onclick=async()=>{await oldSignup();if(user){hideGate();message.textContent='Account ready.';}else message.textContent=$('authStatus').textContent;};
+ const oldLogout=$('logoutBtn').onclick;
+ $('logoutBtn').onclick=async()=>{await oldLogout();showGate('You have signed out. Sign in to continue.');email.value='';password.value='';};
+ $('gateForm').addEventListener('submit',async e=>{e.preventDefault();if(!email.value.trim()||!password.value){message.textContent='Enter your email and password.';return;}copyCredentials();$('loginBtn').click();message.textContent='Signing in…';});
+ $('gateCreate').addEventListener('click',()=>{if(!email.value.trim()||!password.value){message.textContent='Enter your email and choose a password first.';return;}if(password.value.length<8){message.textContent='Use a password with at least 8 characters.';return;}copyCredentials();$('signupBtn').click();message.textContent='Creating your account…';});
+ $('gateTogglePassword').addEventListener('click',()=>{const visible=password.type==='password';password.type=visible?'text':'password';$('gateTogglePassword').textContent=visible?'Hide':'Show';$('gateTogglePassword').setAttribute('aria-label',visible?'Hide password':'Show password');});
+ // Start locked immediately; restore access only after checking the saved Supabase session.
+ showGate('Checking your account…');
+ (async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.getSession();if(error)throw error;if(data.session){user=data.session.user;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');await loadTrades();hideGate();message.textContent='Signed in.';}else showGate('Sign in or create a free account to get started.');}catch(e){showGate('Could not check your session. Check your connection and try again.');}})();
+})();
+
 </script>
 </body></html>
