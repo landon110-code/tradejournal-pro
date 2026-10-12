@@ -887,6 +887,7 @@ body.login-required{margin:0}.login-gate{position:fixed;inset:0;z-index:99999;di
     <div class="auth-actions">
       <button type="button" class="primary" id="loginBtn">Sign in</button>
       <button type="button" id="signupBtn">Create account</button>
+      <button type="button" id="guestSettingsBtn" class="ghost">Continue as Guest</button>
       <button type="button" id="logoutBtn" class="hidden">Sign out</button>
     </div>
     <div id="authStatus" class="status" aria-live="polite">Ready. Sign in or create an account to sync your journal.</div>
@@ -1632,6 +1633,7 @@ initQuiz();
  const showChoice=()=>{gate.hidden=false;document.querySelector('.app').setAttribute('aria-hidden','true')};
  const enterApp=async mode=>{guestMode=mode==='guest';document.body.classList.remove('login-required');gate.hidden=true;document.querySelector('.app').setAttribute('aria-hidden','false');if(guestMode){localStorage.setItem('tjp_guest_mode','true');updateConnection(false);await loadTrades()}else localStorage.removeItem('tjp_guest_mode')};
  $('guestContinue').addEventListener('click',()=>enterApp('guest'));
+ $('guestSettingsBtn').addEventListener('click',async()=>{await enterApp('guest');showView('dashboard');status('Guest mode is active. Trades save on this device.');});
  $('accountCreateChoice').addEventListener('click',()=>{gate.hidden=true;document.querySelector('.app').setAttribute('aria-hidden','false');showView('settings');$('email').focus();$('authStatus').textContent='Create a free account here, or return to the journal as a guest.'});
  $('accountSigninChoice').addEventListener('click',()=>{gate.hidden=true;document.querySelector('.app').setAttribute('aria-hidden','false');showView('settings');$('email').focus();$('authStatus').textContent='Sign in to sync your saved cloud journal.'});
  const oldLogin=$('loginBtn').onclick;
