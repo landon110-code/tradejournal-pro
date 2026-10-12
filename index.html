@@ -147,6 +147,9 @@
 }
 @media(min-width:901px){.mobile-nav-backdrop{display:none!important}}.mobile-nav-backdrop[hidden]{display:none}
 
+:root[data-ui-text="small"]{font-size:14px}:root[data-ui-text="normal"]{font-size:16px}:root[data-ui-text="large"]{font-size:18px}
+:root[data-ui-density="compact"] .panel{padding:14px}:root[data-ui-density="compact"] .cards{gap:10px}:root[data-ui-density="compact"] .content{gap:12px}
+:root[data-ui-motion="off"] *, :root[data-ui-motion="off"] *::before, :root[data-ui-motion="off"] *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 </style>
 </head>
 <body>
@@ -766,6 +769,39 @@ function initQuiz(){
      pending.lastChild.textContent='I couldn’t reach the AI service. Make sure the Copilot function is deployed and its AI provider key is configured in Supabase. Details: '+(err.message||'request failed');
      statusEl.textContent='AI connection needs setup.';
    }finally{send.disabled=false;send.textContent='Ask Copilot';chat.scrollTop=chat.scrollHeight;}
+ });
+})();
+
+
+(function initPersonalizationAndLessons(){
+ const prefDefaults={textSize:'normal',density:'comfortable',motion:'on',confirmDelete:'on'};
+ function loadPrefs(){try{return {...prefDefaults,...JSON.parse(localStorage.getItem('tjp_ui_prefs')||'{}')}}catch{return {...prefDefaults}}}
+ function applyPrefs(p){
+   document.documentElement.dataset.uiText=p.textSize;
+   document.documentElement.dataset.uiDensity=p.density;
+   document.documentElement.dataset.uiMotion=p.motion;
+ }
+ function populatePrefs(){const p=loadPrefs();if($('uiTextSize'))$('uiTextSize').value=p.textSize;if($('uiDensity'))$('uiDensity').value=p.density;if($('uiMotion'))$('uiMotion').value=p.motion;if($('uiConfirmDelete'))$('uiConfirmDelete').value=p.confirmDelete;applyPrefs(p);}
+ populatePrefs();
+ $('saveUiPrefs')?.addEventListener('click',()=>{const p={textSize:$('uiTextSize').value,density:$('uiDensity').value,motion:$('uiMotion').value,confirmDelete:$('uiConfirmDelete').value};localStorage.setItem('tjp_ui_prefs',JSON.stringify(p));applyPrefs(p);$('uiPrefsStatus').textContent='Preferences saved on this device.';});
+ $('resetUiPrefs')?.addEventListener('click',()=>{localStorage.setItem('tjp_ui_prefs',JSON.stringify(prefDefaults));populatePrefs();$('uiPrefsStatus').textContent='Preferences reset to defaults.';});
+ $('settingsExportBtn')?.addEventListener('click',()=>$('exportBtn').click());
+ $('brokerRoadmapBtn')?.addEventListener('click',()=>{$('brokerInfo').classList.toggle('hidden');});
+ $('dashboardCopilotReview')?.addEventListener('click',()=>{showView('copilot');$('copilotMonthlyReview')?.click();});
+ $('dashboardCopilotAsk')?.addEventListener('click',()=>{showView('copilot');$('copilotInput')?.focus();});
+ function readSetupCards(){try{return JSON.parse(localStorage.getItem('tjp_setup_cards')||'[]')}catch{return []}}
+ function renderSetupCards(){
+   const target=$('savedSetupCards');if(!target)return;
+   const cards=readSetupCards();
+   if(!cards.length){target.textContent='No custom setup cards saved yet.';return;}
+   target.innerHTML=cards.map((x,i)=>'<div class="panel" style="margin-top:10px"><div class="panel-head"><strong>'+esc(x.name)+'</strong><button type="button" class="ghost" data-remove-setup="'+i+'">Remove</button></div><p><strong>Context:</strong> '+esc(x.context||'Not set')+'</p><p><strong>Entry:</strong> '+esc(x.entry||'Not set')+'</p><p><strong>Invalidation / skip:</strong> '+esc(x.invalid||'Not set')+'</p><p><strong>Test:</strong> '+esc(x.test||'Not set')+'</p></div>').join('');
+   target.querySelectorAll('[data-remove-setup]').forEach(b=>b.addEventListener('click',()=>{const list=readSetupCards();list.splice(Number(b.dataset.removeSetup),1);localStorage.setItem('tjp_setup_cards',JSON.stringify(list));renderSetupCards();}));
+ }
+ renderSetupCards();
+ $('saveSetupCard')?.addEventListener('click',()=>{
+   const name=$('lessonSetupName').value.trim();if(!name){$('savedSetupCards').textContent='Add a setup name before saving.';return;}
+   const list=readSetupCards();list.unshift({name,context:$('lessonSetupContext').value.trim(),entry:$('lessonSetupEntry').value.trim(),invalid:$('lessonSetupInvalid').value.trim(),test:$('lessonSetupTest').value.trim()});localStorage.setItem('tjp_setup_cards',JSON.stringify(list.slice(0,30)));
+   ['lessonSetupName','lessonSetupContext','lessonSetupEntry','lessonSetupInvalid','lessonSetupTest'].forEach(id=>$(id).value='');renderSetupCards();
  });
 })();
 
