@@ -519,9 +519,21 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 
 /* Mandatory first-screen sign-in gate */
 body.login-required{margin:0}.login-gate{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;background:var(--bg,#0b1220);overflow-y:auto}.login-gate-card{width:min(100%,410px);padding:clamp(22px,6vw,34px);border:1px solid var(--border,#273348);border-radius:22px;background:var(--panel,#111b2b);box-shadow:0 22px 70px #0004}.gate-brand{display:flex;align-items:center;gap:12px;margin-bottom:32px}.gate-logo{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--panel2,#1b2940);color:var(--accent,#7ba7ff);font-size:25px}.gate-brand strong,.gate-brand small{display:block}.gate-brand strong{font-size:18px;letter-spacing:-.3px}.gate-brand small{font-size:9px;letter-spacing:1.1px;color:var(--muted,#9caac0);margin-top:4px}.gate-heading h1{font-size:28px;letter-spacing:-.8px;margin:0 0 8px}.gate-heading p{margin:0 0 25px;color:var(--muted,#9caac0);line-height:1.5}.login-gate form label{display:block;font-size:13px;font-weight:650;margin:15px 0 7px}.login-gate form input{box-sizing:border-box;width:100%;min-height:49px;border:1px solid var(--border,#273348);border-radius:11px;background:var(--bg,#0b1220);color:var(--text,#f3f6fc);padding:0 13px;font-size:16px}.gate-password-row{display:flex;gap:8px}.gate-password-row input{flex:1;min-width:0}.gate-password-row button{border:1px solid var(--border,#273348);border-radius:10px;background:transparent;color:var(--text,#f3f6fc);padding:0 13px}.gate-main-button,.gate-create-button{width:100%;min-height:49px;margin-top:17px;border-radius:11px;font-size:15px;font-weight:700}.gate-create-button{margin-top:9px;border:1px solid var(--border,#273348);background:transparent;color:var(--text,#f3f6fc)}.gate-status{min-height:38px;margin:16px 0 0;color:var(--muted,#9caac0);font-size:13px;line-height:1.5;overflow-wrap:anywhere}.gate-footnote{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--border,#273348);color:var(--muted,#9caac0);font-size:11px;line-height:1.5}.login-gate[hidden]{display:none!important}@media(max-width:480px){.login-gate{padding:14px}.login-gate-card{border-radius:18px}.gate-brand{margin-bottom:27px}}
+
+/* Branded animated loading screen */
+.loading-splash{position:fixed;inset:0;z-index:100001;display:grid;place-items:center;padding:24px;background:#090b0a;color:#f1ead8;opacity:1;visibility:visible;transition:opacity .28s ease,visibility .28s ease}.loading-splash.is-leaving{opacity:0;visibility:hidden;pointer-events:none}.splash-content{display:flex;align-items:center;flex-direction:column;text-align:center;width:min(100%,330px)}.splash-logo{width:108px;height:92px;display:grid;place-items:center;color:#e9e1cd;animation:splash-float 2.5s ease-in-out infinite}.splash-logo svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 14px #e9e1cd1f)}.splash-logo svg path,.splash-logo svg circle{stroke-dasharray:150;stroke-dashoffset:150;animation:splash-draw 1.5s ease forwards}.splash-logo svg circle{stroke-dasharray:none;stroke-dashoffset:0;animation:splash-eye 1.5s ease forwards}.splash-wordmark{font-size:clamp(25px,7vw,32px);font-weight:750;letter-spacing:-1.2px;margin-top:18px}.splash-wordmark span{color:#a8c8a7}.splash-tagline{font-size:9px;letter-spacing:2.1px;color:#a8aa9f;margin-top:9px}.splash-loader{width:150px;height:3px;border-radius:9px;background:#242722;overflow:hidden;margin-top:34px}.splash-loader span{display:block;width:38%;height:100%;border-radius:9px;background:#a8c8a7;animation:splash-progress 1.25s ease-in-out infinite}.splash-content p{font-size:12px;color:#a8aa9f;margin:13px 0 0;min-height:18px}.login-gate{z-index:99999}@keyframes splash-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes splash-draw{to{stroke-dashoffset:0}}@keyframes splash-eye{0%,75%{opacity:.15}100%{opacity:1}}@keyframes splash-progress{0%{transform:translateX(-110%)}100%{transform:translateX(390%)}}@media(prefers-reduced-motion:reduce){.splash-logo,.splash-logo svg path,.splash-logo svg circle,.splash-loader span{animation:none!important}.splash-logo svg path{stroke-dashoffset:0}.loading-splash{transition:none}}
 </style>
 </head>
 <body class="login-required">
+<div id="loadingSplash" class="loading-splash" role="status" aria-live="polite">
+  <div class="splash-content">
+    <div class="splash-logo" aria-hidden="true"><svg viewBox="0 0 48 40" role="img" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 9 18 17 16 24 11 29 12 32 16 31 22 27 25 20 25 13 23 4 24" stroke-width="1.7"/><path d="M10 18 11 13 14 10M15 16 18 11M21 14 24 10M27 14 29 10" stroke-width="1.5"/><path d="M29 15C34 12 38 16 38 21 38 24 35 26 33 24 31 22 33 20 35 22M30 17C37 15 42 21 40 26 39 29 35 29 34 26" stroke-width="1.7"/><path d="M10 22 9 29 6 33 10 33M16 24 17 30 15 34 19 34M24 25 25 30 23 34 27 34M29 23 32 29 31 33 35 33" stroke-width="1.6"/><path d="M13 19 13 22M17 17 17 22M21 16 21 22M25 16 25 22M28 17 28 21M5 24 2 26M9 29 12 30M17 30 20 31M25 30 28 31" stroke-width="1.2"/></g><circle cx="29" cy="15" r=".7" fill="currentColor"/></svg></div>
+    <div class="splash-wordmark">TradeJournal <span>Pro</span></div>
+    <div class="splash-tagline">YOUR TRADING LEARNING SPACE</div>
+    <div class="splash-loader" aria-hidden="true"><span></span></div>
+    <p id="splashMessage">Preparing your journal…</p>
+  </div>
+</div>
 <div id="loginGate" class="login-gate" role="main" aria-labelledby="gateTitle">
   <div class="login-gate-card">
     <div class="gate-brand"><span class="gate-logo" aria-hidden="true">♧</span><div><strong>TradeJournal Pro</strong><small>YOUR TRADING LEARNING SPACE</small></div></div>
@@ -1592,24 +1604,25 @@ function initQuiz(){
 renderAll();
 initQuiz();
 
-// Mandatory login-first experience: gate access until Supabase confirms a session.
+// Mandatory login-first experience plus branded animated loading screen.
 (function initLoginGate(){
- const gate=$('loginGate'),email=$('gateEmail'),password=$('gatePassword'),message=$('gateStatus');
+ const gate=$('loginGate'),email=$('gateEmail'),password=$('gatePassword'),message=$('gateStatus'),splash=$('loadingSplash'),splashMessage=$('splashMessage');
+ const showSplash=(text)=>{if(text)splashMessage.textContent=text;splash.classList.remove('is-leaving');splash.hidden=false;};
+ const hideSplash=()=>{splash.classList.add('is-leaving');window.setTimeout(()=>{splash.hidden=true;},320);};
  const showGate=(text)=>{gate.hidden=false;document.body.classList.add('login-required');document.querySelector('.app').setAttribute('aria-hidden','true');if(text)message.textContent=text;};
  const hideGate=()=>{gate.hidden=true;document.body.classList.remove('login-required');document.querySelector('.app').setAttribute('aria-hidden','false');};
  const copyCredentials=()=>{$('email').value=email.value.trim();$('password').value=password.value;};
  const oldLogin=$('loginBtn').onclick;
- $('loginBtn').onclick=async()=>{await oldLogin();if(user){hideGate();message.textContent='Signed in.';}else message.textContent=$('authStatus').textContent;};
+ $('loginBtn').onclick=async()=>{showSplash('Signing you in…');await oldLogin();if(user){hideGate();message.textContent='Signed in.';hideSplash();}else{message.textContent=$('authStatus').textContent;hideSplash();}};
  const oldSignup=$('signupBtn').onclick;
- $('signupBtn').onclick=async()=>{await oldSignup();if(user){hideGate();message.textContent='Account ready.';}else message.textContent=$('authStatus').textContent;};
+ $('signupBtn').onclick=async()=>{showSplash('Creating your account…');await oldSignup();if(user){hideGate();message.textContent='Account ready.';hideSplash();}else{message.textContent=$('authStatus').textContent;hideSplash();}};
  const oldLogout=$('logoutBtn').onclick;
  $('logoutBtn').onclick=async()=>{await oldLogout();showGate('You have signed out. Sign in to continue.');email.value='';password.value='';};
  $('gateForm').addEventListener('submit',async e=>{e.preventDefault();if(!email.value.trim()||!password.value){message.textContent='Enter your email and password.';return;}copyCredentials();$('loginBtn').click();message.textContent='Signing in…';});
  $('gateCreate').addEventListener('click',()=>{if(!email.value.trim()||!password.value){message.textContent='Enter your email and choose a password first.';return;}if(password.value.length<8){message.textContent='Use a password with at least 8 characters.';return;}copyCredentials();$('signupBtn').click();message.textContent='Creating your account…';});
  $('gateTogglePassword').addEventListener('click',()=>{const visible=password.type==='password';password.type=visible?'text':'password';$('gateTogglePassword').textContent=visible?'Hide':'Show';$('gateTogglePassword').setAttribute('aria-label',visible?'Hide password':'Show password');});
- // Start locked immediately; restore access only after checking the saved Supabase session.
- showGate('Checking your account…');
- (async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.getSession();if(error)throw error;if(data.session){user=data.session.user;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');await loadTrades();hideGate();message.textContent='Signed in.';}else showGate('Sign in or create a free account to get started.');}catch(e){showGate('Could not check your session. Check your connection and try again.');}})();
+ showGate('Checking your account…');showSplash('Checking your account…');
+ (async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.getSession();if(error)throw error;if(data.session){user=data.session.user;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');splashMessage.textContent='Loading your journal…';await loadTrades();hideGate();message.textContent='Signed in.';hideSplash();}else{showGate('Sign in or create a free account to get started.');hideSplash();}}catch(e){showGate('Could not check your session. Check your connection and try again.');hideSplash();}})();
 })();
 
 </script>
