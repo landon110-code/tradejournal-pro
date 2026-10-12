@@ -832,12 +832,25 @@ td{font-variant-numeric:tabular-nums}
 .splash-tagline{font-size:11px;letter-spacing:.19em;font-weight:750;color:var(--muted,#a4aab5);text-transform:uppercase}
 .gate-brand small{display:block;margin-top:5px;font-size:9px;letter-spacing:.15em;font-weight:750;line-height:1.5;color:var(--muted,#a4aab5)}
 @media(max-width:420px){.gate-brand small{font-size:8px;letter-spacing:.11em}}
+
+/* Logo URL uses encoded literal percent signs in the uploaded filename */
+.official-mammoth-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center;max-width:100%;max-height:100%}
+.splash-logo .official-mammoth-image{width:100%;height:100%;object-fit:contain}
+.hero-mark{overflow:hidden}
+.october-plan{margin:0 0 18px;border-color:color-mix(in srgb,var(--blue) 30%,var(--line))}
+.october-plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.october-task{display:flex;gap:11px;align-items:flex-start;padding:13px;border:1px solid var(--line);background:var(--panel2);border-radius:13px;cursor:pointer;min-width:0}
+.october-task input{width:18px;height:18px;flex:0 0 18px;margin:2px 0 0;accent-color:var(--green)}
+.october-task span{min-width:0}.october-task strong{display:block;font-size:13px;line-height:1.4}.october-task small{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin-top:5px}
+.october-task:has(input:checked){border-color:var(--green);background:color-mix(in srgb,var(--green) 7%,var(--panel2))}
+.october-task:has(input:checked) strong{text-decoration:line-through;text-decoration-color:var(--muted)}
+@media(max-width:600px){.october-plan-grid{grid-template-columns:1fr}.october-task{padding:12px}}
 </style>
 </head>
 <body>
 <div id="loadingSplash" class="loading-splash" hidden role="status" aria-live="polite">
   <div class="splash-content">
-    <div class="splash-logo" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%20Mammoth%20Skeleton%20TradeJournalPro%20Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div>
+    <div class="splash-logo" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%2520Mammoth%2520Skeleton%2520TradeJournalPro%2520Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div>
     <div class="splash-wordmark">TradeJournal <span>Pro</span></div>
     <div class="splash-tagline">BY TRADERS. FOR TRADERS.</div>
     <div class="splash-loader" aria-hidden="true"><span></span></div>
@@ -846,7 +859,7 @@ td{font-variant-numeric:tabular-nums}
 </div>
 <div id="loginGate" class="login-gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle" hidden>
   <div class="login-gate-card">
-    <div class="gate-brand"><span class="gate-logo fossil-mark" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%20Mammoth%20Skeleton%20TradeJournalPro%20Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></span><div><strong>TradeJournal Pro</strong><small>BY TRADERS. FOR TRADERS.</small></div></div>
+    <div class="gate-brand"><span class="gate-logo fossil-mark" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%2520Mammoth%2520Skeleton%2520TradeJournalPro%2520Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></span><div><strong>TradeJournal Pro</strong><small>BY TRADERS. FOR TRADERS.</small></div></div>
     <div class="gate-heading"><h1 id="gateTitle">Welcome to your journal</h1><p>Create a free account to sync your trades across devices, or jump straight in as a guest.</p></div>
     <div class="guest-choice-actions">
       <button class="primary gate-main-button" id="accountCreateChoice" type="button">Create a free account</button>
@@ -857,7 +870,7 @@ td{font-variant-numeric:tabular-nums}
   </div>
 </div><div class="app" aria-hidden="true">
 <aside class="sidebar">
-  <div class="brand"><div class="brand-mark fossil-mark" aria-label="TradeJournal Pro official mammoth fossil logo"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%20Mammoth%20Skeleton%20TradeJournalPro%20Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div><div><strong>TradeJournal Pro</strong><small>OFFICIAL MAMMOTH FOSSIL LOGO</small></div></div>
+  <div class="brand"><div class="brand-mark fossil-mark" aria-label="TradeJournal Pro official mammoth fossil logo"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%2520Mammoth%2520Skeleton%2520TradeJournalPro%2520Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div><div><strong>TradeJournal Pro</strong><small>OFFICIAL MAMMOTH FOSSIL LOGO</small></div></div>
   <div><div class="nav-label">WORKSPACE</div><nav class="nav">
     <button class="active" data-view="dashboard"><span class="ico">▦</span>Dashboard</button>
     <button data-view="trades"><span class="ico">☷</span>Trade Log</button>
@@ -875,7 +888,7 @@ td{font-variant-numeric:tabular-nums}
   <div class="sidebar-bottom accountbox"><div class="inline-status"><span class="dot" id="statusDot"></span><span id="sideStatus">Cloud not connected</span></div><div style="margin-top:8px">Manual journaling · Paper trades</div></div>
 </aside>
 <div class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:10px;min-width:0"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="topbar-brand" aria-label="TradeJournalPro"><span class="brand-mark fossil-mark" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%20Mammoth%20Skeleton%20TradeJournalPro%20Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></span><strong>TradeJournalPro</strong></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
+<header class="topbar"><div style="display:flex;align-items:center;gap:10px;min-width:0"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="topbar-brand" aria-label="TradeJournalPro"><span class="brand-mark fossil-mark" aria-hidden="true"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%2520Mammoth%2520Skeleton%2520TradeJournalPro%2520Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></span><strong>TradeJournalPro</strong></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
 <main class="content">
 <section class="view active" id="view-dashboard">
   <section class="dashboard-hero">
@@ -887,10 +900,23 @@ td{font-variant-numeric:tabular-nums}
       <div class="dashboard-hero-actions"><button class="primary" id="dashboardAddTrade"><span>＋</span> Log a trade</button><button class="hero-secondary" type="button" data-goto="copilot">Open Trading Copilot <span>↗</span></button></div>
     </div>
     <div class="dashboard-hero-side">
-      <div class="hero-mark"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%20Mammoth%20Skeleton%20TradeJournalPro%20Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div>
+      <div class="hero-mark"><img src="https://raw.githubusercontent.com/landon110-code/tradejournal-pro/main/Ivory%2520Mammoth%2520Skeleton%2520TradeJournalPro%2520Logo.png" alt="TradeJournal Pro mammoth logo" class="official-mammoth-image"></div>
       <div class="hero-side-label">THE TRADING JOURNAL</div><div class="hero-side-title">Built around<br>better decisions.</div><div class="hero-side-rule"></div><div class="hero-side-note">Review the data. Refine the process. Repeat.</div>
     </div>
     <div class="hero-filter field"><label for="dashSymbol">VIEWING</label><select id="dashSymbol"><option value="all">All instruments / assets</option></select></div>
+  </section>
+  <section class="panel october-plan" id="octoberPlan">
+    <div class="panel-head"><div><span class="pill">PERSONAL TRAINING PLAN</span><h3 style="margin-top:10px">October roadmap</h3><p class="muted small">A practice-first plan to build consistency before considering an evaluation.</p></div><span class="muted small" id="octoberProgress">0 / 7 complete</span></div>
+    <div class="october-plan-grid">
+      <label class="october-task"><input type="checkbox" data-oct-task="0"><span><strong>Oct 12 · Define the setup</strong><small>Write one clear setup with entry evidence, invalidation, and no-trade conditions.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="1"><span><strong>Oct 13 · Mark market structure</strong><small>Review historical WTI (CL) 5-minute charts and mark swing highs/lows without hindsight.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="2"><span><strong>Oct 14 · BOS and imbalance</strong><small>Label BOS, FVG, and IFVG only when the chart evidence meets your definitions.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="3"><span><strong>Oct 15 · Replay practice</strong><small>Complete five historical chart observations; record the hypothesis before revealing later candles.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="4"><span><strong>Oct 16 · Risk rules</strong><small>Document a fixed practice risk limit, stop placement logic, and daily stop condition.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="5"><span><strong>Oct 17 · Review all four markets</strong><small>Compare WTI, platinum, silver, and micro gold for clarity; do not force a setup.</small></span></label>
+      <label class="october-task"><input type="checkbox" data-oct-task="6"><span><strong>Oct 18 · Weekly review</strong><small>Review screenshots and rule adherence. Revise only from evidence, not one outcome.</small></span></label>
+    </div>
+    <div class="notice" style="margin-top:14px"><strong>Milestone:</strong> Repeat the process through the rest of October. Judge readiness by consistent rule-following across a meaningful sample—not by a profit target or a single good day.</div>
   </section>
   <div class="cards">
     <div class="card"><div class="metric-label">Net P&amp;L <span>↗</span></div><div class="metric-value" id="mNet">$0.00</div><div class="metric-foot">Closed trades after fees</div></div>
@@ -1941,6 +1967,16 @@ initQuiz();
  showSplash('Preparing your journal…');
  const watchdog=window.setTimeout(()=>{hideSplash();if(!user&&!localStorage.getItem('tjp_guest_mode'))showChoice();else if(!user)enterApp('guest')},6500);
  (async()=>{try{if(!client)makeClient();const result=await Promise.race([client.auth.getSession(),new Promise((_,reject)=>window.setTimeout(()=>reject(new Error('Session check timed out.')),9000))]);const {data,error}=result;if(error)throw error;if(data.session){user=data.session.user;guestMode=false;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');splashMessage.textContent='Loading your journal…';await loadTrades();document.querySelector('.app').setAttribute('aria-hidden','false');gate.hidden=true;hideSplash()}else if(localStorage.getItem('tjp_guest_mode')==='true'){await enterApp('guest');hideSplash()}else{hideSplash();showChoice()}}catch(e){if(localStorage.getItem('tjp_guest_mode')==='true'){await enterApp('guest');hideSplash()}else{hideSplash();showChoice();message.textContent='Continue as a guest now, or create an account later in Settings.'}}finally{window.clearTimeout(watchdog)}})();
+})();
+</script>
+<script>
+/* Personal October checklist persists on this device */
+(function initOctoberPlan(){
+ const key='tjp_october_plan_2026';
+ let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){}
+ const boxes=[...document.querySelectorAll('[data-oct-task]')];
+ const update=()=>{const done=boxes.filter(b=>b.checked).length;const el=document.getElementById('octoberProgress');if(el)el.textContent=done+' / '+boxes.length+' complete';};
+ boxes.forEach(b=>{b.checked=!!saved[b.dataset.octTask];b.addEventListener('change',()=>{saved[b.dataset.octTask]=b.checked;try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}update();});});update();
 })();
 </script>
 </body></html>
