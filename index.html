@@ -698,6 +698,56 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
     <ol><li>Know the instrument's contract multiplier and tick value from official specifications; don't guess.</li><li>Record planned stop, target logic, fees, and realistic slippage assumptions.</li><li>After each session, review rule-following and execution separately from the result.</li><li>Change one testable variable at a time and compare enough examples before drawing conclusions.</li></ol>
     <div class="notice">Learning sequence: understand the concept → define objective rules → replay historical examples → paper trade consistently → review the journal. These lessons are educational and not trade signals.</div>
   </div>
+  <div class="panel">
+    <div class="panel-head"><div><div class="eyebrow">COURSE 05 · FOUNDATIONS</div><h3>Support, resistance & price zones</h3><p class="muted">Learn to mark areas where price previously paused or changed direction. A zone is an observation—not a promise that price will react the same way again.</p></div><span class="pill">Visual lesson</span></div>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Illustrative price path moving between a lower support zone and upper resistance zone" style="width:100%;max-height:260px;background:var(--panel2);border-radius:12px;margin:8px 0">
+      <rect x="24" y="35" width="592" height="32" rx="5" fill="var(--gold)" opacity=".17"/><rect x="24" y="165" width="592" height="28" rx="5" fill="var(--blue)" opacity=".17"/>
+      <path d="M28 146 L82 106 L130 157 L188 82 L240 125 L292 58 L344 105 L400 78 L450 149 L508 177 L560 119 L610 168" fill="none" stroke="var(--text)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+      <text x="34" y="27" fill="var(--gold)" font-size="13" font-weight="600">Resistance area</text><text x="34" y="157" fill="var(--blue)" font-size="13" font-weight="600">Support area</text>
+      <text x="24" y="211" fill="var(--muted)" font-size="12">Concept sketch only · zones are approximate and may fail</text>
+    </svg>
+    <h4>How to study it</h4>
+    <ol><li>Zoom out and identify obvious historical turning points instead of marking every tiny candle.</li><li>Draw a zone around the area where several reactions clustered; avoid pretending the level is exact to one price.</li><li>Label the zone using only information visible at that moment, then move forward candle by candle in replay.</li><li>Record whether price paused, crossed through, or returned later. Include examples where the zone did not matter.</li></ol>
+    <div class="notice"><strong>Common mistake:</strong> drawing a perfect zone after seeing what happened next. Mark first, reveal later, and keep the original drawing for an honest review.</div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div><div class="eyebrow">COURSE 06 · MARKET CONTEXT</div><h3>Trend, range & uncertainty</h3><p class="muted">Before labeling a pattern, describe the environment. Similar shapes can behave differently in a directional move, a sideways range, or a messy transition.</p></div><span class="pill">Visual lesson</span></div>
+    <svg viewBox="0 0 640 210" role="img" aria-label="Three small illustrative charts showing rising swings, sideways range, and choppy uncertain movement" style="width:100%;max-height:250px;background:var(--panel2);border-radius:12px;margin:8px 0">
+      <g stroke="var(--border)" stroke-width="1"><path d="M18 20H205M18 65H205M18 110H205M225 20H412M225 65H412M225 110H412M432 20H622M432 65H622M432 110H622"/></g>
+      <path d="M24 101 L54 78 L77 91 L106 59 L131 72 L159 42 L194 27" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round"/><path d="M231 70 L251 39 L273 81 L295 43 L317 77 L341 40 L363 75 L389 44 L406 70" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round"/><path d="M438 71 L454 43 L471 88 L489 52 L504 77 L521 34 L540 93 L557 60 L574 84 L592 43 L615 72" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linejoin="round"/>
+      <text x="24" y="135" fill="var(--blue)" font-size="13" font-weight="600">Directional trend</text><text x="231" y="135" fill="var(--gold)" font-size="13" font-weight="600">Sideways range</text><text x="438" y="135" fill="var(--muted)" font-size="13" font-weight="600">Unclear / choppy</text>
+      <text x="24" y="164" fill="var(--muted)" font-size="12">Swings lean one way</text><text x="231" y="164" fill="var(--muted)" font-size="12">Price rotates in an area</text><text x="438" y="164" fill="var(--muted)" font-size="12">No consistent structure</text>
+      <text x="24" y="193" fill="var(--muted)" font-size="12">Illustrative shapes · not a forecast</text>
+    </svg>
+    <h4>Context checklist</h4>
+    <ul><li><strong>Trend:</strong> are successive swing highs and lows generally moving in one direction?</li><li><strong>Range:</strong> does price repeatedly move between recognizable upper and lower areas?</li><li><strong>Transition:</strong> has the prior pattern weakened, but a new structure not yet become clear?</li><li><strong>Uncertainty:</strong> would two careful reviewers agree on the label? If not, record “unclear” rather than forcing a setup.</li></ul>
+    <div class="notice">Practice: label 30 historical chart sections as trend, range, or unclear before revealing future candles. Compare your labels with a second review to find where your definitions are vague.</div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div><div class="eyebrow">COURSE 07 · PATTERN QUALITY</div><h3>Breakouts, retests & false breaks</h3><p class="muted">A breakout describes price moving beyond a previously marked boundary. It can continue, return inside the area, or reverse. The purpose of this lesson is to classify outcomes consistently—not to predict the next move.</p></div><span class="pill">Visual lesson</span></div>
+    <svg viewBox="0 0 640 235" role="img" aria-label="Two illustrative panels compare a move that stays above a range boundary with a false break that returns into the range" style="width:100%;max-height:270px;background:var(--panel2);border-radius:12px;margin:8px 0">
+      <rect x="18" y="65" width="286" height="72" rx="5" fill="var(--gold)" opacity=".12"/><rect x="336" y="65" width="286" height="72" rx="5" fill="var(--gold)" opacity=".12"/>
+      <path d="M18 65H304M336 65H622" stroke="var(--gold)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M28 119 L58 82 L87 127 L116 94 L146 122 L174 70 L200 45 L228 26 L258 39 L290 14" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M346 118 L376 82 L404 126 L432 94 L462 121 L490 60 L516 39 L542 86 L570 118 L611 98" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linejoin="round"/>
+      <text x="24" y="164" fill="var(--blue)" font-size="13" font-weight="600">Example A · Holds outside</text><text x="342" y="164" fill="var(--muted)" font-size="13" font-weight="600">Example B · Returns inside</text>
+      <text x="24" y="188" fill="var(--muted)" font-size="12">Describe what happened after</text><text x="342" y="188" fill="var(--muted)" font-size="12">Classify as a failed / false break</text>
+      <text x="24" y="216" fill="var(--muted)" font-size="12">Both are schematic examples, not trading signals.</text>
+    </svg>
+    <h4>Build an objective definition</h4>
+    <ol><li>Mark the boundary before reviewing what happens next.</li><li>Choose one definition for “break” (for example, a candle close beyond the boundary) and keep it unchanged for the whole study.</li><li>Define a fixed observation window, such as the next 5 candles, so examples are comparable.</li><li>Classify each case: held outside, returned inside, retested boundary, or unclear. Do not delete inconvenient examples.</li><li>Note timeframe, instrument, date, market context, fees assumptions if relevant, and screenshot reference.</li></ol>
+    <div class="notice">A clean-looking example is not evidence of an advantage. Compare all cases in your journal and treat a small sample as preliminary.</div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div><div class="eyebrow">COURSE 08 · RESEARCH WORKFLOW</div><h3>Turn an idea into a fair historical study</h3><p class="muted">Use this workflow to learn whether your written definition is clear and repeatable. Results are descriptive; they cannot guarantee future performance.</p></div></div>
+    <div class="cards">
+      <div class="card"><div class="metric-label">01 · DEFINE</div><h4>Write the rule first</h4><p class="muted small">Specify context, pattern boundaries, confirmation definition, invalidation, skip conditions, and what counts as one example.</p></div>
+      <div class="card"><div class="metric-label">02 · COLLECT</div><h4>Keep every case</h4><p class="muted small">Review consecutive historical examples, including messy ones and failures. Avoid selecting only memorable charts.</p></div>
+      <div class="card"><div class="metric-label">03 · RECORD</div><h4>Use the same fields</h4><p class="muted small">Capture date, instrument, timeframe, setup label, screenshot, rule-following, outcome, and known costs.</p></div>
+      <div class="card"><div class="metric-label">04 · REVIEW</div><h4>Describe, don't predict</h4><p class="muted small">Look for missing data, inconsistent labels, and differences between conditions. Test one change at a time on a fresh sample.</p></div>
+    </div>
+    <div class="notice">Keep a “did not qualify” section too. It helps you see whether your rules are clear and whether you are changing them after seeing the outcome.</div>
+  </div>
   <div class="panel"><h3>Build your own setup card</h3><div class="form-grid">
     <div class="field"><label>Setup name</label><input id="lessonSetupName" placeholder="e.g. BOS retest"></div>
     <div class="field"><label>Market context</label><input id="lessonSetupContext" placeholder="What must be true first?"></div>
