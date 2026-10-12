@@ -147,6 +147,7 @@
 }
 @media(min-width:901px){.mobile-nav-backdrop{display:none!important}}.mobile-nav-backdrop[hidden]{display:none}
 
+.view[hidden]{display:none!important}.view.active:not([hidden]){display:grid!important;gap:18px}
 :root[data-ui-text="small"]{font-size:14px}:root[data-ui-text="normal"]{font-size:16px}:root[data-ui-text="large"]{font-size:18px}
 :root[data-ui-density="compact"] .panel{padding:14px}:root[data-ui-density="compact"] .cards{gap:10px}:root[data-ui-density="compact"] .content{gap:12px}
 :root[data-ui-motion="off"] *, :root[data-ui-motion="off"] *::before, :root[data-ui-motion="off"] *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
@@ -412,8 +413,21 @@ const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).f
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const calc=t=>((Number(t.exit_price)-Number(t.entry_price))*Number(t.contracts)*Number(t.point_value)*(t.side==='short'?-1:1))-Number(t.fees||0);
 const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
-function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+function showView(name){if(!document.getElementById('view-'+name))return;document.querySelectorAll('.view').forEach(v=>{const active=v.id==='view-'+name;v.classList.toggle('active',active);v.hidden=!active;});document.querySelectorAll('[data-view]').forEach(b=>{const active=b.dataset.view===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],copilot:['Trading Copilot','Ask questions and learn strategy concepts'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
+
+// Robust delegated navigation: works for sidebar, mobile drawer, and nested icon/text clicks.
+document.addEventListener('click',function(event){
+ const button=event.target.closest('[data-view]');
+ if(!button)return;
+ const name=button.dataset.view;
+ if(!name||!document.getElementById('view-'+name))return;
+ event.preventDefault();
+ showView(name);
+ document.querySelectorAll('.mobile-nav-backdrop').forEach(el=>{el.hidden=true;});
+ const side=document.querySelector('.sidebar');if(side)side.classList.remove('mobile-open');
+});
+document.querySelectorAll('[data-view]').forEach(b=>{b.type='button';b.setAttribute('aria-controls','view-'+b.dataset.view);});
+
 const themeNames={midnight:'Midnight',obsidian:'Obsidian',slate:'Slate',forest:'Forest',light:'Light'};
 function applyTheme(name){if(!themeNames[name])name='midnight';document.documentElement.dataset.theme=name;localStorage.setItem('tjp_theme',name);document.querySelectorAll('[data-theme-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeChoice===name)));const label=$('themeStatus');if(label)label.textContent=themeNames[name]+' theme selected';}
 document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>applyTheme(b.dataset.themeChoice)));
