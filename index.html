@@ -402,6 +402,65 @@ input,select,textarea{accent-color:var(--blue)}
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* CSV importer polish: quiet, premium controls that match the app rather than browser-grey fields */
+#view-trades #csvFile{
+  width:100%;min-height:68px;padding:12px 14px;
+  color:var(--muted);background:linear-gradient(135deg,color-mix(in srgb,var(--green) 7%,var(--panel)),var(--panel));
+  border:1px dashed color-mix(in srgb,var(--green) 45%,var(--line));border-radius:13px;
+  cursor:pointer;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease
+}
+#view-trades #csvFile:hover{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--panel))}
+#view-trades #csvFile::file-selector-button{
+  margin-right:12px;padding:9px 14px;border:1px solid color-mix(in srgb,var(--green) 40%,transparent);
+  border-radius:9px;background:color-mix(in srgb,var(--green) 15%,var(--panel));color:var(--text);
+  font:inherit;font-size:12px;font-weight:700;cursor:pointer
+}
+#view-trades #csvFile::file-selector-button:hover{background:color-mix(in srgb,var(--green) 23%,var(--panel))}
+#view-trades #csvSymbol,#view-trades #csvDate,#view-trades #csvSide,
+#view-trades #csvEntry,#view-trades #csvExit,#view-trades #csvQty,#view-trades #csvFees,
+#view-trades #csvMultiplier{
+  appearance:none;-webkit-appearance:none;width:100%;min-width:0;min-height:48px;
+  padding:12px 40px 12px 14px;border:1px solid color-mix(in srgb,var(--muted) 30%,var(--line));
+  border-radius:11px;background-color:color-mix(in srgb,var(--panel) 84%,var(--bg));
+  color:var(--text);font-size:14px;font-weight:550;letter-spacing:-.01em;
+  box-shadow:inset 0 1px 0 #ffffff05;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease
+}
+#view-trades #csvSymbol,#view-trades #csvDate,#view-trades #csvSide,
+#view-trades #csvEntry,#view-trades #csvExit,#view-trades #csvQty,#view-trades #csvFees{
+  padding-right:38px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2392a2b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center
+}
+#view-trades #csvMultiplier{padding-right:14px;font-variant-numeric:tabular-nums}
+#view-trades #csvSymbol:hover,#view-trades #csvDate:hover,#view-trades #csvSide:hover,
+#view-trades #csvEntry:hover,#view-trades #csvExit:hover,#view-trades #csvQty:hover,
+#view-trades #csvFees:hover,#view-trades #csvMultiplier:hover{border-color:color-mix(in srgb,var(--green) 48%,var(--line))}
+#view-trades #csvSymbol:focus-visible,#view-trades #csvDate:focus-visible,#view-trades #csvSide:focus-visible,
+#view-trades #csvEntry:focus-visible,#view-trades #csvExit:focus-visible,#view-trades #csvQty:focus-visible,
+#view-trades #csvFees:focus-visible,#view-trades #csvMultiplier:focus-visible,#view-trades #csvFile:focus-visible{
+  outline:none;border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 15%,transparent)
+}
+#view-trades .import-step{background:linear-gradient(145deg,color-mix(in srgb,var(--green) 5%,var(--panel)),var(--panel));border:1px solid color-mix(in srgb,var(--green) 18%,var(--line));border-radius:13px}
+#view-trades .import-step>span{background:color-mix(in srgb,var(--green) 15%,var(--panel));color:var(--green);border:1px solid color-mix(in srgb,var(--green) 25%,transparent)}
+#view-trades #csvAutoMapBtn,#view-trades #csvTradingViewHint,#view-trades #confirmCsvBtn{border-radius:11px;min-height:44px}
+#view-trades #previewCsvBtn{border-radius:11px;min-height:44px;box-shadow:0 5px 18px color-mix(in srgb,var(--blue) 12%,transparent)}
+#view-trades #csvImportStatus{padding:2px 1px;line-height:1.5}
+:root[data-theme="light"] #view-trades #csvFile{background:linear-gradient(135deg,#f1fbf6,#fff);color:#526277;border-color:#9bcbb6}
+:root[data-theme="light"] #view-trades #csvFile::file-selector-button{background:#e7f7ef;color:#1b5b43;border-color:#c4e7d6}
+:root[data-theme="light"] #view-trades #csvSymbol,:root[data-theme="light"] #view-trades #csvDate,
+:root[data-theme="light"] #view-trades #csvSide,:root[data-theme="light"] #view-trades #csvEntry,
+:root[data-theme="light"] #view-trades #csvExit,:root[data-theme="light"] #view-trades #csvQty,
+:root[data-theme="light"] #view-trades #csvFees,:root[data-theme="light"] #view-trades #csvMultiplier{
+  background-color:#f8fbfa;border-color:#d6e3df;color:#172235
+}
+@media(max-width:600px){
+  #view-trades #csvFile{min-height:62px;padding:10px;font-size:12px}
+  #view-trades #csvFile::file-selector-button{margin-right:8px;padding:8px 10px}
+  #view-trades #csvSymbol,#view-trades #csvDate,#view-trades #csvSide,
+  #view-trades #csvEntry,#view-trades #csvExit,#view-trades #csvQty,#view-trades #csvFees,
+  #view-trades #csvMultiplier{min-height:44px;padding-top:10px;padding-bottom:10px;font-size:13px}
+}
+
 </style>
 </head>
 <body>
