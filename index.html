@@ -581,7 +581,6 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
   <details class="import-advanced"><summary>Advanced: match CSV columns manually</summary>
   <p class="muted small">Most supported exports are auto-detected. Open this only if the preview says the columns were matched incorrectly.</p>
   <div class="form-grid" style="margin-top:12px">
-    <div class="field span-all"><label for="csvFile">Choose CSV file</label><input type="file" id="csvFile" accept=".csv,text/csv"></div>
     <div class="field"><label for="csvSymbol">Symbol / asset column</label><select id="csvSymbol"><option value="symbol">symbol</option><option value="ticker">ticker</option><option value="instrument">instrument</option><option value="market">market</option></select></div>
     <div class="field"><label for="csvDate">Date column</label><select id="csvDate"><option value="trade_date">trade_date</option><option value="date">date</option><option value="opened_at">opened_at</option><option value="timestamp">timestamp</option></select></div>
     <div class="field"><label for="csvSide">Side column</label><select id="csvSide"><option value="side">side</option><option value="direction">direction</option><option value="type">type</option></select></div>
