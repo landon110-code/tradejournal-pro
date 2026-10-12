@@ -45,6 +45,84 @@
 
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{height:64px;padding:0 16px}.mobile-menu{display:inline-flex}.content{padding:15px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-2{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.content{padding:11px;gap:12px}.card,.panel{padding:13px;border-radius:12px}.metric-value{font-size:22px}.topbar h1{font-size:16px}.topbar p{display:none}.top-actions button{padding:9px;font-size:11px}.form-grid{grid-template-columns:1fr 1fr}.form-grid .span-all{grid-column:1/-1}.calendar{gap:3px}.day{min-height:55px;padding:4px;font-size:10px}.day .day-pnl{font-size:9px}.bar-row{grid-template-columns:72px minmax(25px,1fr) 65px}.auth-grid{grid-template-columns:1fr}.cards{gap:8px}.metric-label{font-size:10px}.metric-foot{font-size:10px}}
+
+/* Mobile cleanup: calmer spacing, clearer hierarchy, and a real nav drawer */
+@media(max-width:900px){
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  .app{display:block;min-height:100dvh}
+  .sidebar{display:none;position:fixed;inset:0 auto 0 0;width:min(82vw,300px);height:100dvh;z-index:30;overflow-y:auto;box-shadow:18px 0 50px #0008;padding:22px 14px;background:#0f1622}
+  .sidebar.mobile-open{display:flex}
+  .mobile-nav-backdrop{display:block;position:fixed;inset:0;background:#050912a8;z-index:29}
+  .topbar{height:66px;padding:0 14px;gap:10px}
+  .topbar h1{font-size:17px;letter-spacing:-.02em}
+  .topbar p{display:none}
+  .top-actions{gap:6px}
+  .top-actions button{padding:9px 10px;font-size:12px;white-space:nowrap}
+  .content{padding:16px 14px 30px;gap:14px;max-width:760px}
+  .view.active{gap:14px}
+  .section-head{align-items:flex-start;gap:10px}
+  .section-head h2{font-size:16px;letter-spacing:-.02em}
+  .section-head p{line-height:1.45;max-width:42ch}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card,.panel{padding:14px;border-radius:14px}
+  .metric-value{font-size:22px;margin:8px 0 4px}
+  .metric-label{font-size:11px;gap:4px}
+  .metric-foot{line-height:1.4}
+  .layout-2,.quiz-layout{grid-template-columns:minmax(0,1fr);gap:12px}
+  .panel h3{line-height:1.35;margin-bottom:11px}
+  .panel-head{align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .auth-grid{grid-template-columns:minmax(0,1fr)}
+  .field label{font-size:11px;margin-bottom:5px}
+  .field input,.field select,.field textarea,.filter{padding:11px 10px;min-height:42px;font-size:14px}
+  .notice,.quiz-callout{line-height:1.55}
+  .table-wrap{border-radius:10px}
+  .calendar{gap:4px}
+  .day{min-height:60px;padding:5px;border-radius:8px}
+  .quiz-overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .quiz-skill-grid,.skill-card{min-width:0}
+  .quiz-question-title{font-size:18px;line-height:1.35}
+  .quiz-option{font-size:13px;padding:11px;line-height:1.4}
+  .quiz-svg-wrap{overflow:hidden}
+  .form-actions{gap:8px}
+  .form-actions button{min-height:42px}
+}
+@media(max-width:520px){
+  .topbar{padding:0 11px;height:62px}
+  .topbar h1{font-size:16px}
+  .mobile-menu{width:39px;height:39px;justify-content:center;padding:0;font-size:17px}
+  .top-actions button{padding:9px 10px;font-size:11px}
+  #exportBtn{display:none}
+  .content{padding:13px 11px 24px;gap:12px}
+  .view.active{gap:12px}
+  .section-head{gap:8px}
+  .section-head h2{font-size:15px}
+  .section-head p{font-size:11px}
+  .cards{gap:8px}
+  .card,.panel{padding:12px;border-radius:12px}
+  .metric-value{font-size:20px}
+  .metric-foot{font-size:10px}
+  .metric-label{font-size:10px}
+  .filters{grid-template-columns:minmax(0,1fr);gap:8px}
+  .form-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  .form-grid .span-all{grid-column:auto}
+  .calendar{gap:3px}
+  .day{min-height:51px;padding:4px;font-size:10px}
+  .day .day-pnl{font-size:9px;margin-top:5px}
+  .bar-row{grid-template-columns:72px minmax(24px,1fr) 62px;gap:7px}
+  .quiz-overview{gap:7px}
+  .skill-card{padding:10px}
+  .skill-name{font-size:11px}
+  .quiz-side-stat{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quiz-question-title{font-size:17px}
+  .calendar-controls strong{min-width:105px}
+  .calendar-controls button{padding:8px 10px}
+  .auth-grid{gap:10px}
+  .table-wrap table{font-size:11px}
+}
+@media(min-width:901px){.mobile-nav-backdrop{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -221,7 +299,7 @@ const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.
 function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
-$('menuBtn').onclick=()=>{const names=['dashboard','trades','calendar','analytics','playbook','quiz','settings'];const current=names.find(n=>$('view-'+n).classList.contains('active'));const i=names.indexOf(current);showView(names[(i+1)%names.length]);};
+const mobileBackdrop=document.createElement('div');mobileBackdrop.className='mobile-nav-backdrop';mobileBackdrop.hidden=true;document.body.appendChild(mobileBackdrop);function closeMobileNav(){document.querySelector('.sidebar').classList.remove('mobile-open');mobileBackdrop.hidden=true;} $('menuBtn').onclick=()=>{const sidebar=document.querySelector('.sidebar');const open=!sidebar.classList.contains('mobile-open');sidebar.classList.toggle('mobile-open',open);mobileBackdrop.hidden=!open;};mobileBackdrop.onclick=closeMobileNav;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',closeMobileNav));
 function openEditor(){editingId=null;$('tradeForm').reset();$('tradeDate').value=new Date().toISOString().slice(0,10);$('contracts').value=1;$('pointValue').value=1;$('fees').value=0;$('tradeStatus').value='closed';$('editorTitle').textContent='Log a paper trade';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
 $('newTradeTop').onclick=openEditor;$('newTradeLog').onclick=openEditor;$('closeEditor').onclick=()=>$('tradeEditor').classList.add('hidden');$('cancelTrade').onclick=()=>$('tradeEditor').classList.add('hidden');
 function preview(){const e=$('entry').value,x=$('exit').value;if(e===''||x===''||$('tradeStatus').value==='open'){$('pnlPreview').textContent=$('tradeStatus').value==='open'?'Open trade — realized P&L not available':'Enter entry and exit prices';$('pnlPreview').className='';return;}const n=calc({entry_price:e,exit_price:x,contracts:$('contracts').value,point_value:$('pointValue').value,side:$('side').value,fees:$('fees').value});$('pnlPreview').textContent=cash(n);$('pnlPreview').className=n>=0?'positive':'negative';}
