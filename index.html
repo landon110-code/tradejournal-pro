@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c111b"><title>TradeJournal Pro</title>
+<style>
+:root{--bg:#0c111b;--panel:#131b29;--panel2:#182334;--line:#28364a;--text:#edf2fa;--muted:#92a2b8;--blue:#91b9ff;--green:#55d6a0;--red:#ff8c9b;--gold:#f2ca76;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 13px;border-radius:10px;font-weight:650}button.primary{background:var(--blue);color:#0b1422;border-color:var(--blue)}button.ghost{background:transparent}button.danger{color:#ffb3bd;border-color:#6b3643}button:disabled{opacity:.45;cursor:not-allowed}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}.sidebar{background:#0f1622;border-right:1px solid var(--line);padding:22px 13px;display:flex;flex-direction:column;gap:22px}.brand{display:flex;align-items:center;gap:10px;padding:0 8px}.brand-mark{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#20324b;color:var(--blue);font-size:18px}.brand strong{font-size:15px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.nav-label{font-size:10px;color:#6f819b;letter-spacing:.14em;padding:0 10px;margin-bottom:7px}.nav{display:grid;gap:4px}.nav button{display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border-color:transparent;color:#aebdd0;font-weight:550}.nav button.active{background:#1c2b40;color:#f4f7fc;border-color:#2a3d57}.nav .ico{width:19px;text-align:center}.sidebar-bottom{margin-top:auto}.accountbox{padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.5}
+.main{min-width:0}.topbar{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 28px;background:#0e1521;position:sticky;top:0;z-index:5}.topbar h1{font-size:19px;margin:0}.topbar p{font-size:12px;color:var(--muted);margin:4px 0 0}.top-actions{display:flex;gap:8px;align-items:center}.content{max-width:1400px;margin:0 auto;padding:24px;display:grid;gap:18px}.view{display:none}.view.active{display:grid;gap:18px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.section-head h2{font-size:17px;margin:0}.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px;min-width:0}.metric-label{font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:6px}.metric-value{font-size:25px;font-weight:720;letter-spacing:-.04em;margin:11px 0 5px;overflow-wrap:anywhere}.metric-foot{font-size:11px;color:var(--muted)}.positive{color:var(--green)!important}.negative{color:var(--red)!important}.muted{color:var(--muted)}.layout-2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:16px}.panel h3{font-size:14px;margin:0 0 14px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.panel-head h3{margin:0}.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 6px}.field input,.field select,.field textarea,.filter{width:100%;min-width:0;background:#0c1420;border:1px solid #344359;color:var(--text);border-radius:9px;padding:10px}.field textarea{min-height:75px;resize:vertical}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{min-width:0}.span-all{grid-column:1/-1}.form-actions{display:flex;gap:8px;flex-wrap:wrap}.notice{padding:12px;border:1px solid #3a4b62;border-radius:11px;background:#101a29;color:#b4c4d8;font-size:12px;line-height:1.5}.status{font-size:12px;color:var(--muted);margin-top:9px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:12px;min-width:780px}th{text-align:left;color:var(--muted);font-weight:550;font-size:10px;text-transform:uppercase;letter-spacing:.07em}td,th{padding:13px 10px;border-bottom:1px solid #263346;white-space:nowrap}tbody tr:hover{background:#172334}.pill{display:inline-flex;border:1px solid #35465c;border-radius:20px;padding:4px 8px;font-size:10px;color:#bdcbe0}.pill.long{color:var(--green)}.pill.short{color:#ffb2bc}.empty{padding:30px;text-align:center;color:var(--muted);font-size:13px}.bar-list{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:95px minmax(30px,1fr) 78px;gap:10px;align-items:center;font-size:12px}.bar-track{height:8px;border-radius:20px;background:#243247;overflow:hidden}.bar-fill{height:100%;border-radius:20px;background:var(--blue)}.bar-fill.neg{background:var(--red)}.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.day-label{text-align:center;color:var(--muted);font-size:10px;padding:5px 0}.day{border:1px solid var(--line);background:#0e1724;border-radius:9px;min-height:65px;padding:7px;font-size:11px;min-width:0}.day .day-pnl{font-size:10px;margin-top:7px;overflow-wrap:anywhere}.day.good{background:#102a28;border-color:#245749}.day.bad{background:#2b1b27;border-color:#633342}.day.blank{border-color:transparent;background:transparent}.calendar-controls{display:flex;align-items:center;gap:9px}.calendar-controls strong{min-width:130px;text-align:center;font-size:13px}.auth-panel{max-width:900px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hidden{display:none!important}.mobile-menu{display:none}.chart-bars{height:160px;display:flex;align-items:end;gap:7px;border-bottom:1px solid var(--line);padding:10px 0 0}.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:6px;min-width:0}.chart-bar{width:min(28px,80%);border-radius:5px 5px 0 0;background:var(--green);min-height:2px}.chart-bar.neg{background:var(--red)}.chart-col small{font-size:9px;color:var(--muted)}.small{font-size:11px}.inline-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}.dot{height:7px;width:7px;border-radius:50%;background:var(--gold)}.dot.on{background:var(--green)}
+
+.quiz-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.skill-card{background:#101a28;border:1px solid #29394e;border-radius:12px;padding:13px;min-width:0}
+.skill-top{display:flex;justify-content:space-between;gap:8px;align-items:start;margin-bottom:8px}
+.skill-name{font-size:12px;font-weight:700}.skill-level{font-size:10px;color:var(--muted);text-align:right}
+.progress-track{height:7px;background:#29394e;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;background:var(--blue);border-radius:20px;transition:width .25s ease}
+.skill-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;margin-top:7px}
+.quiz-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(240px,1fr);gap:16px}
+.quiz-question-number{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.quiz-question-title{font-size:20px;line-height:1.35;font-weight:700;margin:12px 0}
+.quiz-svg-wrap{border:1px solid #29394e;background:#0b1420;border-radius:12px;padding:8px;margin:13px 0}
+.quiz-svg{width:100%;height:auto;display:block;max-height:270px}
+.quiz-options{display:grid;gap:8px;margin-top:15px}
+.quiz-option{display:flex;gap:10px;align-items:start;text-align:left;width:100%;background:#101a28;color:var(--text);border:1px solid #344359;padding:12px;border-radius:11px;font-size:13px;font-weight:500}
+.quiz-option .option-letter{width:24px;height:24px;min-width:24px;border:1px solid #475a72;border-radius:7px;display:grid;place-items:center;font-size:11px}
+.quiz-option.selected{border-color:var(--blue);background:#1a2a40}
+.quiz-option.correct{border-color:#31795d;background:#102b27}
+.quiz-option.wrong{border-color:#8b3c4b;background:#301b25}
+.quiz-option:disabled{cursor:default;opacity:1}
+.quiz-feedback{padding:13px;border-radius:11px;border:1px solid var(--line);background:#101a28;margin-top:12px;font-size:12px;line-height:1.55}
+.quiz-feedback.correct{border-color:#31795d}.quiz-feedback.wrong{border-color:#8b3c4b}
+.quiz-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.quiz-side-stat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quiz-mini{padding:12px;background:#101a28;border:1px solid var(--line);border-radius:10px}
+.quiz-mini strong{display:block;font-size:21px;margin-top:6px}
+.quiz-mini span{font-size:10px;color:var(--muted)}
+.quiz-learn-list{display:grid;gap:10px}
+.quiz-learn-item{padding:12px;border:1px solid var(--line);border-radius:11px;background:#101a28}
+.quiz-learn-item strong{font-size:12px;display:block;margin-bottom:4px}
+.quiz-learn-item p{font-size:11px;line-height:1.55;color:var(--muted);margin:0}
+.quiz-callout{background:#132238;border:1px solid #2a4668;border-radius:11px;padding:12px;font-size:12px;line-height:1.55;color:#c9d9ee}
+@media(max-width:900px){.quiz-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.quiz-layout{grid-template-columns:1fr}}
+@media(max-width:520px){.quiz-overview{gap:7px}.skill-card{padding:10px}.skill-name{font-size:11px}.quiz-question-title{font-size:18px}.quiz-svg-wrap{padding:4px}.quiz-side-stat{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{height:64px;padding:0 16px}.mobile-menu{display:inline-flex}.content{padding:15px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-2{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.content{padding:11px;gap:12px}.card,.panel{padding:13px;border-radius:12px}.metric-value{font-size:22px}.topbar h1{font-size:16px}.topbar p{display:none}.top-actions button{padding:9px;font-size:11px}.form-grid{grid-template-columns:1fr 1fr}.form-grid .span-all{grid-column:1/-1}.calendar{gap:3px}.day{min-height:55px;padding:4px;font-size:10px}.day .day-pnl{font-size:9px}.bar-row{grid-template-columns:72px minmax(25px,1fr) 65px}.auth-grid{grid-template-columns:1fr}.cards{gap:8px}.metric-label{font-size:10px}.metric-foot{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">↗</div><div><strong>TradeJournal Pro</strong><small>FUTURES TRADING JOURNAL</small></div></div>
+  <div><div class="nav-label">WORKSPACE</div><nav class="nav">
+    <button class="active" data-view="dashboard"><span class="ico">▦</span>Dashboard</button>
+    <button data-view="trades"><span class="ico">☷</span>Trade Log</button>
+    <button data-view="calendar"><span class="ico">▦</span>Calendar</button>
+    <button data-view="analytics"><span class="ico">◒</span>Analytics</button>
+    <button data-view="playbook"><span class="ico">◎</span>Playbook</button>
+    <button data-view="quiz"><span class="ico">✦</span>Knowledge Quiz</button>
+  </nav></div>
+  <div><div class="nav-label">ACCOUNT</div><nav class="nav">
+    <button data-view="settings"><span class="ico">⚙</span>Cloud setup</button>
+  </nav></div>
+  <div class="sidebar-bottom accountbox"><div class="inline-status"><span class="dot" id="statusDot"></span><span id="sideStatus">Cloud not connected</span></div><div style="margin-top:8px">Manual journaling · Paper trades</div></div>
+</aside>
+<div class="main">
+<header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="mobile-menu ghost" id="menuBtn" aria-label="Open menu">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Your trading performance at a glance</p></div></div><div class="top-actions"><button class="ghost" id="exportBtn">Export CSV</button><button class="primary" id="newTradeTop">+ Add trade</button></div></header>
+<main class="content">
+<section class="view active" id="view-dashboard">
+  <div class="section-head"><div><h2>Performance overview</h2><p>Track execution and consistency—not just P&amp;L.</p></div><div class="field" style="min-width:135px"><select id="dashSymbol"><option value="all">All instruments</option><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div></div>
+  <div class="cards">
+    <div class="card"><div class="metric-label">Net P&amp;L <span>↗</span></div><div class="metric-value" id="mNet">$0.00</div><div class="metric-foot">Closed trades after fees</div></div>
+    <div class="card"><div class="metric-label">Win rate <span>◎</span></div><div class="metric-value" id="mWin">—</div><div class="metric-foot" id="mWinFoot">No closed trades yet</div></div>
+    <div class="card"><div class="metric-label">Profit factor <span>◒</span></div><div class="metric-value" id="mPF">—</div><div class="metric-foot">Gross wins ÷ gross losses</div></div>
+    <div class="card"><div class="metric-label">Avg. trade <span>∿</span></div><div class="metric-value" id="mAvg">$0.00</div><div class="metric-foot">Average net P&amp;L per closed trade</div></div>
+  </div>
+  <div class="layout-2">
+    <div class="panel"><div class="panel-head"><h3>Daily P&amp;L</h3><span class="pill">Last 14 days</span></div><div class="chart-bars" id="pnlChart"></div><div class="status">Based on trades you've logged. This is a journal summary, not a prediction.</div></div>
+    <div class="panel"><div class="panel-head"><h3>Setup performance</h3><span class="muted small">By net P&amp;L</span></div><div id="setupBars" class="bar-list"><div class="empty">Add closed trades to see your strongest setups.</div></div></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>Recent trades</h3><button class="ghost" data-goto="trades">View trade log →</button></div><div id="recentTrades" class="table-wrap"><div class="empty">No trades yet. Add your first paper trade to get started.</div></div></div>
+</section>
+
+<section class="view" id="view-trades">
+  <div class="section-head"><div><h2>Trade log</h2><p>Review every entry, exit, setup, and lesson.</p></div><button class="primary" id="newTradeLog">+ Log a trade</button></div>
+  <div class="panel"><div class="filters">
+    <div class="field"><label>Instrument</label><select id="filterSymbol" class="filter"><option value="all">All instruments</option><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div>
+    <div class="field"><label>Direction</label><select id="filterSide" class="filter"><option value="all">All directions</option><option value="long">Long</option><option value="short">Short</option></select></div>
+    <div class="field"><label>Setup</label><select id="filterSetup" class="filter"><option value="all">All setups</option><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
+    <div class="field"><label>Trade status</label><select id="filterStatus" class="filter"><option value="all">All statuses</option><option value="closed">Closed</option><option value="open">Open</option></select></div>
+  </div><div id="tradeTable" class="table-wrap"><div class="empty">Your saved trades will appear here.</div></div></div>
+</section>
+
+<section class="view" id="view-calendar">
+  <div class="section-head"><div><h2>Trading calendar</h2><p>See your logged results by day.</p></div><div class="calendar-controls"><button id="prevMonth" class="ghost">‹</button><strong id="monthTitle"></strong><button id="nextMonth" class="ghost">›</button></div></div>
+  <div class="panel"><div class="calendar" id="calendarGrid"></div><div class="status">Green days are positive, red days are negative. Only closed trades count toward realized P&amp;L.</div></div>
+</section>
+
+<section class="view" id="view-analytics">
+  <div class="section-head"><div><h2>Analytics</h2><p>Find patterns in your process and results.</p></div></div>
+  <div class="cards">
+    <div class="card"><div class="metric-label">Closed trades</div><div class="metric-value" id="aCount">0</div><div class="metric-foot">Total logged closed trades</div></div>
+    <div class="card"><div class="metric-label">Average winner</div><div class="metric-value positive" id="aWinner">$0.00</div><div class="metric-foot">Average positive trade</div></div>
+    <div class="card"><div class="metric-label">Average loser</div><div class="metric-value negative" id="aLoser">$0.00</div><div class="metric-foot">Average negative trade</div></div>
+    <div class="card"><div class="metric-label">Rule adherence</div><div class="metric-value" id="aRules">—</div><div class="metric-foot">Trades marked “Yes”</div></div>
+  </div>
+  <div class="layout-2"><div class="panel"><h3>Performance by instrument</h3><div id="instrumentBars" class="bar-list"><div class="empty">No data yet.</div></div></div><div class="panel"><h3>Performance by mindset</h3><div id="moodBars" class="bar-list"><div class="empty">No data yet.</div></div></div></div>
+  <div class="panel"><h3>Review prompts</h3><div class="notice">After each session, ask: Did I wait for confirmation? Did I respect my planned risk? Which setup had the clearest rules? What should I practice in replay before using it again?</div></div>
+</section>
+
+<section class="view" id="view-playbook">
+  <div class="section-head"><div><h2>Strategy playbook</h2><p>Keep setup definitions consistent so your analytics mean something.</p></div></div>
+  <div class="cards">
+    <div class="card"><div class="metric-label">Setup 01</div><div class="metric-value" style="font-size:19px">BOS</div><div class="metric-foot">Break of structure</div></div>
+    <div class="card"><div class="metric-label">Setup 02</div><div class="metric-value" style="font-size:19px">FVG</div><div class="metric-foot">Fair value gap</div></div>
+    <div class="card"><div class="metric-label">Setup 03</div><div class="metric-value" style="font-size:19px">IFVG</div><div class="metric-foot">Inverse fair value gap</div></div>
+    <div class="card"><div class="metric-label">Setup 04</div><div class="metric-value" style="font-size:19px">Trendline</div><div class="metric-foot">Retest and confirmation</div></div>
+  </div>
+  <div class="panel"><h3>Playbook checklist</h3><div class="notice">For each setup, document: market context, what confirms the entry, where the setup is invalidated, planned stop, target logic, time of day, and conditions when you will skip the trade. Use notes on each trade to track whether these rules were followed.</div><p class="muted small">These are editable setup categories, not recommendations to enter a trade. Build evidence from paper trading before deciding whether a setup is reliable.</p></div>
+</section>
+
+
+<section class="view" id="view-quiz">
+  <div class="section-head"><div><h2>Trading knowledge academy</h2><p>Learn the concepts, answer practice questions, and build skill-by-skill mastery.</p></div><span class="pill">64 questions · 8 skill tracks</span></div>
+  <div class="quiz-callout"><strong>Practice-only learning:</strong> These questions teach market terminology, chart reading, risk concepts, and journaling. A high quiz score does not mean someone is ready to trade live; markets are risky and skills need supervised practice and time.</div>
+  <div class="panel">
+    <div class="panel-head"><h3>Your skill progression</h3><span class="muted small" id="quizTotalProgress">0 / 64 mastered</span></div>
+    <div class="quiz-overview" id="quizSkillGrid"></div>
+  </div>
+  <div class="quiz-layout">
+    <div class="panel">
+      <div class="panel-head"><h3>Knowledge quiz</h3><span class="quiz-question-number" id="quizCounter">Question 1 of 64</span></div>
+      <div class="filters" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+        <div class="field"><label for="quizCategory">Choose a skill</label><select id="quizCategory" class="filter"></select></div>
+        <div class="field"><label for="quizMode">Question order</label><select id="quizMode" class="filter"><option value="sequential">In order</option><option value="unmastered">Focus on unmastered</option><option value="shuffle">Shuffle questions</option></select></div>
+      </div>
+      <div id="quizQuestionArea"></div>
+    </div>
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="panel">
+        <h3>Skill status guide</h3>
+        <div class="quiz-learn-list">
+          <div class="quiz-learn-item"><strong>0–19% · Starting</strong><p>Begin with the definitions and diagrams. No rush—read each explanation.</p></div>
+          <div class="quiz-learn-item"><strong>20–39% · Learning</strong><p>You have started building familiarity. Revisit questions you missed.</p></div>
+          <div class="quiz-learn-item"><strong>40–59% · Developing</strong><p>You recognize some ideas. Keep practicing the weaker parts of the topic.</p></div>
+          <div class="quiz-learn-item"><strong>60–79% · Practicing</strong><p>Your knowledge is growing. Check that you can explain the concept in your own words.</p></div>
+          <div class="quiz-learn-item"><strong>80–94% · Strong</strong><p>You have mastered many questions in this topic's question bank.</p></div>
+          <div class="quiz-learn-item"><strong>95–100% · Excellent quiz mastery</strong><p>You answered nearly all questions correctly at least once. This measures quiz mastery, not live-trading readiness.</p></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Quick learning reminders</h3>
+        <div class="quiz-learn-list">
+          <div class="quiz-learn-item"><strong>Structure before setup</strong><p>Ask what price is doing before labeling a pattern.</p></div>
+          <div class="quiz-learn-item"><strong>Risk before entry</strong><p>Know where the idea is invalidated and estimate risk before considering a trade.</p></div>
+          <div class="quiz-learn-item"><strong>Journal the process</strong><p>A good process can have a losing outcome; a bad process can get lucky. Record both.</p></div>
+        </div>
+      </div>
+      <div class="form-actions"><button id="quizReset" class="ghost">Reset quiz progress</button></div>
+      <p class="muted small" id="quizSaveStatus">Progress is saved on this device. Connect cloud storage to sync it across devices.</p>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="view-settings">
+  <div class="section-head"><div><h2>Cloud setup</h2><p>Connect your own Supabase project to sync trades across devices.</p></div></div>
+  <div class="panel auth-panel">
+    <div class="notice">Your public website code can be public, but your trading records should not be. Use the SQL setup file included in the starter pack and only your Supabase Project URL plus publishable/anon key here. Never use a service-role or secret key in a browser app.</div>
+    <div class="auth-grid">
+      <div class="field"><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
+      <div class="field"><label>Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_… or anon key"></div>
+      <div class="field"><label>Email</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="field"><label>Password</label><input id="password" type="password" placeholder="At least 8 characters" autocomplete="current-password"></div>
+    </div>
+    <div class="form-actions"><button class="primary" id="connectBtn">Connect</button><button id="signupBtn">Create account</button><button id="loginBtn">Sign in</button><button id="logoutBtn" class="hidden">Sign out</button></div>
+    <div id="authStatus" class="status">Not connected. Trades will sync only after cloud setup is complete.</div>
+  </div>
+  <div class="panel"><h3>Trade calculation settings</h3><div class="notice">P&amp;L is calculated as (exit − entry) × contracts × point value × direction − fees. Point value means dollars per 1.00 price move per contract. Confirm the multiplier for the exact contract you are journaling; the app does not guess contract specifications.</div></div>
+</section>
+
+<section class="panel hidden" id="tradeEditor">
+  <div class="panel-head"><h3 id="editorTitle">Log a paper trade</h3><button class="ghost" id="closeEditor">✕</button></div>
+  <form id="tradeForm">
+    <div class="form-grid">
+      <div class="field"><label>Date *</label><input id="tradeDate" type="date" required></div>
+      <div class="field"><label>Instrument *</label><select id="symbol"><option>WTI/CL</option><option>PT</option><option>SLVR</option><option>MGC</option></select></div>
+      <div class="field"><label>Direction *</label><select id="side"><option value="long">Long / Buy</option><option value="short">Short / Sell</option></select></div>
+      <div class="field"><label>Entry price *</label><input id="entry" type="number" step="any" required></div>
+      <div class="field"><label>Exit price <span class="muted">(leave blank if open)</span></label><input id="exit" type="number" step="any"></div>
+      <div class="field"><label>Status</label><select id="tradeStatus"><option value="closed">Closed</option><option value="open">Open</option></select></div>
+      <div class="field"><label>Contracts *</label><input id="contracts" type="number" min="1" step="1" value="1" required></div>
+      <div class="field"><label>Point value ($ per 1.00 move)</label><input id="pointValue" type="number" min="0" step="any" value="1" required></div>
+      <div class="field"><label>Total fees ($)</label><input id="fees" type="number" min="0" step="any" value="0"></div>
+      <div class="field"><label>Setup</label><select id="setup"><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
+      <div class="field"><label>Mindset</label><select id="mood"><option>Focused</option><option>Patient</option><option>FOMO</option><option>Frustrated</option><option>Overconfident</option><option>Tired</option></select></div>
+      <div class="field"><label>Followed rules?</label><select id="followed"><option value="yes">Yes</option><option value="partial">Partially</option><option value="no">No</option></select></div>
+      <div class="field"><label>Execution grade</label><select id="grade"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+      <div class="field"><label>Stop price</label><input id="stop" type="number" step="any"></div>
+      <div class="field"><label>Target price</label><input id="target" type="number" step="any"></div>
+      <div class="field span-all"><label>Entry reason, review notes, lesson</label><textarea id="notes" placeholder="What was the setup? What confirmed entry? Did you follow your rules?"></textarea></div>
+      <div class="field span-all"><label>Screenshot URL (optional)</label><input id="screenshot" type="url" placeholder="Link to your chart screenshot"></div>
+      <div class="field span-all"><div class="notice">Net P&amp;L preview: <strong id="pnlPreview">Enter entry and exit prices</strong></div></div>
+      <div class="form-actions span-all"><button class="primary" type="submit">Save trade</button><button type="button" id="cancelTrade">Cancel</button></div>
+    </div>
+  </form><div id="tradeStatusMsg" class="status"></div>
+</section>
+</main>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+let client=null,user=null,trades=[],editingId=null,calendarMonth=new Date();
+let quizState=(()=>{try{return JSON.parse(localStorage.getItem('tjp_quiz_progress')||'{"attempted":{},"mastered":{}}')}catch(e){return {attempted:{},mastered:{}}}})();
+let quizCurrentId=null,quizAnswered=false,quizSelected=null,quizQueue=[],quizQueueIndex=0,quizRemoteReady=false;
+const $=id=>document.getElementById(id);
+const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n)||0);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const calc=t=>((Number(t.exit_price)-Number(t.entry_price))*Number(t.contracts)*Number(t.point_value)*(t.side==='short'?-1:1))-Number(t.fees||0);
+const closed=arr=>arr.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
+function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));const titles={dashboard:['Dashboard','Your trading performance at a glance'],trades:['Trade Log','Review every entry, exit, setup, and lesson'],calendar:['Calendar','Your results by trading day'],analytics:['Analytics','Find patterns in your process and results'],playbook:['Playbook','Keep your setup rules consistent'],quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],settings:['Cloud setup','Private cloud sync across devices']};$('pageTitle').textContent=titles[name][0];$('pageSubtitle').textContent=titles[name][1];}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
+$('menuBtn').onclick=()=>{const names=['dashboard','trades','calendar','analytics','playbook','quiz','settings'];const current=names.find(n=>$('view-'+n).classList.contains('active'));const i=names.indexOf(current);showView(names[(i+1)%names.length]);};
+function openEditor(){editingId=null;$('tradeForm').reset();$('tradeDate').value=new Date().toISOString().slice(0,10);$('contracts').value=1;$('pointValue').value=1;$('fees').value=0;$('tradeStatus').value='closed';$('editorTitle').textContent='Log a paper trade';$('tradeEditor').classList.remove('hidden');preview();$('tradeEditor').scrollIntoView({behavior:'smooth',block:'start'});}
+$('newTradeTop').onclick=openEditor;$('newTradeLog').onclick=openEditor;$('closeEditor').onclick=()=>$('tradeEditor').classList.add('hidden');$('cancelTrade').onclick=()=>$('tradeEditor').classList.add('hidden');
+function preview(){const e=$('entry').value,x=$('exit').value;if(e===''||x===''||$('tradeStatus').value==='open'){$('pnlPreview').textContent=$('tradeStatus').value==='open'?'Open trade — realized P&L not available':'Enter entry and exit prices';$('pnlPreview').className='';return;}const n=calc({entry_price:e,exit_price:x,contracts:$('contracts').value,point_value:$('pointValue').value,side:$('side').value,fees:$('fees').value});$('pnlPreview').textContent=cash(n);$('pnlPreview').className=n>=0?'positive':'negative';}
+['entry','exit','contracts','pointValue','fees','side','tradeStatus'].forEach(id=>$(id).addEventListener('input',preview));
+function credentials(){return {url:$('supabaseUrl').value.trim(),key:$('supabaseKey').value.trim()}}
+function status(msg){$('authStatus').textContent=msg}
+function updateConnection(connected){$('statusDot').classList.toggle('on',connected);$('sideStatus').textContent=connected?'Cloud connected':'Cloud not connected'}
+function makeClient(){const {url,key}=credentials();if(!url||!key)throw Error('Enter your Supabase Project URL and publishable/anon key.');if(!window.supabase)throw Error('Supabase client did not load. Check internet and reload.');client=window.supabase.createClient(url,key);localStorage.setItem('tjp_url',url);localStorage.setItem('tjp_key',key);updateConnection(false);}
+$('supabaseUrl').value=localStorage.getItem('tjp_url')||'';$('supabaseKey').value=localStorage.getItem('tjp_key')||'';
+$('connectBtn').onclick=()=>{try{makeClient();status('Connected to the Supabase project. Create an account or sign in.')}catch(e){status(e.message)}};
+$('signupBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;status(data.session?'Account created and signed in.':'Account created. Check your email if confirmation is required, then sign in.');await checkSession()}catch(e){status(e.message)}};
+$('loginBtn').onclick=async()=>{try{if(!client)makeClient();const {data,error}=await client.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;user=data.user;status('Signed in as '+user.email);updateConnection(true);$('logoutBtn').classList.remove('hidden');await loadTrades()}catch(e){status(e.message)}};
+$('logoutBtn').onclick=async()=>{if(client)await client.auth.signOut();user=null;trades=[];renderAll();updateConnection(false);status('Signed out.');$('logoutBtn').classList.add('hidden')};
+async function checkSession(){if(!client)return;const {data}=await client.auth.getSession();if(data.session){user=data.session.user;updateConnection(true);status('Signed in as '+user.email);$('logoutBtn').classList.remove('hidden');await loadTrades()}}
+function formTrade(){const st=$('tradeStatus').value,e=$('entry').value,x=$('exit').value;if(!e)throw Error('Enter an entry price.');if(st==='closed'&&x==='')throw Error('Enter an exit price for a closed trade.');const t={trade_date:$('tradeDate').value,symbol:$('symbol').value,side:$('side').value,setup:$('setup').value,entry_price:Number(e),exit_price:x===''?null:Number(x),trade_status:st,contracts:Number($('contracts').value),point_value:Number($('pointValue').value),fees:Number($('fees').value||0),stop_price:$('stop').value===''?null:Number($('stop').value),target_price:$('target').value===''?null:Number($('target').value),mood:$('mood').value,followed_rules:$('followed').value,execution_grade:$('grade').value,notes:$('notes').value.trim(),screenshot_url:$('screenshot').value.trim()||null};if(t.contracts<1||t.point_value<0||t.fees<0)throw Error('Check contracts, point value, and fees.');t.net_pnl=st==='open'?null:calc(t);return t}
+$('tradeForm').onsubmit=async e=>{e.preventDefault();try{if(!client||!user)throw Error('Open Cloud setup and connect/sign in first. Cloud sync is not active yet.');const t=formTrade();const {error}=await client.from('trades').insert(t);if(error)throw error;$('tradeStatusMsg').textContent='Trade saved to your private cloud journal.';$('tradeEditor').classList.add('hidden');await loadTrades()}catch(err){$('tradeStatusMsg').textContent=err.message}};
+async function loadTrades(){if(!client||!user)return;const {data,error}=await client.from('trades').select('*').order('trade_date',{ascending:false}).order('created_at',{ascending:false});if(error){status('Could not load trades: '+error.message);return}trades=data||[];await loadRemoteQuizProgress();renderAll();renderQuiz();}
+function filtered(){let a=[...trades];const sym=$('filterSymbol').value,side=$('filterSide').value,setup=$('filterSetup').value,st=$('filterStatus').value;if(sym!=='all')a=a.filter(t=>t.symbol===sym);if(side!=='all')a=a.filter(t=>t.side===side);if(setup!=='all')a=a.filter(t=>t.setup===setup);if(st!=='all')a=a.filter(t=>(t.trade_status==='open'?'open':'closed')===st);return a}
+['filterSymbol','filterSide','filterSetup','filterStatus'].forEach(id=>$(id).addEventListener('change',renderTradeTable));
+$('dashSymbol').onchange=renderDashboard;
+function renderDashboard(){let a=closed(trades);if($('dashSymbol').value!=='all')a=a.filter(t=>t.symbol===$('dashSymbol').value);const wins=a.filter(t=>Number(t.net_pnl)>0),losses=a.filter(t=>Number(t.net_pnl)<0),net=a.reduce((s,t)=>s+Number(t.net_pnl||0),0),gw=wins.reduce((s,t)=>s+Number(t.net_pnl),0),gl=Math.abs(losses.reduce((s,t)=>s+Number(t.net_pnl),0));$('mNet').textContent=cash(net);$('mNet').className='metric-value '+(net>=0?'positive':'negative');$('mWin').textContent=a.length?(wins.length/a.length*100).toFixed(1)+'%':'—';$('mWinFoot').textContent=a.length?`${wins.length} winners · ${losses.length} losers`:'No closed trades yet';$('mPF').textContent=gl?(gw/gl).toFixed(2):gw?'∞':'—';$('mAvg').textContent=a.length?cash(net/a.length):cash(0);
+const last=[];const now=new Date();for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const key=d.toISOString().slice(0,10);last.push({key,label:d.toLocaleDateString('en-US',{weekday:'short'}),pnl:a.filter(t=>t.trade_date===key).reduce((s,t)=>s+Number(t.net_pnl||0),0)})}const max=Math.max(1,...last.map(x=>Math.abs(x.pnl)));$('pnlChart').innerHTML=last.map(x=>`<div class="chart-col" title="${x.key}: ${cash(x.pnl)}"><div class="chart-bar ${x.pnl<0?'neg':''}" style="height:${Math.max(2,Math.abs(x.pnl)/max*100)}px"></div><small>${x.label}</small></div>`).join('');
+renderBars($('setupBars'),groupPnl(a,'setup'));$('recentTrades').innerHTML=tableHtml(trades.slice(0,6),false)}
+function groupPnl(a,key){const map={};a.forEach(t=>{const k=t[key]||'Other';map[k]=(map[k]||0)+Number(t.net_pnl||0)});return Object.entries(map).sort((a,b)=>b[1]-a[1])}
+function renderBars(el,items){if(!items.length){el.innerHTML='<div class="empty">Add closed trades to see performance.</div>';return}const max=Math.max(1,...items.map(x=>Math.abs(x[1])));el.innerHTML=items.map(([name,n])=>`<div class="bar-row"><span>${esc(name)}</span><div class="bar-track"><div class="bar-fill ${n<0?'neg':''}" style="width:${Math.max(2,Math.abs(n)/max*100)}%"></div></div><strong class="${n>=0?'positive':'negative'}" style="text-align:right">${cash(n)}</strong></div>`).join('')}
+function tableHtml(arr,withDelete=true){if(!arr.length)return '<div class="empty">No trades match yet. Add a trade to start your journal.</div>';return `<table><thead><tr><th>Date</th><th>Instrument</th><th>Side</th><th>Setup</th><th>Entry → Exit</th><th>Contracts</th><th>Status</th><th>Net P&amp;L</th>${withDelete?'<th>Action</th>':''}</tr></thead><tbody>${arr.map(t=>`<tr><td>${esc(t.trade_date)}</td><td><strong>${esc(t.symbol)}</strong></td><td><span class="pill ${esc(t.side)}">${t.side==='long'?'LONG':'SHORT'}</span></td><td>${esc(t.setup)}</td><td>${esc(t.entry_price)} → ${t.exit_price===null?'—':esc(t.exit_price)}</td><td>${esc(t.contracts)}</td><td>${t.trade_status==='open'?'<span class="pill">OPEN</span>':'Closed'}</td><td class="${Number(t.net_pnl)>=0?'positive':'negative'}">${t.net_pnl===null?'—':cash(t.net_pnl)}</td>${withDelete?`<td><button class="danger" onclick="deleteTrade('${esc(t.id)}')">Delete</button></td>`:''}</tr>`).join('')}</tbody></table>`}
+function renderTradeTable(){$('tradeTable').innerHTML=tableHtml(filtered(),true)}
+window.deleteTrade=async id=>{if(!confirm('Delete this trade permanently?'))return;const {error}=await client.from('trades').delete().eq('id',id);if(error){status(error.message);return}await loadTrades()};
+function renderCalendar(){const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth();$('monthTitle').textContent=calendarMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="day-label">${d}</div>`).join('');for(let i=0;i<first;i++)html+='<div class="day blank"></div>';for(let d=1;d<=days;d++){const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const dayTrades=closed(trades).filter(t=>t.trade_date===key),p=dayTrades.reduce((s,t)=>s+Number(t.net_pnl||0),0),cls=dayTrades.length?(p>=0?'good':'bad'):'';html+=`<div class="day ${cls}"><div>${d}</div>${dayTrades.length?`<div class="day-pnl ${p>=0?'positive':'negative'}">${cash(p)}<br><span class="muted">${dayTrades.length} trade${dayTrades.length===1?'':'s'}</span></div>`:''}</div>`}$('calendarGrid').innerHTML=html}
+$('prevMonth').onclick=()=>{calendarMonth.setMonth(calendarMonth.getMonth()-1);renderCalendar()};$('nextMonth').onclick=()=>{calendarMonth.setMonth(calendarMonth.getMonth()+1);renderCalendar()};
+function renderAnalytics(){const a=closed(trades),wins=a.filter(t=>Number(t.net_pnl)>0),losses=a.filter(t=>Number(t.net_pnl)<0),yes=a.filter(t=>t.followed_rules==='yes');$('aCount').textContent=a.length;$('aWinner').textContent=wins.length?cash(wins.reduce((s,t)=>s+Number(t.net_pnl),0)/wins.length):cash(0);$('aLoser').textContent=losses.length?cash(losses.reduce((s,t)=>s+Number(t.net_pnl),0)/losses.length):cash(0);$('aRules').textContent=a.length?(yes.length/a.length*100).toFixed(0)+'%':'—';renderBars($('instrumentBars'),groupPnl(a,'symbol'));renderBars($('moodBars'),groupPnl(a,'mood'))}
+function renderAll(){renderDashboard();renderTradeTable();renderCalendar();renderAnalytics()}
+$('exportBtn').onclick=()=>{if(!trades.length){alert('No trades to export yet.');return}const keys=['trade_date','symbol','side','setup','entry_price','exit_price','trade_status','contracts','point_value','fees','net_pnl','stop_price','target_price','mood','followed_rules','execution_grade','notes','screenshot_url'];const csv=[keys.join(','),...trades.map(t=>keys.map(k=>'"'+String(t[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='tradejournal-pro-trades.csv';a.click();URL.revokeObjectURL(url)};
+
+const QUIZ_CATEGORIES = [
+ {id:'foundations',name:'Trading Foundations',short:'Foundations'},
+ {id:'structure',name:'Market Structure',short:'Structure'},
+ {id:'candles',name:'Candlesticks & Volume',short:'Candles & Volume'},
+ {id:'imbalances',name:'FVG & IFVG',short:'FVG & IFVG'},
+ {id:'trendlines',name:'Trendlines & Confirmation',short:'Trendlines'},
+ {id:'risk',name:'Risk Management',short:'Risk'},
+ {id:'futures',name:'Futures Basics',short:'Futures'},
+ {id:'psychology',name:'Psychology & Journaling',short:'Psychology'}
+];
+const QUESTION_BANK = [
+ // Foundations (8)
+ {id:'f1',c:'foundations',v:'candles',q:'What do the four values in an OHLC candle represent?',o:['Open, High, Low, Close','Order, Hold, Limit, Cancel','Opening trend, Highest trend, Lowest trend, Current trend','Only the opening and closing prices'],a:0,e:'OHLC means Open, High, Low, and Close for the candle’s selected time period. The candle summarizes price movement; it does not show every trade inside that period.'},
+ {id:'f2',c:'foundations',v:'none',q:'What is the main purpose of a written trading plan in a paper-trading exercise?',o:['To guarantee every trade is profitable','To define repeatable entry, exit, and risk rules before outcomes are known','To remove all uncertainty from markets','To trade more often'],a:1,e:'A plan makes decisions more consistent and reviewable. It cannot guarantee profits or remove uncertainty.'},
+ {id:'f3',c:'foundations',v:'none',q:'Which is the best reason to skip a market setup?',o:['You are bored and want action','The setup does not meet your written conditions','You had a losing trade earlier','Price is moving quickly, so rules do not matter'],a:1,e:'A setup that fails your predefined conditions is not your setup. Staying out is a valid decision in a practice journal.'},
+ {id:'f4',c:'foundations',v:'none',q:'What is the difference between a hypothesis and a confirmed outcome?',o:['They are identical','A hypothesis is an idea to test; the outcome is what the data shows','A hypothesis must be profitable','An outcome can be selected before a trade'],a:1,e:'A trading idea is a hypothesis. A journal and a sufficiently broad sample help you test whether results support it; one or two trades are not enough.'},
+ {id:'f5',c:'foundations',v:'none',q:'Why should you define a setup before reviewing whether it won?',o:['It prevents hindsight from changing the rules after seeing the result','It makes the chart move more clearly','It guarantees the right direction','It lets you ignore losing trades'],a:0,e:'Writing the rules first reduces hindsight bias and makes a review more honest.'},
+ {id:'f6',c:'foundations',v:'candles',q:'On a 5-minute chart, what does one completed candle summarize?',o:['Five seconds of price action','Five minutes of price action','The whole trading day','Only the closing auction'],a:1,e:'Each completed 5-minute candle summarizes OHLC for that 5-minute interval. The interval can be different on other chart timeframes.'},
+ {id:'f7',c:'foundations',v:'none',q:'What is a useful role for a higher timeframe in a multi-timeframe process?',o:['It makes the lower timeframe unnecessary','It provides broader context while a lower timeframe may show detail','It guarantees the direction','It replaces a risk plan'],a:1,e:'A higher timeframe can help describe broader structure; neither timeframe guarantees what happens next.'},
+ {id:'f8',c:'foundations',v:'none',q:'What is a fair way to evaluate a strategy during paper trading?',o:['Only count the largest winner','Use consistent rules, log all eligible trades, and review a meaningful sample','Delete trades that break the pattern','Change the rules after each loss'],a:1,e:'Consistent data and a meaningful sample help you see strengths and weaknesses without cherry-picking.'},
+
+ // Structure (8)
+ {id:'s1',c:'structure',v:'structure',q:'What does a bullish sequence of swing structure commonly look like?',o:['Lower highs and lower lows','Higher highs and higher lows','Equal highs only','Random candles with no swings'],a:1,e:'Higher highs (HH) and higher lows (HL) often describe an uptrend structure. Structure is context, not a promise of continuation.'},
+ {id:'s2',c:'structure',v:'structure',q:'In a simple bullish market-structure lesson, what is a bullish break of structure (BOS)?',o:['Price breaks above a relevant prior swing high','Price touches a moving average','Any green candle appears','Price reaches yesterday’s low'],a:0,e:'A bullish BOS commonly refers to a break above a relevant prior swing high. Define which swing matters in your own rules.'},
+ {id:'s3',c:'structure',v:'structure',q:'What would be a common bearish structure sequence?',o:['Higher highs and higher lows','Lower highs and lower lows','Higher lows only','A single large candle always'],a:1,e:'Lower highs and lower lows are a common description of bearish structure, though markets can transition or range.'},
+ {id:'s4',c:'structure',v:'structure',q:'Why should you identify a meaningful swing before calling a BOS?',o:['Every tiny fluctuation has equal importance','A defined swing helps make the rule repeatable instead of arbitrary','It makes a BOS certain to continue','It removes the need to review'],a:1,e:'If swing points are chosen differently each time, a BOS rule becomes subjective. Define your swing criteria and use them consistently.'},
+ {id:'s5',c:'structure',v:'none',q:'What is a range-bound market?',o:['Price moves between an approximate upper and lower boundary','Price only rises','Price only falls','A market with no trades'],a:0,e:'A range is an area where price oscillates between boundaries rather than establishing a sustained directional sequence. Boundaries can fail.'},
+ {id:'s6',c:'structure',v:'none',q:'What does a change of character (CHoCH) label generally try to communicate?',o:['A possible change in short-term structure','Guaranteed reversal','An automatic entry signal in every system','A change to the chart theme'],a:0,e:'CHoCH is used differently by traders, but generally flags a possible structural change. It needs context and does not guarantee a reversal.'},
+ {id:'s7',c:'structure',v:'none',q:'If a price level is broken only by a wick but closes back inside, what should you do?',o:['Assume a confirmed breakout every time','Apply the exact close/wick rules defined in your plan and observe the context','Ignore all future candles','Automatically double size'],a:1,e:'A wick and a candle close convey different information. Your rules should define what counts as a break, rather than deciding after the result.'},
+ {id:'s8',c:'structure',v:'liquidity',q:'Does a break of structure by itself guarantee continuation in that direction?',o:['Yes, always','No; it is one observation that can fail or reverse','Only on a 1-minute chart','Only when the candle is green'],a:1,e:'No chart pattern is certain. A BOS is a descriptive signal within a framework, not a guarantee.'},
+
+ // Candles and volume (8)
+ {id:'c1',c:'candles',v:'candles',q:'What does a long upper wick show for that candle?',o:['Price traded higher but the candle ended below its high','The market cannot rise again','The candle had no high','The next candle must fall'],a:0,e:'A long upper wick means the high was above the close (or open). It can show rejection within that interval but needs context.'},
+ {id:'c2',c:'candles',v:'candles',q:'What is a doji commonly characterized by?',o:['A relatively small real body compared with the range','A candle with no high or low','A guaranteed reversal','A candle always larger than others'],a:0,e:'A doji usually has open and close near one another. It reflects limited net movement during that interval and is not a standalone prediction.'},
+ {id:'c3',c:'candles',v:'candles',q:'What is the safest interpretation of a bullish engulfing pattern?',o:['It guarantees a rally','It describes one candle body overtaking the prior body; context still matters','It means risk controls can be removed','It only works on futures'],a:1,e:'Candlestick names describe price formations. Their usefulness varies by context and method; none guarantees an outcome.'},
+ {id:'c4',c:'candles',v:'none',q:'What does volume generally measure on a chart?',o:['The amount of trading activity reported by that data feed','The exact number of buyers more than sellers','How much price must rise next','A fixed future profit'],a:0,e:'Volume represents reported activity, with specifics depending on the market and data provider. Every completed trade has both a buyer and a seller.'},
+ {id:'c5',c:'candles',v:'candles',q:'Why is a candle close often used for confirmation rules?',o:['The close finalizes that candle’s OHLC values','A close guarantees continuation','Wicks do not exist','It removes slippage'],a:0,e:'Before a candle closes, its body and close can change. Some plans therefore use confirmed closes; this may mean later entries.'},
+ {id:'c6',c:'candles',v:'none',q:'Why can the same candle pattern mean different things in different locations?',o:['Context such as trend, range, and nearby levels changes its meaning','Candle colors change the contract multiplier','Patterns work only at one exact price','They cannot mean anything'],a:0,e:'Patterns are not isolated facts. Trend, volatility, location, timeframe, and sample evidence affect how a trader interprets them.'},
+ {id:'c7',c:'candles',v:'candles',q:'What does the real body of a candle represent?',o:['The distance between open and close','The full high-to-low range only','Trading fees','The next candle’s range'],a:0,e:'The real body runs between opening and closing price. The full candle range includes the wicks.'},
+ {id:'c8',c:'candles',v:'none',q:'If volume is high during a large candle, what can you conclude with certainty?',o:['The next candle will continue','Activity was high in the feed; the next price move remains uncertain','All traders agree on direction','Your entry is risk-free'],a:1,e:'High activity is observable; future direction is not certain. Interpret volume with price context and your tested method.'},
+
+ // FVG / IFVG (8)
+ {id:'i1',c:'imbalances',v:'fvg',q:'In a common three-candle definition, what is a bullish fair value gap (FVG)?',o:['An area where candle 1 high is below candle 3 low','Any two green candles','An area where all three candles have the same close','A gap in account balance'],a:0,e:'In a common ICT-style definition, a bullish FVG is the gap between the first candle’s high and the third candle’s low, with the middle candle showing displacement. Naming conventions vary.'},
+ {id:'i2',c:'imbalances',v:'fvg',q:'For a common bearish FVG definition, which boundary relationship is used?',o:['Candle 1 low is above candle 3 high','Candle 1 high is below candle 3 low','All candles close at the same price','The middle candle is always a doji'],a:0,e:'A bearish FVG is commonly the area between candle 3 high and candle 1 low when candle 1 low is above candle 3 high.'},
+ {id:'i3',c:'imbalances',v:'fvg',q:'What does it mean if price later trades back into an FVG?',o:['It has revisited the zone; it does not ensure a reaction','It must reverse immediately','The market closes permanently','The pattern was guaranteed correct'],a:0,e:'A return to a zone is only a price event. Price may react, pass through, or revisit it multiple times.'},
+ {id:'i4',c:'imbalances',v:'fvg',q:'What is a sensible way to use an FVG concept in a paper-trading strategy test?',o:['Record the exact definition, context, entry trigger, invalidation, and outcome','Enter every gap automatically','Move stops whenever a gap fails','Only record gaps that win'],a:0,e:'A testable setup requires repeatable definitions and a complete record, including losses and skipped trades.'},
+ {id:'i5',c:'imbalances',v:'none',q:'Does every FVG have to fill completely?',o:['Yes, always','No; a gap can remain unfilled or be crossed without the reaction you expect','Only gaps on oil fill','Only on the 1-minute timeframe'],a:1,e:'No rule guarantees a complete fill. Avoid treating chart concepts as obligations that price must fulfill.'},
+ {id:'i6',c:'imbalances',v:'fvg',q:'What is an inverse FVG (IFVG) generally meant to describe in some frameworks?',o:['A former gap zone that is crossed and then interpreted from the opposite side','A gap in your journal file','Any moving-average cross','A guaranteed change of trend'],a:0,e:'IFVG terminology varies, but it often describes a fair value gap that is violated and later treated as a potential zone from the opposite direction. Define the rule precisely.'},
+ {id:'i7',c:'imbalances',v:'none',q:'Why might you require a separate trigger before entering at an FVG?',o:['To define what evidence is needed rather than entering only because a zone exists','Because FVGs cannot be drawn','To guarantee every trade','To avoid defining a stop'],a:0,e:'An area is not itself a full plan. Your confirmation trigger and invalidation rule should be explicit and tested.'},
+ {id:'i8',c:'imbalances',v:'none',q:'Which journal note is most useful when testing FVGs?',o:['“It looked good”','The timeframe, gap boundaries, context, trigger, stop logic, and result','Only the winning amount','A screenshot without a date or explanation'],a:1,e:'Record details that let you repeat and evaluate the same setup fairly across wins and losses.'},
+
+ // Trendlines (8)
+ {id:'t1',c:'trendlines',v:'trendline',q:'What is a common way to draw a rising trendline?',o:['Connect relevant rising swing lows','Connect random highs and lows until it looks right','Draw a horizontal line through every candle','Use only the current price'],a:0,e:'A rising trendline commonly connects relevant higher swing lows. Use consistent swing criteria and avoid forcing a line through unrelated points.'},
+ {id:'t2',c:'trendlines',v:'trendline',q:'How many points can define a line, and what role does a third touch play?',o:['Two define a line; a later touch may add evidence but still can fail','Three touches guarantee a breakout','One point defines a unique line','No points are needed'],a:0,e:'Two points define a straight line. A further reaction can make it more relevant to your chart reading, but it does not guarantee future behavior.'},
+ {id:'t3',c:'trendlines',v:'trendline',q:'What is the main warning sign that a trendline has been forced?',o:['It does not connect clear, consistent swing points','It has a color','It slopes upward','It is on a chart'],a:0,e:'A line is more useful when its anchor points follow a consistent rule. If you must adjust points repeatedly to fit your view, the line may be arbitrary.'},
+ {id:'t4',c:'trendlines',v:'trendline',q:'If price breaks a trendline, what is the most accurate conclusion?',o:['The line has been broken under your chosen rule; next behavior is uncertain','A new trend is guaranteed','Price must return to the line','All swing points disappear'],a:0,e:'A line break is an observation, not a certainty. Some plans wait for a candle close, retest, or additional structure evidence.'},
+ {id:'t5',c:'trendlines',v:'none',q:'Why should you draw trendlines on a consistent timeframe during a test?',o:['It makes your examples more comparable and rules repeatable','It makes the result always profitable','Trendlines only exist on 5-minute charts','It removes market noise completely'],a:0,e:'Keeping the timeframe and swing rules consistent reduces hidden changes in your method.'},
+ {id:'t6',c:'trendlines',v:'trendline',q:'What is a retest in a breakout discussion?',o:['Price returns toward a broken level or line after moving beyond it','The first candle of every session','A guaranteed entry signal','A mandatory part of every breakout'],a:0,e:'A retest is a possible later revisit. It may not occur, and its outcome is not guaranteed.'},
+ {id:'t7',c:'trendlines',v:'none',q:'What should you do if several plausible trendlines fit the same chart?',o:['Pick the one that gives the largest trade','Apply your predefined swing-selection rule, or record that the chart is ambiguous','Use all lines as entry signals','Change timeframes until a win appears'],a:1,e:'A repeatable selection rule helps reduce hindsight. Sometimes a chart is ambiguous and the best response is to skip it in a strict test.'},
+ {id:'t8',c:'trendlines',v:'none',q:'Why is a steep trendline not automatically “better” than a shallow one?',o:['Slope alone does not prove reliability; context and tested rules matter','Steep lines always work','Shallow lines never work','The angle determines future price exactly'],a:0,e:'A steep angle is descriptive, not proof of reliability. Evaluate a defined rule with data rather than choosing based on appearance.'},
+
+ // Risk (8)
+ {id:'r1',c:'risk',v:'risk',q:'Why should possible loss be estimated before a practice entry?',o:['So the planned risk and invalidation are known before emotion takes over','To guarantee a winner','Because stops always fill exactly at the level','To maximize contract size'],a:0,e:'A plan should define where the idea is wrong and estimate loss before entry. Actual fills can differ due to slippage and market conditions.'},
+ {id:'r2',c:'risk',v:'risk',q:'What is risk-to-reward ratio comparing?',o:['Planned potential loss with planned potential gain','Win rate with chart color','Number of candles with number of indicators','Only account balance with fees'],a:0,e:'Risk-to-reward compares the amount at risk with the target gain being planned. It does not show the probability the target will be reached.'},
+ {id:'r3',c:'risk',v:'none',q:'Why does a stop price not guarantee the exact maximum loss in a fast market?',o:['Slippage and gaps can cause execution away from the stop price','Stops always turn into profit','The chart freezes at a stop','Fees disappear'],a:0,e:'Stop orders may execute at a worse price than expected, particularly in fast or thin markets. They are not guarantees of exact loss.'},
+ {id:'r4',c:'risk',v:'none',q:'What is drawdown?',o:['A decline from a prior account equity peak to a later lower value','The number of winning trades','A type of candlestick','A contract expiry date'],a:0,e:'Drawdown tracks a decline from a previous peak. It is useful for reviewing how losses accumulate.'},
+ {id:'r5',c:'risk',v:'risk',q:'If a strategy has a 1:2 planned risk-to-reward ratio, what does that mean?',o:['The planned reward is twice the planned risk','The trade must win twice','You should use two contracts','The win rate must be 50%'],a:0,e:'A 1:2 planned ratio means risking one unit for a target of two units. It does not imply any particular win rate or outcome.'},
+ {id:'r6',c:'risk',v:'none',q:'Why should fees and slippage be included when reviewing paper results?',o:['They can reduce the net result compared with gross price movement','They always increase profits','They are irrelevant to short-term trading','They only apply to losing trades'],a:0,e:'Costs reduce results and can matter a great deal when trades are frequent or targets are small.'},
+ {id:'r7',c:'risk',v:'none',q:'What is a sensible response to reaching a predefined daily loss limit in a practice plan?',o:['Stop the session and review according to your rule','Immediately increase size to recover','Delete the losses','Move the limit after hitting it'],a:0,e:'A written limit only helps if it is respected. Stopping also prevents a practice session from becoming an emotional recovery attempt.'},
+ {id:'r8',c:'risk',v:'none',q:'What is expectancy in a trading journal?',o:['Average expected result per trade based on win/loss rates and average wins/losses','A guarantee of the next result','The amount of margin required','The number of charts open'],a:0,e:'A basic expectancy estimate combines win rate, average win, and average loss. It is only meaningful when the sample and execution are reasonably representative.'},
+
+ // Futures (8)
+ {id:'u1',c:'futures',v:'contract',q:'What is a futures contract?',o:['A standardized exchange-traded agreement tied to a specified underlying or benchmark','A stock share in the broker','A guaranteed deposit account','A price chart drawing'],a:0,e:'Futures are standardized contracts with specifications such as multiplier, tick size, expiration, and settlement method. Different contracts have different risks.'},
+ {id:'u2',c:'futures',v:'contract',q:'What does tick size mean?',o:['The minimum price increment for a contract','The amount of your daily loss limit','The contract’s expiration month only','The number of trades per day'],a:0,e:'Tick size is the minimum price increment defined in the contract specification. Tick value depends on both tick size and the contract multiplier.'},
+ {id:'u3',c:'futures',v:'contract',q:'Why must you check the exact contract multiplier before calculating futures P&L?',o:['Different contracts have different dollar values per price move','All futures use the same multiplier','The chart color decides the multiplier','It is only needed for winning trades'],a:0,e:'Dollar P&L depends on price movement, contract multiplier, number of contracts, and costs. Do not assume every symbol or contract size uses the same multiplier.'},
+ {id:'u4',c:'futures',v:'none',q:'What does margin on a futures account generally represent?',o:['Funds required to support a futures position; it is not the maximum possible loss','The total purchase price paid for the underlying asset','A guarantee against losses','A commission refund'],a:0,e:'Futures margin is performance collateral, not a cap on risk. Losses can exceed the initial margin and account funds.'},
+ {id:'u5',c:'futures',v:'none',q:'What is slippage?',o:['The difference between an expected/quoted price and the actual execution price','A type of trendline','A required monthly fee','A profitable exit'],a:0,e:'Slippage can occur when prices move between decision and execution. It can be positive or negative, but should be considered in planning.'},
+ {id:'u6',c:'futures',v:'none',q:'Why do futures traders need to know expiration and roll dates?',o:['Contract specifications and liquidity can change as trading shifts to later expiries','Expiration guarantees a profit','A roll removes market risk','Dates only affect stocks'],a:0,e:'Futures are dated contracts. Traders need to understand contract expiry and how activity moves between contract months; procedures differ by market.'},
+ {id:'u7',c:'futures',v:'none',q:'What is a micro futures contract compared with a corresponding standard contract, generally?',o:['It has a smaller contract size/multiplier, but still carries risk','It is risk-free','It always has lower volatility per dollar','It cannot lose money'],a:0,e:'Micro contracts are generally smaller notional exposure versions of certain futures, but leveraged losses and other risks remain.'},
+ {id:'u8',c:'futures',v:'none',q:'Why are market-data and symbol conventions important when journaling an instrument like WTI/CL?',o:['Different contract months, symbols, and multipliers can change what price and P&L mean','Symbols are only decoration','Every data feed uses identical timing and specifications','A ticker guarantees direction'],a:0,e:'Confirm that the chart and trade log refer to the intended contract/month and correct specification; shorthand tickers can hide important differences.'},
+
+ // Psychology and journaling (8)
+ {id:'p1',c:'psychology',v:'psychology',q:'What does FOMO mean in trading psychology?',o:['Fear of missing out that may pressure someone into an unplanned entry','A contract multiplier','A type of limit order','A confirmed trend change'],a:0,e:'FOMO can push a person to chase moves instead of waiting for defined conditions. Journaling mindset helps reveal that pattern.'},
+ {id:'p2',c:'psychology',v:'psychology',q:'What is revenge trading?',o:['Taking trades driven by a desire to recover a prior loss quickly','Reviewing a journal calmly','Following an ordinary checklist','Closing a chart after the session'],a:0,e:'Revenge trading is emotion-driven behavior after a loss. Predefined session limits and breaks can help interrupt it.'},
+ {id:'p3',c:'psychology',v:'none',q:'Why should you record rule adherence separately from profit or loss?',o:['A profitable result can still come from breaking rules, and a rule-following trade can lose','Only profit matters','Rules guarantee a win','It makes the chart more accurate'],a:0,e:'Outcome and process are different measures. Track both to avoid rewarding risky rule-breaking just because it worked once.'},
+ {id:'p4',c:'psychology',v:'none',q:'Why is changing a strategy after every losing trade a problem?',o:['You cannot evaluate a consistent method if its rules change after each outcome','Every losing trade proves the strategy works','It improves sample quality','It removes emotion automatically'],a:0,e:'Strategy changes can be appropriate after structured review, but changing rules after each loss makes results difficult to interpret.'},
+ {id:'p5',c:'psychology',v:'none',q:'What does overtrading usually describe?',o:['Taking more trades than your plan or valid setups justify','Logging every trade','Waiting for a valid condition','Taking a scheduled break'],a:0,e:'More activity is not necessarily better. Define eligible setups and track whether trades met your plan.'},
+ {id:'p6',c:'psychology',v:'none',q:'What is hindsight bias in chart review?',o:['Believing the past move was obvious after already seeing its outcome','Using a date filter','Recording entry price','Measuring tick size'],a:0,e:'Hindsight bias makes past moves seem more predictable than they were in real time. Write down what was known at entry and consider screenshots.'},
+ {id:'p7',c:'psychology',v:'none',q:'What is a good reason to take a break from a paper-trading session?',o:['You are frustrated, fatigued, or no longer following your process','You have not won in ten minutes, so size should increase','You want to force a setup','Your daily limit has no purpose'],a:0,e:'Fatigue and frustration can degrade decision quality. A break can protect the learning process from turning into reactive clicking.'},
+ {id:'p8',c:'psychology',v:'none',q:'What should a useful end-of-session review include?',o:['Process adherence, setup quality, mistakes, and what to practice next','Only the best trade screenshot','Only the final balance','A new rule for every trade'],a:0,e:'Reviewing the process and recording one or two specific improvements makes practice more deliberate. Record all trades, not just memorable ones.'}
+];
+
+function quizSvg(type){
+ const commonStart='<svg class="quiz-svg" viewBox="0 0 560 230" role="img" aria-label="Educational trading chart illustration" xmlns="http://www.w3.org/2000/svg"><rect width="560" height="230" rx="12" fill="#0b1420"/>';
+ const grid='<g stroke="#243248" stroke-width="1"><path d="M30 35H530M30 75H530M30 115H530M30 155H530M30 195H530"/><path d="M80 20V205M160 20V205M240 20V205M320 20V205M400 20V205M480 20V205"/></g>';
+ const candle=(x,open,close,high,low,color='#55d6a0',w=12)=>`<g stroke="${color}" stroke-width="2"><path d="M${x} ${high}V${low}"/><rect x="${x-w/2}" y="${Math.min(open,close)}" width="${w}" height="${Math.max(4,Math.abs(close-open))}" fill="${color}" stroke="${color}"/></g>`;
+ const tail='</svg>';
+ if(type==='none')return '';
+ if(type==='candles'){
+  let s=commonStart+grid+'<text x="30" y="22" font-size="11" fill="#94a8c4">OHLC candle example</text>';
+  [[70,130,100,80,150,'#55d6a0'],[130,100,115,78,143,'#ff8c9b'],[190,115,72,60,132,'#55d6a0'],[250,72,82,52,105,'#ff8c9b'],[310,82,56,43,96,'#55d6a0'],[370,56,92,38,110,'#ff8c9b'],[430,92,65,50,118,'#55d6a0']].forEach(a=>s+=candle(...a));
+  s+='<text x="454" y="67" font-size="10" fill="#91b9ff">close</text><path d="M446 64H430" stroke="#91b9ff"/><text x="454" y="42" font-size="10" fill="#91b9ff">high</text><path d="M446 39H430" stroke="#91b9ff"/><text x="28" y="220" font-size="10" fill="#94a8c4">Illustration only · not a live market chart</text>';return s+tail;
+ }
+ if(type==='structure'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Simplified higher-high / higher-low structure</text>';
+  const pts='M45 174 L105 130 L160 150 L226 95 L275 119 L342 68 L396 93 L475 40';
+  s+=`<path d="${pts}" fill="none" stroke="#91b9ff" stroke-width="3" stroke-linejoin="round"/>`;
+  [[105,130,'HH'],[160,150,'HL'],[226,95,'HH'],[275,119,'HL'],[342,68,'HH'],[396,93,'HL']].forEach(([x,y,t])=>s+=`<circle cx="${x}" cy="${y}" r="4" fill="#f2ca76"/><text x="${x-12}" y="${y+(t==='HL'?18:-10)}" fill="#f2ca76" font-size="11">${t}</text>`);
+  s+='<path d="M404 43H472" stroke="#55d6a0" stroke-width="2" stroke-dasharray="4 4"/><text x="406" y="32" fill="#55d6a0" font-size="10">Prior swing high</text><text x="28" y="220" font-size="10" fill="#94a8c4">A structure break is a description, not a guarantee.</text>';return s+tail;
+ }
+ if(type==='fvg'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Simplified bullish FVG (three-candle concept)</text>';
+  s+=candle(170,155,125,105,170,'#ff8c9b',22);
+  s+=candle(270,125,55,40,140,'#55d6a0',22);
+  s+=candle(370,48,34,24,50,'#55d6a0',22);
+  s+='<rect x="182" y="50" width="175" height="49" fill="#91b9ff" fill-opacity=".18" stroke="#91b9ff" stroke-dasharray="4 4"/><text x="217" y="70" fill="#c8dcff" font-size="14" font-weight="700">FVG zone</text><text x="206" y="87" fill="#a9bfdc" font-size="10">gap between candle 1 high</text><text x="206" y="98" fill="#a9bfdc" font-size="10">and candle 3 low</text><text x="28" y="220" font-size="10" fill="#94a8c4">Common definition · conventions can vary.</text>';return s+tail;
+ }
+ if(type==='trendline'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Connect relevant rising swing lows</text>';
+  const pts=[[65,170],[128,142],[196,155],[260,111],[327,123],[397,77],[466,89]];
+  let p=pts.map(x=>x.join(',')).join(' ');
+  s+=`<polyline points="${p}" fill="none" stroke="#d5e3f8" stroke-width="2.4"/>`;
+  s+='<path d="M65 174 L466 89" stroke="#91b9ff" stroke-width="3" stroke-dasharray="7 4"/>';
+  [[65,174],[196,146],[327,112]].forEach(([x,y])=>s+=`<circle cx="${x}" cy="${y}" r="5" fill="#f2ca76" stroke="#0b1420" stroke-width="2"/>`);
+  s+='<text x="72" y="193" font-size="10" fill="#f2ca76">swing low</text><text x="355" y="150" font-size="11" fill="#91b9ff">trendline</text><text x="28" y="220" font-size="10" fill="#94a8c4">Lines are interpretations; breaks can fail.</text>';return s+tail;
+ }
+ if(type==='risk'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Example risk plan levels (not a trade recommendation)</text>';
+  s+='<rect x="65" y="53" width="430" height="50" rx="6" fill="#55d6a0" fill-opacity=".15"/><rect x="65" y="104" width="430" height="55" rx="6" fill="#ff8c9b" fill-opacity=".14"/><path d="M50 103H510" stroke="#91b9ff" stroke-width="2.5"/><path d="M50 53H510" stroke="#55d6a0" stroke-width="2" stroke-dasharray="5 4"/><path d="M50 159H510" stroke="#ff8c9b" stroke-width="2" stroke-dasharray="5 4"/><text x="80" y="43" fill="#55d6a0" font-size="12">Illustrative target area</text><text x="80" y="97" fill="#91b9ff" font-size="12">Hypothetical entry</text><text x="80" y="178" fill="#ff8c9b" font-size="12">Illustrative stop / invalidation</text><text x="28" y="220" font-size="10" fill="#94a8c4">Real fills, fees and slippage can change outcomes.</text>';return s+tail;
+ }
+ if(type==='liquidity'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Equal highs / example reference level</text>';
+  s+=`<path d="M42 155 L95 92 L140 135 L195 92 L250 144 L310 66 L365 111 L420 47 L495 76" fill="none" stroke="#91b9ff" stroke-width="3" stroke-linejoin="round"/>`;
+  s+='<path d="M72 91H465" stroke="#f2ca76" stroke-width="2" stroke-dasharray="5 4"/><text x="335" y="81" fill="#f2ca76" font-size="11">similar highs</text><path d="M420 45V27" stroke="#ff8c9b" stroke-width="2"/><text x="427" y="35" fill="#ffb0ba" font-size="10">break?</text><text x="28" y="220" font-size="10" fill="#94a8c4">Stops and liquidity are inferred, not directly visible as a pool.</text>';return s+tail;
+ }
+ if(type==='contract'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">P&amp;L depends on price move and contract specifications</text>';
+  s+='<rect x="45" y="50" width="470" height="120" rx="10" fill="#101d2c" stroke="#34465c"/><text x="75" y="82" fill="#edf2fa" font-size="15">P&amp;L ≈ price move × multiplier × contracts</text><text x="75" y="113" fill="#91b9ff" font-size="13">Then account for fees and slippage</text><text x="75" y="145" fill="#f2ca76" font-size="12">Check exact contract tick size + tick value</text><text x="28" y="220" font-size="10" fill="#94a8c4">The point value field must match the exact contract.</text>';return s+tail;
+ }
+ if(type==='psychology'){
+  let s=commonStart+grid+'<text x="28" y="22" font-size="11" fill="#94a8c4">Pre-trade checklist</text>';
+  const items=[['Defined setup',true],['Entry confirmation',true],['Stop / invalidation',true],['Planned risk within rules',false]];
+  items.forEach(([txt,yes],i)=>{let y=53+i*36;s+=`<rect x="70" y="${y}" width="22" height="22" rx="5" fill="${yes?'#173d34':'#39212a'}" stroke="${yes?'#55d6a0':'#ff8c9b'}"/><text x="81" y="${y+15}" text-anchor="middle" font-size="14" fill="${yes?'#55d6a0':'#ff8c9b'}">${yes?'✓':'!'}</text><text x="108" y="${y+15}" font-size="13" fill="#edf2fa">${txt}</text>`});
+  s+='<text x="28" y="220" font-size="10" fill="#94a8c4">Process first; a good checklist cannot guarantee an outcome.</text>';return s+tail;
+ }
+ return '';
+}
+let quizOrderMode='sequential';
+function quizQuestionsForCategory(cat){return cat==='all'?QUESTION_BANK:QUESTION_BANK.filter(q=>q.c===cat)}
+function quizMasteredCount(){return Object.keys(quizState.mastered||{}).filter(id=>quizState.mastered[id]).length}
+function quizAttemptedCount(){return Object.keys(quizState.attempted||{}).filter(id=>quizState.attempted[id]).length}
+function quizLevel(pct){if(pct>=95)return 'Excellent quiz mastery';if(pct>=80)return 'Strong';if(pct>=60)return 'Practicing';if(pct>=40)return 'Developing';if(pct>=20)return 'Learning';return 'Starting'}
+function persistQuizLocal(){localStorage.setItem('tjp_quiz_progress',JSON.stringify(quizState));}
+async function saveRemoteQuizProgress(){
+ persistQuizLocal();
+ if(client&&user){const {error}=await client.from('quiz_progress').upsert({user_id:user.id,progress:quizState,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error){$('quizSaveStatus').textContent='Saved on this device; cloud sync issue: '+error.message;}else{$('quizSaveStatus').textContent='Progress saved on this device and synced to your private cloud account.';}}
+ else{$('quizSaveStatus').textContent='Progress saved on this device. Connect cloud storage to sync across devices.';}
+ renderQuizOverview();
+}
+async function loadRemoteQuizProgress(){
+ if(!client||!user)return;
+ try{const {data,error}=await client.from('quiz_progress').select('progress').eq('user_id',user.id).maybeSingle();if(error){$('quizSaveStatus').textContent='Local progress remains saved. Cloud quiz sync is not ready yet: '+error.message;return;}
+  const remote=data&&data.progress?data.progress:{attempted:{},mastered:{}};
+  quizState={attempted:{...(quizState.attempted||{}),...(remote.attempted||{})},mastered:{...(quizState.mastered||{}),...(remote.mastered||{})}};
+  persistQuizLocal();
+  // Add local progress to cloud on next saved answer; preserve existing remote entries.
+  $('quizSaveStatus').textContent='Signed in. Quiz progress is ready to sync.';
+ }catch(e){$('quizSaveStatus').textContent='Using local quiz progress for now.';}
+}
+function currentQuizCategory(){return $('quizCategory')?$('quizCategory').value:'all'}
+function buildQuizQueue(){
+ let arr=quizQuestionsForCategory(currentQuizCategory());
+ quizOrderMode=$('quizMode')?$('quizMode').value:'sequential';
+ if(quizOrderMode==='unmastered')arr=arr.filter(q=>!quizState.mastered[q.id]);
+ if(quizOrderMode==='shuffle')arr=arr.slice().sort(()=>Math.random()-.5);
+ quizQueue=arr.map(q=>q.id);
+ quizQueueIndex=0;
+ quizCurrentId=quizQueue.length?quizQueue[0]:null;
+ quizAnswered=false;quizSelected=null;
+ renderQuizQuestion();renderQuizOverview();
+}
+function getQuizQuestion(){return QUESTION_BANK.find(q=>q.id===quizCurrentId)||null}
+function quizPositionText(q){
+ const arr=quizQuestionsForCategory(currentQuizCategory());
+ const ix=arr.findIndex(x=>x.id===q.id)+1;
+ return currentQuizCategory()==='all'?`Question ${ix} of ${arr.length}`:`${QUIZ_CATEGORIES.find(c=>c.id===q.c).name} · ${ix} of ${arr.length}`;
+}
+function renderQuiz(){renderQuizOverview();renderQuizQuestion();}
+function renderQuizOverview(){
+ const grid=$('quizSkillGrid');if(!grid)return;
+ grid.innerHTML=QUIZ_CATEGORIES.map(c=>{
+  const qs=QUESTION_BANK.filter(q=>q.c===c.id),mastered=qs.filter(q=>quizState.mastered[q.id]).length,attempted=qs.filter(q=>quizState.attempted[q.id]).length;
+  const pct=Math.round(mastered/qs.length*100),level=mastered===0?'Starting':quizLevel(pct);
+  return `<div class="skill-card"><div class="skill-top"><span class="skill-name">${esc(c.short)}</span><span class="skill-level">${esc(level)}</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="skill-meta"><span>${mastered}/${qs.length} mastered</span><span>${pct}%</span></div><div class="skill-meta"><span>${attempted} attempted</span><span>${qs.length-attempted} new</span></div></div>`;
+ }).join('');
+ $('quizTotalProgress').textContent=`${quizMasteredCount()} / ${QUESTION_BANK.length} mastered`;
+}
+function renderQuizQuestion(){
+ const area=$('quizQuestionArea'),q=getQuizQuestion();
+ renderQuizOverview();
+ if(!q){area.innerHTML='<div class="empty">No questions match this filter.</div>';return;}
+ $('quizCounter').textContent=quizPositionText(q);
+ const visual=quizSvg(q.v);
+ area.innerHTML=`<div class="quiz-question-number">${esc(QUIZ_CATEGORIES.find(c=>c.id===q.c).name)}${quizState.mastered[q.id]?' · ✓ Mastered':''}</div><div class="quiz-question-title">${esc(q.q)}</div>${visual?`<div class="quiz-svg-wrap">${visual}</div>`:''}<div class="quiz-options">${q.o.map((op,i)=>`<button class="quiz-option ${quizSelected===i?(quizAnswered?(i===q.a?'correct':'wrong'):'selected'):''} ${quizAnswered&&i===q.a?'correct':''}" data-option="${i}" ${quizAnswered?'disabled':''}><span class="option-letter">${String.fromCharCode(65+i)}</span><span>${esc(op)}</span></button>`).join('')}</div>${quizAnswered?`<div class="quiz-feedback ${quizSelected===q.a?'correct':'wrong'}"><strong>${quizSelected===q.a?'Correct!':'Not quite.'}</strong> ${esc(q.e)}${quizState.mastered[q.id]?' <br><br><strong>Skill tracker:</strong> This question is marked mastered.':''}</div>`:''}<div class="quiz-actions">${!quizAnswered?`<button class="primary" id="checkAnswer" ${quizSelected===null?'disabled':''}>Check answer</button>`:`<button class="primary" id="nextQuestion">${quizQueueIndex>=quizQueue.length-1?'Finish / restart':'Next question →'}</button>`}<button class="ghost" id="skipQuestion">Skip</button></div>`;
+ area.querySelectorAll('[data-option]').forEach(b=>b.onclick=()=>{if(quizAnswered)return;quizSelected=Number(b.dataset.option);renderQuizQuestion()});
+ const check=$('checkAnswer');if(check)check.onclick=answerQuizQuestion;
+ const next=$('nextQuestion');if(next)next.onclick=advanceQuizQuestion;
+ const skip=$('skipQuestion');if(skip)skip.onclick=advanceQuizQuestion;
+}
+async function answerQuizQuestion(){
+ const q=getQuizQuestion();if(!q||quizSelected===null)return;
+ quizAnswered=true;
+ quizState.attempted=quizState.attempted||{};quizState.mastered=quizState.mastered||{};
+ quizState.attempted[q.id]=true;if(quizSelected===q.a)quizState.mastered[q.id]=true;
+ renderQuizQuestion();await saveRemoteQuizProgress();
+}
+function advanceQuizQuestion(){
+ if(!quizQueue.length){buildQuizQueue();return;}
+ if(quizQueueIndex+1<quizQueue.length){quizQueueIndex++;quizCurrentId=quizQueue[quizQueueIndex];quizAnswered=false;quizSelected=null;renderQuizQuestion();}
+ else{
+  const cat=currentQuizCategory();
+  const mastered=quizQuestionsForCategory(cat).filter(q=>quizState.mastered[q.id]).length;
+  $('quizQuestionArea').innerHTML=`<div class="empty"><div style="font-size:28px;margin-bottom:8px">✦</div><strong>Quiz set complete</strong><p>You have mastered ${mastered} of ${quizQuestionsForCategory(cat).length} questions in this selection.</p><button class="primary" id="restartQuiz">Practice again</button> <button id="reviewWeak">Focus on unmastered</button></div>`;
+  $('restartQuiz').onclick=buildQuizQueue;
+  const weak=$('reviewWeak');if(weak)weak.onclick=()=>{$('quizMode').value='unmastered';buildQuizQueue();};
+ }
+}
+function initQuiz(){
+ const select=$('quizCategory');
+ select.innerHTML='<option value="all">All skills · 64 questions</option>'+QUIZ_CATEGORIES.map(c=>`<option value="${c.id}">${esc(c.name)} · ${QUESTION_BANK.filter(q=>q.c===c.id).length}</option>`).join('');
+ select.onchange=buildQuizQueue;$('quizMode').onchange=buildQuizQueue;
+ $('quizReset').onclick=async()=>{if(!confirm('Reset all quiz progress on this device and, if signed in, in your cloud account? This cannot be undone.'))return;quizState={attempted:{},mastered:{}};quizAnswered=false;quizSelected=null;persistQuizLocal();if(client&&user){const {error}=await client.from('quiz_progress').upsert({user_id:user.id,progress:quizState,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)$('quizSaveStatus').textContent='Local progress reset, but remote update failed: '+error.message;else $('quizSaveStatus').textContent='Quiz progress reset locally and in cloud.';}else $('quizSaveStatus').textContent='Quiz progress reset on this device.';buildQuizQueue();};
+ buildQuizQueue();
+}
+
+renderAll();
+initQuiz();
+</script>
+</body></html>
