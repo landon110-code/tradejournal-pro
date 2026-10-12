@@ -270,6 +270,7 @@
   <div class="section-head"><div><h2>Trading Copilot</h2><p>Ask about concepts, strategy rules, chart structure, or your paper-trading process.</p></div><span class="pill">Educational · Paper trading</span></div>
   <div class="panel" style="max-width:920px">
     <div class="panel-head"><div><h3>Ask your trading coach</h3><p class="muted small" style="margin:5px 0 0">Get explanations, examples, and questions to help test your understanding.</p></div></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 14px"><button class="btn primary" type="button" id="copilotMonthlyReview">Review my month</button><span class="muted small">Uses your saved journal trades to find patterns and areas to practice.</span></div>
     <div class="copilot-prompts" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px">
       <button class="btn secondary" type="button" data-copilot-prompt="Explain break of structure (BOS) with a simple example.">Explain BOS</button>
       <button class="btn secondary" type="button" data-copilot-prompt="How can I define and backtest a fair value gap (FVG) setup?">FVG setup</button>
@@ -645,6 +646,24 @@ function initQuiz(){
    const body=document.createElement('div');body.style.cssText='margin-top:7px;white-space:pre-wrap;line-height:1.55';body.textContent=text;
    wrap.append(head,body);chat.appendChild(wrap);chat.scrollTop=chat.scrollHeight;return wrap;
  }
+ function buildCopilotMonthContext(){
+   const now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+   const closed=trades.filter(t=>t.trade_status!=='open'&&t.exit_price!==null&&t.exit_price!==''&&t.exit_price!==undefined);
+   const month=closed.filter(t=>{const d=new Date((t.trade_date||'')+'T12:00:00');return !Number.isNaN(d.getTime())&&d>=monthStart&&d<=now;});
+   const pnl=t=>Number(t.net_pnl??calc(t))||0;
+   const days={};month.forEach(t=>{const d=t.trade_date||'Unknown';days[d]=(days[d]||0)+pnl(t)});
+   const dayValues=Object.entries(days).map(([date,net])=>({date,net:Number(net.toFixed(2))}));
+   const wins=month.filter(t=>pnl(t)>0),losses=month.filter(t=>pnl(t)<0);
+   const group=(key)=>{const g={};month.forEach(t=>{const k=String(t[key]||'Not recorded');if(!g[k])g[k]={count:0,pnl:0,wins:0};g[k].count++;g[k].pnl+=pnl(t);if(pnl(t)>0)g[k].wins++;});return Object.entries(g).map(([name,v])=>({name,count:v.count,pnl:Number(v.pnl.toFixed(2)),winRate:Math.round(v.wins/v.count*100)})).sort((a,b)=>b.pnl-a.pnl).slice(0,8);};
+   return {month:now.toLocaleString('en-US',{month:'long',year:'numeric'}),closedTrades:month.length,totalNetPnl:Number(month.reduce((s,t)=>s+pnl(t),0).toFixed(2)),wins:wins.length,losses:losses.length,winRate:month.length?Math.round(wins.length/month.length*100):null,redDays:dayValues.filter(d=>d.net<0).length,greenDays:dayValues.filter(d=>d.net>0).length,flatDays:dayValues.filter(d=>d.net===0).length,dayResults:dayValues.slice(-20),bySetup:group('setup'),bySymbol:group('symbol'),byMood:group('mood'),byExecutionGrade:group('execution_grade'),ruleFollowedCounts:{yes:month.filter(t=>t.followed_rules===true||t.followed_rules==='yes'||t.followed_rules==='true').length,no:month.filter(t=>t.followed_rules===false||t.followed_rules==='no'||t.followed_rules==='false').length,notRecorded:month.filter(t=>t.followed_rules==null||t.followed_rules==='').length},recentTrades:month.slice(0,20).map(t=>({date:t.trade_date,symbol:t.symbol,side:t.side,setup:t.setup,netPnl:Number(pnl(t).toFixed(2)),mood:t.mood||null,followedRules:t.followed_rules??null,executionGrade:t.execution_grade||null,notes:String(t.notes||'').slice(0,240)}))};
+ }
+ $('copilotMonthlyReview').addEventListener('click',()=>{
+   if(!client||!user){statusEl.textContent='Connect cloud storage and sign in first.';addMessage('Copilot','Sign in through Cloud setup so I can review your private journal.');return;}
+   const ctx=buildCopilotMonthContext();
+   if(!ctx.closedTrades){input.value='Review my month and help me build a plan to improve. I have no closed trades logged this month yet. Tell me what data to record for a useful review.';}
+   else input.value='Review my '+ctx.month+' trading month using my journal data. Identify the strongest patterns, likely weaknesses, any red-day or rule-following patterns, and give me 3 specific practice actions. Separate observations from guesses and do not assume a small sample proves a strategy works.';
+   form.requestSubmit();
+ });
  document.querySelectorAll('[data-copilot-prompt]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.copilotPrompt;input.focus()}));
  form.addEventListener('submit',async e=>{
    e.preventDefault();const question=input.value.trim();if(!question||send.disabled)return;
@@ -652,7 +671,8 @@ function initQuiz(){
    addMessage('You',question);input.value='';send.disabled=true;send.textContent='Thinking…';statusEl.textContent='Working on an explanation…';
    const pending=addMessage('Copilot','Thinking through your question…');
    try{
-     const {data,error}=await client.functions.invoke('trading-copilot',{body:{question}});
+     const monthContext=buildCopilotMonthContext();
+     const {data,error}=await client.functions.invoke('trading-copilot',{body:{question,monthContext}});
      if(error)throw error;
      const answer=data&&data.answer;if(!answer)throw new Error((data&&data.error)||'No answer returned.');
      pending.lastChild.textContent=answer;statusEl.textContent='Ready';
