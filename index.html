@@ -525,7 +525,7 @@ body.login-required{margin:0}.login-gate{position:fixed;inset:0;z-index:99999;di
 </style>
 </head>
 <body class="login-required">
-<div id="loadingSplash" class="loading-splash" role="status" aria-live="polite">
+<div id="loadingSplash" class="loading-splash" hidden role="status" aria-live="polite">
   <div class="splash-content">
     <div class="splash-logo" aria-hidden="true"><svg viewBox="0 0 48 40" role="img" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 9 18 17 16 24 11 29 12 32 16 31 22 27 25 20 25 13 23 4 24" stroke-width="1.7"/><path d="M10 18 11 13 14 10M15 16 18 11M21 14 24 10M27 14 29 10" stroke-width="1.5"/><path d="M29 15C34 12 38 16 38 21 38 24 35 26 33 24 31 22 33 20 35 22M30 17C37 15 42 21 40 26 39 29 35 29 34 26" stroke-width="1.7"/><path d="M10 22 9 29 6 33 10 33M16 24 17 30 15 34 19 34M24 25 25 30 23 34 27 34M29 23 32 29 31 33 35 33" stroke-width="1.6"/><path d="M13 19 13 22M17 17 17 22M21 16 21 22M25 16 25 22M28 17 28 21M5 24 2 26M9 29 12 30M17 30 20 31M25 30 28 31" stroke-width="1.2"/></g><circle cx="29" cy="15" r=".7" fill="currentColor"/></svg></div>
     <div class="splash-wordmark">TradeJournal <span>Pro</span></div>
@@ -1621,10 +1621,10 @@ initQuiz();
  $('gateForm').addEventListener('submit',async e=>{e.preventDefault();if(!email.value.trim()||!password.value){message.textContent='Enter your email and password.';return;}copyCredentials();$('loginBtn').click();message.textContent='Signing in…';});
  $('gateCreate').addEventListener('click',()=>{if(!email.value.trim()||!password.value){message.textContent='Enter your email and choose a password first.';return;}if(password.value.length<8){message.textContent='Use a password with at least 8 characters.';return;}copyCredentials();$('signupBtn').click();message.textContent='Creating your account…';});
  $('gateTogglePassword').addEventListener('click',()=>{const visible=password.type==='password';password.type=visible?'text':'password';$('gateTogglePassword').textContent=visible?'Hide':'Show';$('gateTogglePassword').setAttribute('aria-label',visible?'Hide password':'Show password');});
- showGate('Checking your account…');showSplash('Checking your account…');
+ showGate('Sign in or create a free account to get started.');splash.hidden=true;splash.classList.remove('is-leaving');
  // Fail-safe: a slow or blocked network must never trap someone on the splash screen.
  let splashWatchdog=window.setTimeout(()=>{showGate('This is taking longer than expected. You can sign in below; try refreshing if this continues.');hideSplash();},6500);
- (async()=>{try{if(!client)makeClient();const sessionResult=await Promise.race([client.auth.getSession(),new Promise((_,reject)=>window.setTimeout(()=>reject(new Error('Session check timed out.')),9000))]);const {data,error}=sessionResult;if(error)throw error;if(data.session){user=data.session.user;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');splashMessage.textContent='Loading your journal…';await loadTrades();hideGate();message.textContent='Signed in.';hideSplash();}else{showGate('Sign in or create a free account to get started.');hideSplash();}}catch(e){showGate('Could not finish loading. Check your connection, then sign in or refresh the page.');hideSplash();}finally{window.clearTimeout(splashWatchdog);}})();
+ (async()=>{try{if(!client)makeClient();const sessionResult=await Promise.race([client.auth.getSession(),new Promise((_,reject)=>window.setTimeout(()=>reject(new Error('Session check timed out.')),9000))]);const {data,error}=sessionResult;if(error)throw error;if(data.session){user=data.session.user;updateConnection(true);$('authStatus').textContent='Signed in as '+user.email;$('logoutBtn').classList.remove('hidden');splashMessage.textContent='Loading your journal…';await loadTrades();hideGate();message.textContent='Signed in.';hideSplash();}else{showGate('Sign in or create a free account to get started.');hideSplash();}}catch(e){showGate('Could not check your saved session. You can still try signing in below.');hideSplash();}finally{window.clearTimeout(splashWatchdog);}})();
 })();
 
 </script>
