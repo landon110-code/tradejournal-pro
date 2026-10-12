@@ -52,4 +52,4 @@ A direct broker connection is not implemented by the CSV importer. It requires a
 
 ## Development checks
 
-There is no dedicated automated test suite or package build step yet. Before merging changes, at minimum check the inline JavaScript syntax, confirm unique HTML IDs, and verify GitHub Pages Actions succeed. Then manually smoke-test navigation, trade CRUD, CSV preview/import, settings, quiz progress, and mobile layouts.
+A small Node.js regression suite covers CSV parsing, date validation, direction normalization, numeric parsing, and duplicate detection. Run it with `node --test tests/csv-import.test.mjs` (Node.js 22 recommended). Before merging changes, also check inline JavaScript syntax, confirm unique HTML IDs, and verify GitHub Pages Actions succeed. Then manually smoke-test navigation, trade CRUD, CSV preview/import, settings, quiz progress, and mobile layouts.
