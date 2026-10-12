@@ -608,7 +608,12 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
     <div class="card"><div class="metric-label">Average loser</div><div class="metric-value negative" id="aLoser">$0.00</div><div class="metric-foot">Average negative trade</div></div>
     <div class="card"><div class="metric-label">Rule adherence</div><div class="metric-value" id="aRules">—</div><div class="metric-foot">Trades marked “Yes”</div></div>
   </div>
-  <div class="layout-2"><div class="panel"><h3>Performance by asset</h3><div id="instrumentBars" class="bar-list"><div class="empty">No data yet.</div></div></div><div class="panel"><h3>Performance by mindset</h3><div id="moodBars" class="bar-list"><div class="empty">No data yet.</div></div></div></div><div class="layout-2"><div class="panel"><h3>Performance by strategy / setup</h3><p class="muted small">Use consistent labels; results are descriptive, not a prediction.</p><div id="strategyBars" class="bar-list"><div class="empty">No data yet.</div></div></div><div class="panel"><h3>Performance by execution grade</h3><p class="muted small">Only trades with a grade are included. Check sample size before drawing conclusions.</p><div id="gradeBars" class="bar-list"><div class="empty">No graded trades yet.</div></div></div></div>
+  <div class="layout-2"><div class="panel"><h3>Performance by asset</h3><div id="instrumentBars" class="bar-list"><div class="empty">No data yet.</div></div></div><div class="panel"><h3>Performance by mindset</h3><div id="moodBars" class="bar-list"><div class="empty">No data yet.</div></div></div></div><div class="layout-2"><div class="panel"><h3>Performance by strategy / setup</h3><p class="muted small">Use consistent labels; results are descriptive, not a prediction.</p><div id="strategyBars" class="bar-list"><div class="empty">No data yet.</div></div></div>
+<div class="panel">
+  <h3>Strategy research table</h3>
+  <p class="muted small">Compare logged setups using closed trades only. Net results use recorded P&amp;L when available and the journal calculation otherwise. Small samples are not evidence of a reliable edge.</p>
+  <div class="table-wrap"><table class="data-table" id="strategyResearchTable"><thead><tr><th>Setup</th><th>Sample</th><th>Win rate</th><th>Avg net / trade</th><th>Total net</th><th>Evidence</th></tr></thead><tbody><tr><td colspan="6">Log closed trades with consistent setup names to begin comparing.</td></tr></tbody></table></div>
+</div><div class="panel"><h3>Performance by execution grade</h3><p class="muted small">Only trades with a grade are included. Check sample size before drawing conclusions.</p><div id="gradeBars" class="bar-list"><div class="empty">No graded trades yet.</div></div></div></div>
   <div class="layout-2"><div class="panel"><h3>Results by rule adherence</h3><p class="muted small">Compares logged results by whether your plan was followed.</p><div id="ruleBars" class="bar-list"><div class="empty">No data yet.</div></div></div><div class="panel"><h3>Sample size & data quality</h3><div id="analyticsQuality" class="notice">Log closed trades to see data quality checks.</div></div></div>
   <div class="panel"><h3>Review prompts</h3><div class="notice">After each session, ask: Did I wait for confirmation? Did I respect my planned risk? Which setup had the clearest rules? What should I practice in replay before using it again?</div></div>
 </section>
@@ -951,6 +956,19 @@ function renderAnalytics(){
  renderBars($('instrumentBars'),groupPnl(a,'symbol'));
  renderBars($('moodBars'),groupPnl(a,'mood'));
  renderBars($('strategyBars'),groupPnl(a,'setup'));
+ const setupGroups=new Map();
+ a.forEach(t=>{
+   const name=String(t.setup||'').trim()||'Not recorded';
+   if(!setupGroups.has(name))setupGroups.set(name,[]);
+   setupGroups.get(name).push(Number(t.net_pnl??calc(t))||0);
+ });
+ const setupRows=[...setupGroups.entries()].map(([name,values])=>{
+   const wins=values.filter(v=>v>0).length;
+   const total=values.reduce((sum,v)=>sum+v,0);
+   return {name,count:values.length,winRate:values.length?Math.round(wins/values.length*100):0,avg:values.length?total/values.length:0,total};
+ }).sort((x,y)=>y.count-x.count||y.avg-x.avg);
+ const tbody=$('strategyResearchTable')?.querySelector('tbody');
+ if(tbody)tbody.innerHTML=setupRows.length?setupRows.map(r=>'<tr><td>'+esc(r.name)+'</td><td>'+r.count+'</td><td>'+r.winRate+'%</td><td>'+cash(r.avg)+'</td><td>'+cash(r.total)+'</td><td>'+ (r.count<20?'Early sample':'Review assumptions') +'</td></tr>').join(''):'<tr><td colspan="6">Log closed trades with consistent setup names to begin comparing.</td></tr>';
  const graded=a.filter(t=>String(t.execution_grade||'').trim());
  renderBars($('gradeBars'),groupPnl(graded,'execution_grade'));
  const ruleGroups=[['Followed plan',a.filter(t=>t.followed_rules==='yes')],['Partly followed',a.filter(t=>t.followed_rules==='partial')],['Did not follow',a.filter(t=>t.followed_rules==='no')],['Not recorded',a.filter(t=>!['yes','partial','no'].includes(t.followed_rules))]].filter(x=>x[1].length).map(([name,list])=>[name,list.reduce((sum,t)=>sum+Number(t.net_pnl||0),0)]);
