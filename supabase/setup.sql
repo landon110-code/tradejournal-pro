@@ -12,7 +12,7 @@ create table if not exists public.trades (
   symbol text not null,
   side text not null check (side in ('long', 'short')),
   setup text not null default 'Other',
-  entry_price numeric not null check (entry_price >= 0),
+  entry_price numeric not null,
   exit_price numeric,
   trade_status text not null default 'closed' check (trade_status in ('open', 'closed')),
   contracts numeric not null default 1 check (contracts > 0),
