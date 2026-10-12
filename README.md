@@ -1,52 +1,55 @@
 # TradeJournal Pro
 
-A mobile-first trading journal and market-learning workspace. It is designed for **recordkeeping, reflection, and education**—not live order execution, market predictions, or financial advice.
+A mobile-first trading journal and learning workspace built as a static GitHub Pages app with optional Supabase account sync.
+
+**Live app:** https://landon110-code.github.io/tradejournal-pro/  
+**Repository:** https://github.com/landon110-code/tradejournal-pro
 
 ## Current features
 
-- **Journal:** record, edit, filter, and review manually logged trades.
-- **CSV import:** map common export columns, preview estimated calculations, and review likely duplicates before importing.
-- **CSV export:** download your logged records for backup or analysis.
-- **Dashboard & calendar:** summarize closed-trade records by date and instrument.
-- **Analytics:** review results by instrument, setup, mindset, execution grade, and self-reported rule adherence; view sample-size/data-quality checks.
-- **Replay Lab:** calculate hypothetical examples from inputs; it does not fetch live prices.
-- **Learning tools:** Masterclass lessons, a visual knowledge quiz with progress, and saved playbook notes.
-- **Personalization:** themes, text size, layout density, and motion preferences.
-- **Cloud sync:** optional Supabase authentication and database storage when configured.
+- Dashboard and performance summaries from saved closed trades
+- Trade log with add, edit, delete, filtering, CSV export, and CSV import preview
+- CSV column auto-detection for common broker/trading-platform headers
+- Calendar, analytics, and instrument/setup/mindset breakdowns
+- Appearance themes and device-level interface preferences
+- Beginner Academy, knowledge quiz, playbook, and local chart-study notebook
+- Mobile navigation and responsive layouts
+- Optional account-based cloud storage through Supabase
 
-## Important limitations
+## Run it
 
-- The app does **not** place orders, connect directly to a broker, or provide live market data.
-- CSV columns vary by platform and export type. Always inspect the import preview and verify symbol, dates, direction, quantity, multipliers, and fees before confirming.
-- Calculated results depend on the data you enter. Derivative products can have contract-specific multipliers and fees; don't assume a universal multiplier.
-- Journal analytics describe past records and do not predict future outcomes.
-- AI Copilot is optional and requires a supported provider configuration on the server. Until that is configured and tested, treat it as unavailable. Do not place provider secrets in `index.html`, public GitHub files, or browser settings.
+The app is a static `index.html`. You can open it through GitHub Pages or serve the repository locally with any static web server. The Supabase JavaScript client is loaded from a CDN, so cloud features need an internet connection.
 
 ## Supabase setup
 
-1. Create a Supabase project.
-2. Run the SQL setup script supplied with the project in the Supabase SQL editor.
-3. In **Settings → API**, copy the Project URL and the publishable/anon key.
-4. Enter those public client settings in the app's Cloud setup panel.
-5. Create an account or sign in.
-6. Confirm row-level security policies are enabled and restrict each user's records to that authenticated user.
+1. Create or select a Supabase project.
+2. Open **SQL Editor** and review/run [`supabase/setup.sql`](supabase/setup.sql) only if you are setting up a **new database schema**.
+3. In the app, open **Settings**, confirm the Project URL and publishable/anon key, then connect and create an account.
+4. Confirm email if your Supabase Auth settings require it, then sign in.
 
-**Never put a Supabase service-role key or an AI provider secret in browser code.** A publishable/anon key is only safe to use with correctly configured database permissions and row-level security. Do not enter broker passwords, account credentials, or private trading API secrets into the journal.
+### Important existing-database warning
 
-## GitHub Pages
+The starter SQL is for a new setup, not an automatic migration for an existing database. Back up existing data and compare the table columns and policies before applying schema changes to a project that already contains tables. Never put a Supabase **service-role secret** in this website. The browser may use only a publishable key (or legacy anon key), with Row Level Security enabled.
 
-The site is a static `index.html` app. In the repository, open **Settings → Pages** and confirm the deployment source is configured for the `main` branch and root directory (if using branch-based deployment). After a commit, GitHub Pages can take several minutes to publish; check the Actions/Pages status if the live site does not update.
+## TradingView import
 
-## Manual smoke-test checklist
+TradeJournal Pro currently imports supported CSV files through the Trade Log importer. TradingView export availability and column formats can differ by chart, broker connection, and account view. Export a sample file from your actual workflow, upload it, use **Auto-detect columns**, check every mapping and preview row, and only then import.
 
-- [ ] Open on a narrow phone viewport; verify navigation, forms, tables, and dialogs fit.
-- [ ] Connect a test Supabase account and verify records load only for that account.
-- [ ] Create a test record, edit it, reload, export, then delete it.
-- [ ] Import a small sample CSV; verify column mapping, preview, estimated math, and duplicate handling before confirming.
-- [ ] Test empty states, malformed CSV, missing columns, and network/auth errors.
-- [ ] Change theme, text size, density, and motion preference; reload and verify preferences persist.
-- [ ] Confirm AI Copilot displays a clear setup/error state when the provider is not configured.
+CSV import is not a live broker connection and does not continuously sync positions or fills. Check the imported prices, side, dates, quantities, commissions, and multiplier before relying on any calculated P&L. Futures multipliers vary by contract and must be verified.
 
-## Privacy
+## Copilot and integrations
 
-This repository contains front-end code. Keep private records in a properly secured database, avoid uploading real account credentials, and use sample or redacted data when testing or reporting issues.
+The page includes a Copilot interface that calls a Supabase Edge Function named `trading-copilot`. The function source/deployment and its AI provider configuration are not included in this repository at present. Copilot responses therefore require that backend function and its secret configuration be deployed separately. Do not expose an AI provider key in browser JavaScript.
+
+A direct broker connection is not implemented by the CSV importer. It requires a supported provider/API, secure server-side credential handling, and appropriate permission scopes. Do not ask users to paste brokerage passwords into this app.
+
+## Data and privacy notes
+
+- Theme, UI preferences, quiz progress, and chart-study notes are stored in the current browser's local storage; they do not automatically follow a user to another device.
+- Trades and quiz progress use Supabase when the user is signed in and the database schema/RLS policies are configured.
+- Export backups regularly. Clearing browser storage can remove local-only data.
+- The app is an educational journaling tool, not a source of financial advice or trade signals.
+
+## Development checks
+
+There is no dedicated automated test suite or package build step yet. Before merging changes, at minimum check the inline JavaScript syntax, confirm unique HTML IDs, and verify GitHub Pages Actions succeed. Then manually smoke-test navigation, trade CRUD, CSV preview/import, settings, quiz progress, and mobile layouts.
