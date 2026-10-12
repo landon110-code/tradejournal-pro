@@ -299,6 +299,8 @@ button:active{transform:scale(.98)}
  .topbar-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;white-space:nowrap;pointer-events:none}.topbar-brand .brand-mark{width:34px;height:34px;border-radius:10px;background:#111318;color:#f3e8d3;border:1px solid #44454a}.topbar-brand strong{font-size:15px;letter-spacing:-.03em;color:var(--text)}@media(max-width:760px){.topbar-brand{position:static;transform:none;margin:0 auto;gap:6px}.topbar-brand .brand-mark{width:30px;height:30px}.topbar-brand strong{font-size:12px}.topbar .top-actions #exportBtn{display:none}.topbar{padding:0 12px}.topbar-brand{flex-shrink:0}}@media(max-width:420px){.topbar-brand .brand-mark{display:none}.topbar-brand strong{font-size:11px}.topbar h1{font-size:16px}.topbar p{display:none}} 
 .trade-row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.trade-row-actions button{min-height:34px;padding:7px 10px;font-size:10px}
 @media(max-width:520px){.trade-row-actions{gap:5px}.trade-row-actions button{min-height:38px;padding:8px 9px}}
+.import-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.import-step{display:flex;gap:10px;align-items:flex-start;padding:13px;border:1px solid var(--line-soft);border-radius:13px;background:color-mix(in srgb,var(--panel2) 45%,transparent)}.import-step>span{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:9px;background:color-mix(in srgb,var(--blue) 13%,var(--panel));color:var(--blue);font-size:10px;font-weight:800}.import-step strong{font-size:11px}.import-step p{font-size:10px;line-height:1.55;color:var(--muted);margin:5px 0 0}
+@media(max-width:700px){.import-steps{grid-template-columns:1fr}.import-step{padding:11px}.import-step p{font-size:11px}}
 /* ── TradeJournal Pro · unified premium design system ── */
 :root{--radius-card:18px;--radius-control:11px;--shadow-card:0 10px 35px #00000012;--line-soft:color-mix(in srgb,var(--line) 78%,transparent);--surface-raised:color-mix(in srgb,var(--panel) 90%,var(--panel2))}
 html{scroll-behavior:smooth}
@@ -433,7 +435,8 @@ tbody tr{transition:background .16s ease}tbody tr:hover{background:color-mix(in 
 
 <section class="view" id="view-trades">
   <div class="panel"><div class="panel-head"><div><h3>Import trades from a platform</h3><p class="muted small">Import a CSV export from a broker or journal. Review the preview before adding records.</p></div><span class="pill">CSV · Preview first</span></div>
-  <div class="notice">Use a CSV file exported from your platform. Column names vary, so map the required fields below. Imported records are normalized to this journal's fields. Rows that look like duplicates are skipped. Always check the preview and calculations before confirming.</div>
+  <div class="notice">Import a CSV export from TradingView or another platform. The importer previews the rows, calculates journal P&amp;L, and skips probable duplicates. TradingView paper-trading exports can vary by report type, so always verify the preview and multiplier before importing.</div>
+  <div class="import-steps" style="margin-top:12px"><div class="import-step"><span>01</span><div><strong>Export from TradingView</strong><p>Open Trading Panel → Paper Trading → Account History or Orders, then use the export/download option if your panel offers it. Save the CSV to your device.</p></div></div><div class="import-step"><span>02</span><div><strong>Preview your CSV here</strong><p>Choose the file. Select the matching columns below, then preview before confirming.</p></div></div><div class="import-step"><span>03</span><div><strong>Check futures multipliers</strong><p>For futures, the value per 1.00 price move depends on the contract. Check the symbol's contract specifications; a wrong multiplier means wrong calculated P&amp;L.</p></div></div></div>
   <div class="form-grid" style="margin-top:12px">
     <div class="field span-all"><label for="csvFile">Choose CSV file</label><input type="file" id="csvFile" accept=".csv,text/csv"></div>
     <div class="field"><label for="csvSymbol">Symbol / asset column</label><select id="csvSymbol"><option value="symbol">symbol</option><option value="ticker">ticker</option><option value="instrument">instrument</option><option value="market">market</option></select></div>
@@ -445,6 +448,7 @@ tbody tr{transition:background .16s ease}tbody tr:hover{background:color-mix(in 
     <div class="field"><label for="csvFees">Fees column (optional)</label><select id="csvFees"><option value="fees">fees</option><option value="commission">commission</option><option value="total_fees">total_fees</option><option value="">No fees column</option></select></div>
     <div class="field"><label for="csvMultiplier">Value per 1.00 move (USD)</label><input id="csvMultiplier" type="number" min="0" step="any" value="1"></div>
   </div>
+  <div class="form-actions" style="margin-top:12px"><button type="button" class="ghost" id="csvAutoMapBtn">Auto-detect columns</button><button type="button" class="ghost" id="csvTradingViewHint">TradingView export help</button></div>
   <div class="form-actions" style="margin-top:12px"><button type="button" class="primary" id="previewCsvBtn">Preview CSV</button><button type="button" id="confirmCsvBtn" disabled>Import previewed trades</button></div>
   <div id="csvImportStatus" class="status" aria-live="polite">No file selected.</div><div id="csvPreview" class="table-wrap"></div>
 </div>
@@ -794,6 +798,20 @@ initAcademy();
 function renderAll(){renderDashboard();renderTradeTable();renderCalendar();renderAnalytics()}
 $('exportBtn').onclick=()=>{if(!trades.length){alert('No trades to export yet.');return}const keys=['trade_date','symbol','side','setup','entry_price','exit_price','trade_status','contracts','point_value','fees','net_pnl','stop_price','target_price','mood','followed_rules','execution_grade','notes','screenshot_url'];const csv=[keys.join(','),...trades.map(t=>keys.map(k=>'"'+String(t[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='tradejournal-pro-trades.csv';a.click();URL.revokeObjectURL(url)};
 
+
+// TradingView-aware CSV helpers. Mapping remains user-confirmed because exports differ by panel and report.
+const csvAliases={
+ csvSymbol:['symbol','ticker','instrument','market','symbol id','contract'],
+ csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at'],
+ csvSide:['side','direction','type','action','order side'],
+ csvEntry:['entry_price','entry','avg_entry_price','buy_price','average entry price','avg price','price'],
+ csvExit:['exit_price','exit','avg_exit_price','sell_price','average exit price','exit price'],
+ csvQty:['contracts','quantity','qty','units','size','filled','filled qty'],
+ csvFees:['fees','commission','total_fees','commissions','fee']
+};
+function setCsvMap(headers){let changed=0;Object.entries(csvAliases).forEach(([id,aliases])=>{const match=headers.find(h=>aliases.includes(h.toLowerCase().trim()));if(match){const select=$(id);let option=[...select.options].find(o=>o.value.toLowerCase()===match.toLowerCase());if(!option){option=document.createElement('option');option.value=match;option.textContent=match;select.appendChild(option)}select.value=option.value;changed++}});return changed}
+$('csvAutoMapBtn').addEventListener('click',async()=>{const file=$('csvFile').files[0];if(!file){$('csvImportStatus').textContent='Choose your TradingView CSV first.';return}try{const text=await file.text(),parsed=parseCsvText(text);if(!parsed.length)throw Error('No rows or headers found.');const headers=Object.keys(parsed[0]);const n=setCsvMap(headers);$('csvImportStatus').textContent='Detected '+n+' of 6 column mappings from '+file.name+'. Check each dropdown; then preview the CSV.';}catch(e){$('csvImportStatus').textContent='Could not detect columns: '+e.message}});
+$('csvTradingViewHint').addEventListener('click',()=>{$('csvImportStatus').textContent='TradingView export steps can differ by paper-trading panel and report. Open Trading Panel → Paper Trading and look for Account History/Orders export. If there is no CSV export option for the view you need, download/copy the available report or export the trade list from the connected broker. Upload the CSV here and inspect the preview before importing.'});
 
 // CSV import: preview, normalize common headers, and skip probable duplicates.
 let csvRowsPending=[];
