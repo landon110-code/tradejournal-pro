@@ -178,6 +178,10 @@
     <div class="card"><div class="metric-label">Profit factor <span>◒</span></div><div class="metric-value" id="mPF">—</div><div class="metric-foot">Gross wins ÷ gross losses</div></div>
     <div class="card"><div class="metric-label">Avg. trade <span>∿</span></div><div class="metric-value" id="mAvg">$0.00</div><div class="metric-foot">Average net P&amp;L per closed trade</div></div>
   </div>
+  <div class="panel copilot-dashboard-card" style="margin-bottom:18px;border-color:var(--blue)">
+    <div class="panel-head"><div><h3>✧ Trading Copilot</h3><p class="muted small" style="margin:5px 0 0">Get a monthly review and personalized practice ideas from your journal.</p></div><span class="pill">Learning coach</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="button" class="primary" id="dashboardCopilotReview">Review my month</button><button type="button" class="ghost" id="dashboardCopilotAsk">Ask a question</button><span class="muted small">Uses your logged trades; small samples can be misleading.</span></div>
+  </div>
   <div class="layout-2">
     <div class="panel"><div class="panel-head"><h3>Daily P&amp;L</h3><span class="pill">Last 14 days</span></div><div class="chart-bars" id="pnlChart"></div><div class="status">Based on trades you've logged. This is a journal summary, not a prediction.</div></div>
     <div class="panel"><div class="panel-head"><h3>Setup performance</h3><span class="muted small">By net P&amp;L</span></div><div id="setupBars" class="bar-list"><div class="empty">Add closed trades to see your strongest setups.</div></div></div>
@@ -213,14 +217,47 @@
 </section>
 
 <section class="view" id="view-playbook">
-  <div class="section-head"><div><h2>Strategy playbook</h2><p>Keep setup definitions consistent so your analytics mean something.</p></div></div>
+  <div class="section-head"><div><h2>Strategy playbook & learning paths</h2><p>Short courses with diagrams, definitions, and a replay exercise for each concept.</p></div></div>
   <div class="cards">
-    <div class="card"><div class="metric-label">Setup 01</div><div class="metric-value" style="font-size:19px">BOS</div><div class="metric-foot">Break of structure</div></div>
-    <div class="card"><div class="metric-label">Setup 02</div><div class="metric-value" style="font-size:19px">FVG</div><div class="metric-foot">Fair value gap</div></div>
-    <div class="card"><div class="metric-label">Setup 03</div><div class="metric-value" style="font-size:19px">IFVG</div><div class="metric-foot">Inverse fair value gap</div></div>
-    <div class="card"><div class="metric-label">Setup 04</div><div class="metric-value" style="font-size:19px">Trendline</div><div class="metric-foot">Retest and confirmation</div></div>
+    <div class="card"><div class="metric-label">Course 01</div><div class="metric-value" style="font-size:19px">Market structure</div><div class="metric-foot">Swings · BOS · context</div></div>
+    <div class="card"><div class="metric-label">Course 02</div><div class="metric-value" style="font-size:19px">Imbalances</div><div class="metric-foot">FVG · IFVG · invalidation</div></div>
+    <div class="card"><div class="metric-label">Course 03</div><div class="metric-value" style="font-size:19px">Trendlines</div><div class="metric-foot">Anchors · breaks · retests</div></div>
+    <div class="card"><div class="metric-label">Course 04</div><div class="metric-value" style="font-size:19px">Risk & review</div><div class="metric-foot">Costs · rules · journaling</div></div>
   </div>
-  <div class="panel"><h3>Playbook checklist</h3><div class="notice">For each setup, document: market context, what confirms the entry, where the setup is invalidated, planned stop, target logic, time of day, and conditions when you will skip the trade. Use notes on each trade to track whether these rules were followed.</div><p class="muted small">These are editable setup categories, not recommendations to enter a trade. Build evidence from paper trading before deciding whether a setup is reliable.</p></div>
+  <div class="panel">
+    <h3>Lesson 1 · Market structure and BOS</h3>
+    <p class="muted">A break of structure is a move through a previously identified swing level. Define whether your rule uses a wick or a candle close before you test it.</p>
+    <svg viewBox="0 0 600 180" role="img" aria-label="Illustration of rising swing lows and highs with a horizontal prior swing level" style="width:100%;max-height:220px;background:var(--panel2);border-radius:12px;margin:8px 0"><path d="M24 145 L105 82 L166 115 L250 52 L312 92 L402 36 L465 66 L560 20" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M240 52 H565" stroke="var(--gold)" stroke-width="2" stroke-dasharray="7 6"/><text x="250" y="43" fill="var(--gold)" font-size="13">Prior swing high</text><circle cx="402" cy="36" r="6" fill="var(--green)"/><text x="420" y="55" fill="var(--green)" font-size="13">Break (illustrative)</text><text x="24" y="166" fill="var(--muted)" font-size="12">Concept sketch only — not live market data</text></svg>
+    <ol><li>Mark a clear swing high and low using one consistent pivot rule.</li><li>Write down what counts as a break: wick through, candle close, or another objective condition.</li><li>Record what would invalidate the idea and what would make you skip it.</li></ol>
+    <div class="notice">Replay task: find 20 historical examples and record every valid and invalid break, not only the clean ones.</div>
+  </div>
+  <div class="panel">
+    <h3>Lesson 2 · Fair value gaps (FVG) and inverse FVG (IFVG)</h3>
+    <p class="muted">An FVG is commonly defined using a three-candle price imbalance. Definitions differ, so use the exact rule you plan to test.</p>
+    <svg viewBox="0 0 600 190" role="img" aria-label="Three candle diagram with a highlighted illustrative gap between candle one high and candle three low" style="width:100%;max-height:230px;background:var(--panel2);border-radius:12px;margin:8px 0"><g stroke="var(--muted)" stroke-width="2"><path d="M105 30V155M250 22V140M395 25V165"/></g><rect x="88" y="70" width="34" height="52" rx="3" fill="var(--green)"/><rect x="233" y="45" width="34" height="65" rx="3" fill="var(--green)"/><rect x="378" y="35" width="34" height="65" rx="3" fill="var(--green)"/><rect x="122" y="70" width="256" height="22" fill="var(--gold)" opacity=".2" stroke="var(--gold)" stroke-dasharray="5 4"/><text x="130" y="84" fill="var(--gold)" font-size="13">Illustrative imbalance zone</text><text x="89" y="178" fill="var(--muted)" font-size="12">Candle 1</text><text x="235" y="178" fill="var(--muted)" font-size="12">Candle 2</text><text x="380" y="178" fill="var(--muted)" font-size="12">Candle 3</text></svg>
+    <ol><li>Define the three-candle boundaries precisely and mark the zone without looking ahead.</li><li>Record whether price returns to the zone and what your predefined reaction condition is.</li><li>For an IFVG, write down exactly what invalidates the original zone and how you identify the inversion.</li></ol>
+    <div class="notice">Replay task: log at least 20 examples and note context, session, outcome, and costs. A gap is not a guaranteed reversal or entry signal.</div>
+  </div>
+  <div class="panel">
+    <h3>Lesson 3 · Drawing and testing trendlines</h3>
+    <p class="muted">Trendlines summarize swing points; they do not predict price. Avoid adjusting them after seeing the outcome.</p>
+    <svg viewBox="0 0 600 180" role="img" aria-label="Illustrative rising trendline touching three rising swing lows" style="width:100%;max-height:220px;background:var(--panel2);border-radius:12px;margin:8px 0"><path d="M25 32 L105 80 L165 45 L245 105 L310 70 L395 130 L465 95 L565 151" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linejoin="round"/><path d="M25 150 L565 38" stroke="var(--blue)" stroke-width="2.5" stroke-dasharray="8 6"/><g fill="var(--gold)"><circle cx="25" cy="150" r="5"/><circle cx="245" cy="105" r="5"/><circle cx="565" cy="38" r="5"/></g><text x="30" y="170" fill="var(--muted)" font-size="12">Anchor meaningful swing lows consistently</text></svg>
+    <ol><li>Pick two meaningful rising swing lows to draw a candidate line.</li><li>Decide in advance if a wick or candle close defines a break; don't move the line to rescue the setup.</li><li>If testing a retest, define what confirmation means and what invalidates it.</li></ol>
+    <div class="notice">Replay task: mark 20 charts before revealing the next candles. Record false breaks as well as successful examples.</div>
+  </div>
+  <div class="panel">
+    <h3>Lesson 4 · Risk, costs, and a repeatable review</h3>
+    <ol><li>Know the instrument's contract multiplier and tick value from official specifications; don't guess.</li><li>Record planned stop, target logic, fees, and realistic slippage assumptions.</li><li>After each session, review rule-following and execution separately from the result.</li><li>Change one testable variable at a time and compare enough examples before drawing conclusions.</li></ol>
+    <div class="notice">Learning sequence: understand the concept → define objective rules → replay historical examples → paper trade consistently → review the journal. These lessons are educational and not trade signals.</div>
+  </div>
+  <div class="panel"><h3>Build your own setup card</h3><div class="form-grid">
+    <div class="field"><label>Setup name</label><input id="lessonSetupName" placeholder="e.g. BOS retest"></div>
+    <div class="field"><label>Market context</label><input id="lessonSetupContext" placeholder="What must be true first?"></div>
+    <div class="field span-all"><label>Entry confirmation</label><textarea id="lessonSetupEntry" rows="2" placeholder="Objective condition, not a feeling"></textarea></div>
+    <div class="field span-all"><label>Invalidation and skip conditions</label><textarea id="lessonSetupInvalid" rows="2" placeholder="What proves the idea wrong or means no trade?"></textarea></div>
+    <div class="field span-all"><label>Replay test plan</label><textarea id="lessonSetupTest" rows="2" placeholder="How many examples and what fields will you record?"></textarea></div>
+    <div class="field"><button type="button" class="primary" id="saveSetupCard">Save setup card on this device</button></div>
+  </div><div id="savedSetupCards" class="status">Your custom setup cards stay on this device.</div></div>
 </section>
 
 
@@ -301,6 +338,22 @@
       <button type="button" class="theme-choice" data-theme-choice="light" aria-pressed="false"><span class="theme-preview preview-light"></span><strong>Light</strong><small>Bright & clear</small></button>
     </div>
     <div class="theme-foot"><span class="inline-status"><span class="dot on"></span><span id="themeStatus">Midnight theme selected</span></span><button type="button" class="ghost" id="resetTheme">Reset default</button></div>
+  </div>
+  <div class="panel">
+    <h3>Interface preferences</h3><p class="muted small">Saved on this device. These controls change how the app is displayed.</p>
+    <div class="form-grid">
+      <div class="field"><label for="uiTextSize">Text size</label><select id="uiTextSize"><option value="small">Compact</option><option value="normal">Default</option><option value="large">Large</option></select></div>
+      <div class="field"><label for="uiDensity">Layout density</label><select id="uiDensity"><option value="comfortable">Comfortable spacing</option><option value="compact">Compact spacing</option></select></div>
+      <div class="field"><label for="uiMotion">Motion effects</label><select id="uiMotion"><option value="on">On</option><option value="off">Reduced / off</option></select></div>
+      <div class="field"><label for="uiConfirmDelete">Confirm destructive actions</label><select id="uiConfirmDelete"><option value="on">Always confirm</option><option value="off">Skip extra confirmation</option></select></div>
+    </div>
+    <div class="form-actions"><button type="button" class="primary" id="saveUiPrefs">Save preferences</button><button type="button" id="resetUiPrefs">Reset preferences</button></div><div id="uiPrefsStatus" class="status">Preferences are stored locally on this device.</div>
+  </div>
+  <div class="panel">
+    <h3>Data portability & connections</h3>
+    <p class="muted small">Export your journal as CSV to keep a backup. Direct broker connections are not enabled yet; avoid entering broker passwords or API secrets into this app.</p>
+    <div class="form-actions"><button type="button" id="settingsExportBtn">Export journal CSV</button><button type="button" id="brokerRoadmapBtn">Broker connection info</button></div>
+    <div id="brokerInfo" class="notice hidden">Broker linking is a future feature. The safer first step is a read-only import of a broker-provided CSV, with a preview and duplicate check before importing. Never share brokerage passwords, API secrets, or account credentials in chat or a browser form.</div>
   </div>
   <div class="section-head"><div><h2>Cloud setup</h2><p>Connect your own Supabase project to sync trades across devices.</p></div></div>
   <div class="panel auth-panel">
@@ -662,7 +715,7 @@ function advanceQuizQuestion(){
 }
 function initQuiz(){
  const select=$('quizCategory');
- select.innerHTML='<option value="all">All skills · ${QUESTION_BANK.length} questions</option>'+QUIZ_CATEGORIES.map(c=>`<option value="${c.id}">${esc(c.name)} · ${QUESTION_BANK.filter(q=>q.c===c.id).length}</option>`).join('');
+ select.innerHTML=`<option value="all">All skills · ${QUESTION_BANK.length} questions</option>`+QUIZ_CATEGORIES.map(c=>`<option value="${c.id}">${esc(c.name)} · ${QUESTION_BANK.filter(q=>q.c===c.id).length}</option>`).join('');
  select.onchange=buildQuizQueue;$('quizMode').onchange=buildQuizQueue;
  $('quizReset').onclick=async()=>{if(!confirm('Reset all quiz progress on this device and, if signed in, in your cloud account? This cannot be undone.'))return;quizState={attempted:{},mastered:{}};quizAnswered=false;quizSelected=null;persistQuizLocal();if(client&&user){const {error}=await client.from('quiz_progress').upsert({user_id:user.id,progress:quizState,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)$('quizSaveStatus').textContent='Local progress reset, but remote update failed: '+error.message;else $('quizSaveStatus').textContent='Quiz progress reset locally and in cloud.';}else $('quizSaveStatus').textContent='Quiz progress reset on this device.';buildQuizQueue();};
  buildQuizQueue();
