@@ -989,8 +989,8 @@ const csvAliases={
  csvSymbol:['symbol','ticker','instrument','market','symbol id','contract'],
  csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at','date/time'],
  csvSide:['side','direction','trade direction','position side','position direction'],
- csvEntry:['entry_price','entry','avg_entry_price','average entry price','avg entry','open price'],
- csvExit:['exit_price','exit','avg_exit_price','average exit price','avg exit','close price'],
+ csvEntry:['entry_price','entry price','entry','avg_entry_price','avg entry price','average entry price','avg entry','open price'],
+ csvExit:['exit_price','exit price','exit','avg_exit_price','avg exit price','average exit price','avg exit','close price'],
  csvQty:['contracts','quantity','qty','units','size','filled qty'],
  csvFees:['fees','commission','total_fees','commissions','fee']
 };
@@ -1040,7 +1040,7 @@ $('previewCsvBtn').addEventListener('click',async()=>{
    if(!side){badSides++;invalid++;return null}
    if(fees<0){badFees++;invalid++;return null}
    if(!symbol||entry===null||exit===null||qty===null||qty<=0){invalid++;return null}
-   const t={trade_date:date,symbol,side,setup:'Imported',entry_price:entry,exit_price:exit,trade_status:'closed',contracts:qty,point_value:multiplier,fees,stop_price:null,target_price:null,mood:'Imported',followed_rules:'partial',execution_grade:'',notes:'Imported from CSV: '+file.name,screenshot_url:null};
+   const t={trade_date:date,symbol,side,setup:'Imported',entry_price:entry,exit_price:exit,trade_status:'closed',contracts:qty,point_value:multiplier,fees,stop_price:null,target_price:null,mood:'Imported',followed_rules:'partial',execution_grade:null,notes:'Imported from CSV: '+file.name,screenshot_url:null};
    t.net_pnl=calc(t);return t;
   });
   const valid=mapped.filter(Boolean);
