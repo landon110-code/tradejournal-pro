@@ -2240,4 +2240,63 @@ initQuiz();
 })();
 </script>
 
+
+<script>
+/* Reliable drawer navigation: sidebar items switch views directly, then close drawer. */
+(function(){
+  document.addEventListener('click',function(event){
+    var target=event.target;
+    if(!target || !target.closest) return;
+    var button=target.closest('.sidebar [data-view]');
+    if(!button) return;
+    var name=button.getAttribute('data-view');
+    var view=document.getElementById('view-'+name);
+    if(!view) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    document.querySelectorAll('.view').forEach(function(section){
+      var active=section===view;
+      section.hidden=!active;
+      section.classList.toggle('active',active);
+    });
+    document.querySelectorAll('[data-view]').forEach(function(item){
+      var active=item.getAttribute('data-view')===name;
+      item.classList.toggle('active',active);
+      item.setAttribute('aria-current',active?'page':'false');
+    });
+    var titles={
+      dashboard:['Dashboard','Your trading performance at a glance'],
+      trades:['Trade Log','Review every entry, exit, setup, and lesson'],
+      calendar:['Calendar','Your results by trading day'],
+      weeklyplan:['Weekly Plan','Your guided practice plan for this week'],
+      monthlyplan:['Study Calendar','Your daily learning plan for October'],
+      analytics:['Analytics','Find patterns in your process and results'],
+      replay:['Replay Lab','Practice examples and test rules without live orders'],
+      masterclass:['Beginner Masterclass','Learn the foundations step by step'],
+      playbook:['Playbook','Keep your setup rules consistent'],
+      quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],
+      copilot:['Trading Copilot','Ask questions and learn strategy concepts'],
+      settings:['Settings','Personalize your workspace and manage your data']
+    };
+    var title=titles[name];
+    if(title){
+      var heading=document.getElementById('pageTitle');
+      var subtitle=document.getElementById('pageSubtitle');
+      if(heading) heading.textContent=title[0];
+      if(subtitle) subtitle.textContent=title[1];
+    }
+    var sidebar=document.querySelector('.sidebar');
+    if(sidebar){sidebar.classList.remove('mobile-open');sidebar.style.display='';sidebar.style.zIndex='';}
+    document.querySelectorAll('.mobile-nav-backdrop').forEach(function(backdrop){
+      backdrop.hidden=true;backdrop.style.display='';backdrop.style.zIndex='';
+    });
+    var more=document.getElementById('mobileMoreBtn');
+    var menu=document.getElementById('menuBtn');
+    if(more) more.setAttribute('aria-expanded','false');
+    if(menu) menu.setAttribute('aria-expanded','false');
+    window.scrollTo({top:0,behavior:'auto'});
+  },true);
+})();
+</script>
+
 </body></html>
