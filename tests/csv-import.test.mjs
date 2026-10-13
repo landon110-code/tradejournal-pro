@@ -67,3 +67,20 @@ test('duplicate detection compares date, symbol, side, prices, and quantity', ()
   assert.equal(probableDuplicate(a, { ...a, contracts: 2 }), false);
   assert.equal(probableDuplicate(a, { ...a, side: 'short' }), false);
 });
+
+test('CSV parser detects semicolon and tab delimiters', () => {
+  const semicolonRows = parseCsvText('Symbol;Entry;Exit\nCL;75.2;75.8');
+  assert.equal(semicolonRows[0].symbol, 'CL');
+  assert.equal(semicolonRows[0].entry, '75.2');
+  const tabRows = parseCsvText('Symbol\tEntry\tExit\nMGC\t2600.1\t2601.2');
+  assert.equal(tabRows[0].symbol, 'MGC');
+  assert.equal(tabRows[0].exit, '2601.2');
+});
+
+test('CSV parser reports an unclosed quoted field', () => {
+  assert.throws(() => parseCsvText('Symbol,Entry\nCL,"75.2'), /unclosed quoted field/i);
+});
+
+test('CSV page includes the automatic column detection control', () => {
+  assert.match(html, /id="csvAutoMapBtn"/);
+});
