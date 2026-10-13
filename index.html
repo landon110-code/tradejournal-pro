@@ -145,7 +145,7 @@
   .auth-grid{gap:10px}
   .table-wrap table{font-size:11px}
 }
-@media(min-width:901px){.mobile-nav-backdrop{display:none!important}}.mobile-nav-backdrop[hidden]{display:none}
+@media(min-width:901px){.mobile-nav-backdrop{display:none!important}}.mobile-nav-backdrop[hidden]{display:none!important;pointer-events:none!important}
 
 .view[hidden]{display:none!important}.view.active:not([hidden]){display:grid!important;gap:18px}
 :root[data-ui-text="small"]{font-size:14px}:root[data-ui-text="normal"]{font-size:16px}:root[data-ui-text="large"]{font-size:18px}
@@ -1353,7 +1353,7 @@ td{font-variant-numeric:tabular-nums}
 <button type="button" data-view="masterclass" aria-label="Beginner masterclass"><span class="tab-icon" aria-hidden="true">✦</span><span>Learn</span></button>
 <button type="button" id="mobileMoreBtn" aria-label="Open all sections"><span class="tab-icon" aria-hidden="true">☰</span><span>More</span></button>
 </nav>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let client=null,user=null,trades=[],editingId=null,calendarMonth=new Date(),guestMode=false;
 let quizState=(()=>{try{return JSON.parse(localStorage.getItem('tjp_quiz_progress')||'{"attempted":{},"mastered":{}}')}catch(e){return {attempted:{},mastered:{}}}})();
