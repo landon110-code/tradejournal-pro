@@ -514,6 +514,7 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--green
 /* Phone-first account and import simplification */
 .auth-welcome{display:flex;align-items:center;gap:12px;margin:4px 0 16px}.auth-welcome-icon{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:14px;background:var(--panel2);color:var(--blue);font-size:22px}.auth-simple-grid{grid-template-columns:1fr 1fr}.password-row{display:flex;gap:7px;align-items:stretch}.password-row input{min-width:0;flex:1}.password-toggle{min-width:60px;padding:8px 10px}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.auth-actions #loginBtn{min-height:48px}.auth-actions #logoutBtn{grid-column:1/-1}.advanced-connection,.import-advanced{margin-top:16px;border-top:1px solid var(--border);padding-top:13px}.advanced-connection summary,.import-advanced summary{cursor:pointer;font-weight:600;min-height:42px;display:flex;align-items:center;color:var(--muted)}.import-quick-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.import-quick-step{display:flex;gap:10px;align-items:flex-start;padding:12px;background:var(--panel2);border:1px solid var(--border);border-radius:12px}.import-quick-step>span{display:grid;place-items:center;flex:0 0 26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-weight:700}.import-quick-step strong{display:block;margin:2px 0 5px}.import-quick-step p{font-size:12px;line-height:1.5;margin:0;color:var(--muted)}.import-file-field{padding:14px;border:1px dashed var(--border);border-radius:14px;background:var(--panel2)}.import-file-field input{width:100%;min-height:50px;margin-top:8px}.import-panel #previewCsvBtn,.import-panel #confirmCsvBtn{min-height:48px}.import-panel #confirmCsvBtn{font-weight:700}.import-panel #csvPreview{overflow-x:auto}.import-panel #csvPreview table{min-width:580px}@media(max-width:600px){.auth-simple-grid{grid-template-columns:1fr}.auth-actions{grid-template-columns:1fr}.auth-actions #logoutBtn{grid-column:auto}.import-quick-steps{grid-template-columns:1fr;gap:8px}.import-quick-step{padding:10px}.import-quick-step p{font-size:13px}.import-panel .form-grid{grid-template-columns:1fr!important}.import-panel .form-actions{display:grid;grid-template-columns:1fr;gap:9px}.import-panel .form-actions button{width:100%;min-height:48px}.advanced-connection .auth-grid{grid-template-columns:1fr}}
 
+.journal-advanced{border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--panel2)}.journal-advanced summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--muted);font-weight:650;font-size:13px}.journal-advanced .form-grid{padding:4px 0 12px}.import-panel #csvAutoMapBtn{width:100%;min-height:42px;margin:0 0 8px}
 /* Ultra-simple mobile CSV wizard */
 .visually-hidden-file{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}.import-progress{display:flex;align-items:center;gap:8px;max-width:250px;margin:4px 0 22px}.import-progress-dot{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--border);border-radius:50%;color:var(--muted);font-weight:700}.import-progress-dot.active{background:var(--blue);border-color:var(--blue);color:white}.import-progress-line{height:2px;background:var(--border);flex:1}.import-step-copy{margin-bottom:18px}.import-step-copy h3,.import-next-step h3{margin:0 0 7px}.import-step-copy p,.import-next-step p{line-height:1.55}.import-file-button{display:flex;align-items:center;gap:12px;padding:17px;border:1px dashed var(--blue);border-radius:14px;background:var(--panel2);cursor:pointer;min-height:82px}.import-file-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--blue);color:white;font-size:24px;font-weight:700}.import-file-button strong,.import-file-button small{display:block}.import-file-button small{color:var(--muted);margin-top:4px}.chosen-file{padding:10px 2px 16px;overflow-wrap:anywhere}.import-next-step{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}.import-next-step label{display:block;font-weight:600;margin:10px 0 7px}.import-next-step input{width:100%;min-height:48px}.import-primary-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:13px}.import-primary-actions button{width:100%;min-height:48px}.import-help-link{margin-top:14px;width:100%;text-align:left;white-space:normal}.import-panel #csvImportStatus{margin-top:12px;line-height:1.55}.import-panel #csvPreview{overflow-x:auto}.import-panel #csvPreview table{min-width:560px}.import-advanced{margin-top:16px;border-top:1px solid var(--border);padding-top:12px}.import-advanced summary{min-height:42px;display:flex;align-items:center;cursor:pointer;color:var(--muted);font-weight:600}.import-advanced .form-grid{grid-template-columns:1fr 1fr}@media(max-width:600px){.import-advanced .form-grid{grid-template-columns:1fr}.import-primary-actions button{font-size:15px}.import-panel{padding:16px}}
 
@@ -943,6 +944,7 @@ td{font-variant-numeric:tabular-nums}
     <label class="import-file-button" for="csvFile"><span class="import-file-icon">↑</span><span><strong>Choose CSV from Files</strong><small>Tap to browse your iPhone</small></span></label>
     <input type="file" id="csvFile" accept=".csv,text/csv" class="visually-hidden-file">
     <div id="csvChosenFile" class="chosen-file muted small">No file selected yet.</div>
+    <button type="button" class="ghost" id="csvAutoMapBtn">Detect columns from CSV</button>
     <details class="import-advanced"><summary>My file needs manual column matching</summary>
       <p class="muted small">Leave these settings alone if the app detects your columns correctly.</p>
       <div class="form-grid" style="margin-top:12px">
@@ -1286,6 +1288,7 @@ td{font-variant-numeric:tabular-nums}
       <div class="field"><label>Quantity / units *</label><input id="contracts" type="number" min="0.00000001" step="any" value="1" required></div>
       <div class="field"><label>Value per 1.00 price move (USD)</label><input id="pointValue" type="number" min="0" step="any" value="1" required></div>
       <div class="field"><label>Total fees ($)</label><input id="fees" type="number" min="0" step="any" value="0"></div>
+      <details class="journal-advanced span-all"><summary>Optional review details (setup, mindset, notes)</summary><div class="form-grid">
       <div class="field"><label>Setup</label><select id="setup"><option>BOS</option><option>FVG</option><option>IFVG</option><option>Trendline</option><option>Other</option></select></div>
       <div class="field"><label>Mindset</label><select id="mood"><option>Focused</option><option>Patient</option><option>FOMO</option><option>Frustrated</option><option>Overconfident</option><option>Tired</option></select></div>
       <div class="field"><label>Followed rules?</label><select id="followed"><option value="yes">Yes</option><option value="partial">Partially</option><option value="no">No</option></select></div>
@@ -1294,6 +1297,7 @@ td{font-variant-numeric:tabular-nums}
       <div class="field"><label>Target price</label><input id="target" type="number" step="any"></div>
       <div class="field span-all"><label>Entry reason, review notes, lesson</label><textarea id="notes" placeholder="What was the setup? What confirmed entry? Did you follow your rules?"></textarea></div>
       <div class="field span-all"><label>Screenshot URL (optional)</label><input id="screenshot" type="url" placeholder="Link to your chart screenshot"></div>
+      </div></details>
       <div class="field span-all"><div class="notice">Net P&amp;L preview: <strong id="pnlPreview">Enter entry and exit prices</strong></div></div>
       <div class="form-actions span-all"><button class="primary" type="submit">Save trade</button><button type="button" id="cancelTrade">Cancel</button></div>
     </div>
@@ -1453,13 +1457,13 @@ $('exportBtn').onclick=()=>{if(!trades.length){alert('No trades to export yet.')
 
 // TradingView-aware CSV helpers. Mapping remains user-confirmed because exports differ by panel and report.
 const csvAliases={
- csvSymbol:['symbol','ticker','instrument','market','symbol id','contract'],
- csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at','date/time'],
- csvSide:['side','direction','trade direction','position side','position direction'],
- csvEntry:['entry_price','entry price','entry','avg_entry_price','avg entry price','average entry price','avg entry','open price'],
- csvExit:['exit_price','exit price','exit','avg_exit_price','avg exit price','average exit price','avg exit','close price'],
- csvQty:['contracts','quantity','qty','units','size','filled qty'],
- csvFees:['fees','commission','total_fees','commissions','fee']
+ csvSymbol:['symbol','ticker','instrument','market','symbol id','contract','product','asset'],
+ csvDate:['trade_date','date','opened_at','timestamp','time','entry time','open time','filled at','date/time','open date','entry date','close date'],
+ csvSide:['side','direction','trade direction','position side','position direction','action','trade type'],
+ csvEntry:['entry_price','entry price','entry','avg_entry_price','avg entry price','average entry price','avg entry','open price','average open price','entry avg price'],
+ csvExit:['exit_price','exit price','exit','avg_exit_price','avg exit price','average exit price','avg exit','close price','average close price','exit avg price'],
+ csvQty:['contracts','quantity','qty','units','size','filled qty','filled quantity','position size'],
+ csvFees:['fees','commission','total_fees','commissions','fee','commission and fees','total commission']
 };
 function setCsvMap(headers){let changed=0;Object.entries(csvAliases).forEach(([id,aliases])=>{const match=headers.find(h=>aliases.includes(h.toLowerCase().trim()));if(match){const select=$(id);let option=[...select.options].find(o=>o.value.toLowerCase()===match.toLowerCase());if(!option){option=document.createElement('option');option.value=match;option.textContent=match;select.appendChild(option)}select.value=option.value;changed++}});return changed}
 $('csvAutoMapBtn').addEventListener('click',async()=>{const file=$('csvFile').files[0];if(!file){$('csvImportStatus').textContent='Choose your TradingView CSV first.';return}try{const text=await file.text(),parsed=parseCsvText(text);if(!parsed.length)throw Error('No rows or headers found.');const headers=Object.keys(parsed[0]);const n=setCsvMap(headers);$('csvImportStatus').textContent='Detected '+n+' of 6 column mappings from '+file.name+'. Check each dropdown; then preview the CSV.';}catch(e){$('csvImportStatus').textContent='Could not detect columns: '+e.message}});
@@ -1468,7 +1472,17 @@ $('csvTradingViewHint').addEventListener('click',()=>{$('csvImportStatus').textC
 
 // CSV import: preview, normalize common headers, and skip probable duplicates.
 let csvRowsPending=[];
-function parseCsvText(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else if(c==='"')quoted=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell.replace(/\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row);row=[];cell=''}else cell+=c}if(cell!==''||row.length){row.push(cell.replace(/\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row)}if(!rows.length)return [];const headers=rows.shift().map(h=>h.trim().replace(/^\uFEFF/, '').toLowerCase());return rows.map(values=>Object.fromEntries(headers.map((h,i)=>[h,(values[i]||'').trim()])))}
+function parseCsvText(text){
+ const source=String(text||'').replace(/^\uFEFF/,'');if(!source.trim())return [];
+ const firstLine=source.split(/\r?\n/,1)[0]||'';const candidates=[',',';','\t','|'];let delimiter=',',best=-1;
+ for(const candidate of candidates){let count=0,quoted=false;for(let i=0;i<firstLine.length;i++){const ch=firstLine[i];if(ch==='"'&&firstLine[i+1]==='"'){i++;continue}if(ch==='"')quoted=!quoted;else if(ch===candidate&&!quoted)count++;}if(count>best){best=count;delimiter=candidate}}
+ const rows=[];let row=[],cell='',quoted=false;
+ for(let i=0;i<source.length;i++){const ch=source[i];if(quoted){if(ch==='"'&&source[i+1]==='"'){cell+='"';i++}else if(ch==='"')quoted=false;else cell+=ch;continue}if(ch==='"'){quoted=true;continue}if(ch===delimiter){row.push(cell.trim());cell='';continue}if(ch==='\n'){row.push(cell.replace(/\r$/g,'').trim());if(row.some(v=>v!==''))rows.push(row);row=[];cell='';continue}cell+=ch;}
+ if(cell!==''||row.length){row.push(cell.replace(/\r$/g,'').trim());if(row.some(v=>v!==''))rows.push(row)}
+ if(quoted)throw Error('This CSV has an unclosed quoted field. Re-export the file and try again.');if(!rows.length)return [];
+ const headers=rows.shift().map(h=>h.trim().replace(/^\uFEFF/,'').toLowerCase());if(!headers.some(Boolean))throw Error('The first row needs column headers.');
+ return rows.map(values=>Object.fromEntries(headers.map((h,i)=>[h,(values[i]||'').trim()])))
+}
 function normalizedSide(v){
  const value=String(v||'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\\s+/g,' ');
  if(['short','sell short','short sell','s','bearish'].includes(value))return 'short';
@@ -1527,7 +1541,7 @@ $('previewCsvBtn').addEventListener('click',async()=>{
   $('confirmCsvBtn').dataset.importCount=String(unique.length);
  }catch(err){csvRowsPending=[];$('confirmCsvBtn').disabled=true;$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Could not preview CSV: '+err.message}
 });
-$('confirmCsvBtn').addEventListener('click',async()=>{if(!client||!user){$('csvImportStatus').textContent='Connect and sign in to your private cloud journal before importing.';return}if(!csvRowsPending.length)return;const batch=csvRowsPending;try{$('confirmCsvBtn').disabled=true;$('csvImportStatus').textContent='Importing '+batch.length+' rows…';for(let i=0;i<batch.length;i+=100){const {error}=await client.from('trades').insert(batch.slice(i,i+100));if(error)throw error}csvRowsPending=[];$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Import complete. '+batch.length+' trades added.';await loadTrades()}catch(err){$('csvImportStatus').textContent='Import stopped: '+err.message+' If some batches succeeded, preview again; duplicates are checked against loaded trades.';$('confirmCsvBtn').disabled=false}});
+$('confirmCsvBtn').addEventListener('click',async()=>{if(!guestMode&&(!client||!user)){$('csvImportStatus').textContent='Sign in to import to your cloud journal, or choose Guest mode to save on this device.';return}if(!csvRowsPending.length)return;const batch=csvRowsPending;try{$('confirmCsvBtn').disabled=true;$('csvImportStatus').textContent='Importing '+batch.length+' rows…';if(guestMode){const stamped=batch.map((t,i)=>({...t,id:'guest-import-'+Date.now()+'-'+i,created_at:new Date().toISOString()}));trades=[...stamped,...trades];localStorage.setItem('tjp_guest_trades',JSON.stringify(trades));renderAll();}else{for(let i=0;i<batch.length;i+=100){const {error}=await client.from('trades').insert(batch.slice(i,i+100));if(error)throw error}await loadTrades()}csvRowsPending=[];$('csvPreview').innerHTML='';$('csvImportStatus').textContent='Import complete. '+batch.length+' trades added '+(guestMode?'to this device.':'to your cloud journal.');}catch(err){$('csvImportStatus').textContent='Import stopped: '+err.message+' If some batches succeeded, preview again; duplicates are checked against loaded trades.';$('confirmCsvBtn').disabled=false}});
 
 // Chart Study Notebook: observation notes only; no order or P&L simulation.
 const studyStoreKey='tjpro_chart_study_notes_v1';
