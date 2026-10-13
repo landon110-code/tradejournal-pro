@@ -2203,4 +2203,41 @@ initQuiz();
 })();
 </script>
 
+
+<script>
+/* Independent mobile More-button handler: runs before other navigation listeners. */
+(function(){
+  document.addEventListener('click',function(event){
+    var more=event.target && event.target.closest ? event.target.closest('#mobileMoreBtn') : null;
+    if(!more) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    var sidebar=document.querySelector('.sidebar');
+    var backdrop=document.querySelector('.mobile-nav-backdrop');
+    if(!backdrop){
+      backdrop=document.createElement('div');
+      backdrop.className='mobile-nav-backdrop';
+      backdrop.hidden=true;
+      document.body.appendChild(backdrop);
+      backdrop.addEventListener('click',function(){
+        if(sidebar) sidebar.classList.remove('mobile-open');
+        backdrop.hidden=true;
+      });
+    }
+    if(!sidebar) return;
+    var opening=!sidebar.classList.contains('mobile-open');
+    sidebar.classList.toggle('mobile-open',opening);
+    sidebar.style.display=opening?'flex':'none';
+    sidebar.style.zIndex='1001';
+    backdrop.hidden=!opening;
+    backdrop.style.display=opening?'block':'none';
+    backdrop.style.position='fixed';
+    backdrop.style.inset='0';
+    backdrop.style.zIndex='1000';
+    more.setAttribute('aria-expanded',String(opening));
+    more.setAttribute('aria-label',opening?'Close navigation menu':'Open all sections');
+  },true);
+})();
+</script>
+
 </body></html>
