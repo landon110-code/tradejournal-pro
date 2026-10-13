@@ -2115,4 +2115,67 @@ initQuiz();
  boxes.forEach(b=>{b.checked=!!saved[b.dataset.octTask];b.addEventListener('change',()=>{saved[b.dataset.octTask]=b.checked;try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}update();});});update();
 })();
 </script>
+
+<script>
+/* Navigation failsafe: keeps page switching usable if an earlier feature script errors. */
+(function(){
+  const titles={
+    dashboard:['Dashboard','Your trading performance at a glance'],
+    trades:['Trade Log','Review every entry, exit, setup, and lesson'],
+    calendar:['Calendar','Your results by trading day'],
+    weeklyplan:['Weekly Plan','Your guided practice plan for this week'],
+    monthlyplan:['Study Calendar','Your daily learning plan for October'],
+    analytics:['Analytics','Find patterns in your process and results'],
+    replay:['Replay Lab','Practice examples and test rules without live orders'],
+    masterclass:['Beginner Masterclass','Learn the foundations step by step'],
+    playbook:['Playbook','Keep your setup rules consistent'],
+    quiz:['Knowledge Quiz','Learn concepts and track skill-by-skill mastery'],
+    copilot:['Trading Copilot','Ask questions and learn strategy concepts'],
+    settings:['Settings','Personalize your workspace and manage your data']
+  };
+  function navigate(name){
+    if(!name || !document.getElementById('view-'+name)) return false;
+    document.querySelectorAll('.view').forEach(function(v){
+      var active=v.id==='view-'+name;
+      v.hidden=!active;
+      v.classList.toggle('active',active);
+    });
+    document.querySelectorAll('[data-view]').forEach(function(b){
+      var active=b.dataset.view===name;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-current',active?'page':'false');
+    });
+    var t=titles[name];
+    if(t && document.getElementById('pageTitle')) document.getElementById('pageTitle').textContent=t[0];
+    if(t && document.getElementById('pageSubtitle')) document.getElementById('pageSubtitle').textContent=t[1];
+    var side=document.querySelector('.sidebar'); if(side) side.classList.remove('mobile-open');
+    document.querySelectorAll('.mobile-nav-backdrop').forEach(function(el){el.hidden=true;});
+    return true;
+  }
+  document.addEventListener('click',function(e){
+    var target=e.target;
+    if(!target || !target.closest) return;
+    var button=target.closest('[data-view]');
+    if(button && navigate(button.dataset.view)){e.preventDefault();}
+    if(target.closest('#guestContinue')){
+      var gate=document.getElementById('loginGate'),splash=document.getElementById('loadingSplash'),app=document.querySelector('.app');
+      if(gate) gate.hidden=true;
+      if(splash) splash.hidden=true;
+      if(app) app.setAttribute('aria-hidden','false');
+      document.body.classList.remove('login-required');
+      try{localStorage.setItem('tjp_guest_mode','true')}catch(_){}
+    }
+  },true);
+  /* Never leave a stale splash layer blocking the app forever. */
+  window.setTimeout(function(){
+    var splash=document.getElementById('loadingSplash');
+    if(splash && !splash.hidden){
+      splash.hidden=true;
+      var gate=document.getElementById('loginGate');
+      if(gate && !localStorage.getItem('tjp_guest_mode')) gate.hidden=false;
+    }
+  },11000);
+})();
+</script>
+
 </body></html>
