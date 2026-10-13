@@ -1533,10 +1533,22 @@ function weeklyPlanLoad(){try{return JSON.parse(localStorage.getItem(WEEKLY_PLAN
 function weeklyPlanSave(state){localStorage.setItem(WEEKLY_PLAN_KEY,JSON.stringify(state))}
 const MONTHLY_PLAN_KEY='tjp_monthly_study_plan_2026_10';
 const MONTHLY_PLAN=[
-{d:13,w:'Tue',time:'2 hr 30 min',focus:'Start with chart reading',tasks:['Watch trendline basics; pause and predict swing points','Mark direction and swing highs/lows on 3 historical WTI charts','Draw trendlines without forcing them; save 3 screenshots','Replay 5 examples: setup or no-trade, and explain why','Journal 2 examples with confirmation and invalidation']},
-{d:14,w:'Wed',time:'25 min',focus:'Market structure',tasks:['Mark higher highs/lows, lower highs/lows, or sideways structure on 3 charts','Circle the meaningful swing points before drawing lines','Write one reason a chart is too choppy to trade']},
-{d:15,w:'Thu',time:'25 min',focus:'Trendline reactions',tasks:['Find 3 historical trendline touches or breaks','Record what price did after each touch; do not assume a touch means entry','Save one example you would skip and explain why']},
-{d:16,w:'Fri',time:'3 hours',focus:'Replay and review',tasks:['Watch the second trendline walkthrough; note rules, not profit claims','Replay 5–8 historical examples and pause before outcomes','For each example, record direction, anchors, confirmation, invalidation, and outcome','Review mistakes: direction, swing points, confirmation, or forcing a line','Write one setup rule and one no-trade rule in your playbook']},
+{d:1,w:'Thu',time:'20 min',focus:'Trading foundations',tasks:['Write three rules that prevent impulsive decisions','Learn the difference between a planned setup and guessing','Set up paper trading only'],video:'trading basics for beginners risk management'},
+{d:2,w:'Fri',time:'25 min',focus:'Candles and timeframes',tasks:['Review candle open, high, low, and close','Compare WTI 15-minute and 5-minute charts','Write what one candle cannot tell you'],video:'candlestick charts for beginners'},
+{d:3,w:'Sat',time:'20 min',focus:'Chart navigation',tasks:['Practice scrolling historical CL charts','Find one clear swing high and swing low','Save a labeled screenshot'],video:'TradingView chart basics replay mode tutorial'},
+{d:4,w:'Sun',time:'15 min',focus:'Rest and recap',tasks:['Write three things you learned','Write one question','Take a break after the recap']},
+{d:5,w:'Mon',time:'25 min',focus:'Swing highs and lows',tasks:['Mark five swing highs and five swing lows on historical WTI','Reject tiny pivots that do not affect structure','Explain two pivot choices'],video:'how to identify swing highs and swing lows trading'},
+{d:6,w:'Tue',time:'25 min',focus:'Market structure',tasks:['Label higher highs/lows, lower highs/lows, or range','Practice on three historical chart sections','Mark unclear structure as no-trade'],video:'market structure higher highs higher lows beginner'},
+{d:7,w:'Wed',time:'20 min',focus:'Trendline basics',tasks:['Learn that a trendline summarizes pivots, not predicts price','Find one rising and one falling swing sequence','Write two reasons a line can fail'],video:'trendline trading for beginners how to draw trendlines'},
+{d:8,w:'Thu',time:'25 min',focus:'Trendline anchors',tasks:['Connect two meaningful rising swing lows','Connect two meaningful falling swing highs','Reject lines that must be forced through price'],video:'how to draw trendlines correctly swing points trading'},
+{d:9,w:'Fri',time:'25 min',focus:'Touches are not signals',tasks:['Find three historical trendline touches','Record what price did afterward without assuming','Explain why a touch alone is not an entry rule'],video:'trendline bounce false breakout trading education'},
+{d:10,w:'Sat',time:'30 min',focus:'Breaks and retests',tasks:['Find two trendline breaks and one false break','Record continuation, retest, or return to range','Write what extra evidence you would need'],video:'trendline breakout retest false breakout explained'},
+{d:11,w:'Sun',time:'20 min',focus:'Weekly review',tasks:['Review screenshots before checking later candles','Write your two biggest drawing mistakes','Choose one question to investigate']},
+{d:12,w:'Mon',time:'20 min',focus:'Prepare your chart',tasks:['Open historical WTI/CL on 15-minute and 5-minute charts','Mark major swings on 15-minute first','Save a clean screenshot before adding indicators']},
+{d:13,w:'Tue',time:'2 hr 30 min',focus:'Trendline video lesson',video:'trendline trading for beginners how to draw trendlines step by step',tasks:['Watch a beginner trendline lesson; pause and draw the pivots before continuing','Mark direction and swing highs/lows on 3 historical WTI charts','Draw trendlines without forcing them; save 3 screenshots','Replay 5 examples: setup or no-trade, and explain why','Journal 2 examples with confirmation and invalidation']},
+{d:14,w:'Wed',time:'25 min',focus:'Pick better swing points',video:'trendline trading swing points anchor points beginner',tasks:['Review yesterday’s video notes and redraw one chart without looking at your old line','Compare two possible anchor pairs and explain which better reflects structure','Mark one choppy chart where no clear line exists','Circle the meaningful swing points before drawing lines','Write one reason a chart is too choppy to trade']},
+{d:15,w:'Thu',time:'25 min',focus:'Trend or chop?',video:'how to identify trending vs ranging market beginner trading',tasks:['Classify four historical WTI sections as uptrend, downtrend, or sideways','State which swing sequence supports each label','Mark sideways structure as no-trade practice','Record what price did after each touch; do not assume a touch means entry','Save one example you would skip and explain why']},
+{d:16,w:'Fri',time:'3 hours',focus:'Reactions and confirmation',video:'trendline breakout confirmation false breakout trading tutorial',tasks:['Watch a lesson about trendline breaks and false breakouts','Replay three examples and pause before the next candles appear','Define one objective confirmation condition for your test','Replay 5–8 historical examples and pause before outcomes','For each example, record direction, anchors, confirmation, invalidation, and outcome','Review mistakes: direction, swing points, confirmation, or forcing a line','Write one setup rule and one no-trade rule in your playbook']},
 {d:17,w:'Sat',time:'20 min',focus:'Screenshot review',tasks:['Review this week’s screenshots without looking at outcomes first','Label the biggest mistake you made','Write one question you still have about trendlines']},
 {d:18,w:'Sun',time:'20 min',focus:'Weekly reset',tasks:['Summarize 3 things you learned','Count examples where you followed your written rules','Choose next week’s single skill to improve']},
 {d:19,w:'Mon',time:'25 min',focus:'Swing-point accuracy',tasks:['Mark 5 swing highs and 5 swing lows on historical WTI charts','Compare each point with surrounding candles to reject tiny noise','Save 2 charts with your reasoning']},
@@ -1555,12 +1567,24 @@ const MONTHLY_PLAN=[
 ];
 function monthlyPlanLoad(){try{return JSON.parse(localStorage.getItem(MONTHLY_PLAN_KEY)||'{}')}catch(e){return {}}}
 function monthlyPlanSave(state){localStorage.setItem(MONTHLY_PLAN_KEY,JSON.stringify(state))}
+let selectedMonthlyDay=13;
 function renderMonthlyPlan(){
- const root=$('monthlyPlanDays');if(!root)return;
+ const root=$('monthlyPlanDays'),detail=$('monthlyDayDetail');if(!root||!detail)return;
  const state=monthlyPlanLoad();let total=0,done=0;
- root.innerHTML=MONTHLY_PLAN.map((day,di)=>'<div class="card month-day"><div class="metric-label">'+esc(day.w+' · OCTOBER '+day.d)+'</div><div class="metric-value">'+esc(day.time)+'</div><div class="metric-foot">'+esc(day.focus)+'</div><div class="plan-tasks">'+day.tasks.map((task,ti)=>{const id=day.d+'-'+ti,checked=!!state[id];total++;if(checked)done++;return '<label class="plan-task"><input type="checkbox" data-month-task="'+id+'" '+(checked?'checked':'')+'><span>'+esc(task)+'</span></label>'}).join('')+'</div></div>').join('');
- const progress=$('monthlyPlanProgress');if(progress)progress.textContent=done+' of '+total+' tasks complete';
+ const selected=MONTHLY_PLAN.find(day=>day.d===selectedMonthlyDay)||MONTHLY_PLAN[0];
+ const offset=new Date(2026,9,1).getDay();
+ const cells=Array.from({length:offset},()=>'<div class="study-date blank" aria-hidden="true"></div>');
+ MONTHLY_PLAN.forEach(day=>{
+  const completed=day.tasks.filter((task,ti)=>!!state[day.d+'-'+ti]).length;
+  total+=day.tasks.length;done+=completed;
+  cells.push('<button type="button" class="study-date '+(day.d===selected.d?'selected':'')+'" data-study-date="'+day.d+'" aria-pressed="'+(day.d===selected.d?'true':'false')+'"><span class="study-date-number">'+day.d+'</span><span class="study-date-focus">'+esc(day.focus)+'</span><span class="study-date-progress">'+completed+'/'+day.tasks.length+' done</span></button>');
+ });
+ root.innerHTML=cells.join('');
+ const progress=$('monthlyPlanProgress');if(progress)progress.textContent=done+' / '+total+' tasks complete';
+ const links=selected.video?'<div class="study-resource-links"><a href="https://www.youtube.com/results?search_query='+encodeURIComponent(selected.video)+'" target="_blank" rel="noopener noreferrer">▶ Find lesson videos</a><a href="https://www.youtube.com/results?search_query='+encodeURIComponent('trendline trading tutorial for beginners')+'" target="_blank" rel="noopener noreferrer">More trendline tutorials</a></div>':'';
+ detail.innerHTML='<div class="study-detail-head"><div><div class="metric-label">OCTOBER '+selected.d+' · '+selected.w.toUpperCase()+'</div><h3>'+esc(selected.focus)+'</h3><p class="muted small" style="margin:0">'+esc(selected.time)+' · Historical charts and simulation only</p></div><span class="pill">'+selected.tasks.filter((task,ti)=>!!state[selected.d+'-'+ti]).length+' of '+selected.tasks.length+' done</span></div>'+links+'<div class="study-detail-tasks">'+selected.tasks.map((task,ti)=>{const id=selected.d+'-'+ti,checked=!!state[id];return '<label class="plan-task"><input type="checkbox" data-month-task="'+id+'" '+(checked?'checked':'')+'><span>'+esc(task)+'</span></label>'}).join('')+'</div>';
 }
+document.addEventListener('click',function(event){const button=event.target.closest('[data-study-date]');if(!button)return;selectedMonthlyDay=Number(button.dataset.studyDate);renderMonthlyPlan()});
 document.addEventListener('change',function(event){const input=event.target.closest('[data-month-task]');if(!input)return;const state=monthlyPlanLoad();state[input.dataset.monthTask]=input.checked;monthlyPlanSave(state);renderMonthlyPlan()});
 $('resetMonthlyPlan')?.addEventListener('click',function(){if(!confirm('Reset all October study-calendar checkmarks?'))return;monthlyPlanSave({});renderMonthlyPlan()});
 function renderWeeklyPlan(){
